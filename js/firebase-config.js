@@ -1,22 +1,8 @@
-// ============================================================
-// KONFIGURASI FIREBASE - DampingKu
-// Akun Firebase: 202516162005
-// 
-// CARA MENDAPATKAN CONFIG INI:
-// 1. Buka https://console.firebase.google.com
-// 2. Login dengan akun 202516162005
-// 3. Pilih project (atau buat baru: "dampingku")
-// 4. Klik ikon gear (Project Settings)
-// 5. Scroll ke bagian "Your apps" > Web App
-// 6. Copy firebaseConfig dan paste di bawah ini
-// ============================================================
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-// ðŸ”´ GANTI DENGAN FIREBASE CONFIG ANDA DARI CONSOLE FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyC_5cgfYHLSaEZbPbAmSBCSrtQu5u5DNh8",
   authDomain: "dampingku.firebaseapp.com",
@@ -26,7 +12,6 @@ const firebaseConfig = {
   appId: "1:49548141904:web:7a5560163af798854ff855"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
