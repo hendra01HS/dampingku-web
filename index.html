@@ -258,6 +258,16 @@
       nav ul { display:none; }
       .hero { padding:60px 16px; }
     }
+
+    /* LOGO GLOW EFFECT */
+    @keyframes logoGlow {
+      0%   { filter: drop-shadow(0 0 2px rgba(42,157,143,0)); }
+      50%  { filter: drop-shadow(0 0 10px rgba(42,157,143,0.85)) drop-shadow(0 0 20px rgba(82,196,183,0.5)); }
+      100% { filter: drop-shadow(0 0 2px rgba(42,157,143,0)); }
+    }
+    .logo-glow {
+      animation: logoGlow 3s ease-in-out infinite;
+    }
   </style>
 </head>
 <body>
@@ -265,7 +275,7 @@
 <!-- NAV -->
 <nav>
   <a href="/" class="logo">
-    <img src="assets/logo.png" alt="DampingKu" style="height:44px; width:auto;"/>
+    <img src="assets/logo.png" alt="DampingKu" class="logo-glow" style="height:44px; width:auto;"/>
   </a>
   <ul>
     <li><a href="#fitur">Keunggulan</a></li>
@@ -380,7 +390,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo-footer"><img src="assets/logo.png" alt="DampingKu" style="height:52px; width:auto; filter:brightness(0) invert(1);"/></div>
+  <div class="logo-footer"><img src="assets/logo.png" alt="DampingKu" class="logo-glow" style="height:52px; width:auto; filter:brightness(0) invert(1);"/></div>
   <p>Teman Orang Tua Dampingi Anak Belajar.<br/>Disusun oleh guru SD aktif, untuk orang tua Indonesia.</p>
   <div class="social">
     <a href="https://instagram.com/dampingku.id" title="Instagram">📸</a>
