@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin — DampingKu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --hijau:#2A9D8F; --hijau-gelap:#1A7268; --hijau-muda:#52C4B7;
+      --navy:#1D3557; --kuning:#F4A261; --merah:#EF4444;
+      --abu:#6B7280; --abu-muda:#F3F4F6; --putih:#FFFFFF;
+      --sidebar-w:240px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Nunito',sans-serif; background:var(--abu-muda); display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width:var(--sidebar-w); background:var(--navy); color:white;
+      position:fixed; top:0; left:0; height:100vh;
+      display:flex; flex-direction:column; z-index:50; overflow-y:auto;
+    }
+    .sidebar-logo {
+      padding:24px 20px; border-bottom:1px solid rgba(255,255,255,0.1);
+      font-size:1.3rem; font-weight:900;
+    }
+    .sidebar-logo span { color:var(--hijau-muda); }
+    .sidebar-logo small { display:block; font-size:0.7rem; font-weight:400; color:rgba(255,255,255,0.5); margin-top:2px; }
+    .nav-section { padding:16px 12px 4px; font-size:0.68rem; font-weight:800; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
+    .nav-item {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 20px; cursor:pointer;
+      color:rgba(255,255,255,0.7); font-weight:700; font-size:0.9rem;
+      border-radius:0; transition:all 0.2s; text-decoration:none;
+      border-left:3px solid transparent;
+    }
+    .nav-item:hover, .nav-item.active {
+      background:rgba(42,157,143,0.15); color:white;
+      border-left-color:var(--hijau-muda);
+    }
+    .nav-item .icon { font-size:1.1rem; width:22px; text-align:center; }
+    .sidebar-footer {
+      margin-top:auto; padding:16px 20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-footer button {
+      width:100%; background:rgba(255,255,255,0.1); border:none;
+      color:white; padding:10px; border-radius:8px;
+      font-family:'Nunito',sans-serif; font-weight:700; cursor:pointer;
+      transition:background 0.2s; font-size:0.88rem;
+    }
+    .sidebar-footer button:hover { background:rgba(239,68,68,0.3); }
+    
+    /* MAIN */
+    .main { margin-left:var(--sidebar-w); flex:1; padding:28px; }
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:28px;
+    }
+    .topbar h1 { font-size:1.5rem; font-weight:900; color:var(--navy); }
+    .topbar .admin-badge {
+      background:var(--hijau); color:white; padding:6px 14px;
+      border-radius:20px; font-size:0.82rem; font-weight:700;
+    }
+    
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
+    .stat-card {
+      background:white; border-radius:14px; padding:20px;
+      border-left:4px solid var(--hijau);
+    }
+    .stat-card.kuning { border-left-color:var(--kuning); }
+    .stat-card.merah { border-left-color:var(--merah); }
+    .stat-card.navy { border-left-color:var(--navy); }
+    .stat-label { font-size:0.78rem; color:var(--abu); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+    .stat-val { font-size:1.8rem; font-weight:900; color:var(--navy); margin-top:4px; }
+    .stat-sub { font-size:0.75rem; color:var(--abu); margin-top:2px; }
+
+    /* PANEL */
+    .panel { background:white; border-radius:16px; padding:24px; margin-bottom:24px; }
+    .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+    .panel-title { font-size:1.1rem; font-weight:900; color:var(--navy); }
+    
+    /* TABLE */
+    table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+    th { text-align:left; padding:10px 12px; color:var(--abu); font-weight:800; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--abu-muda); }
+    td { padding:12px 12px; border-bottom:1px solid var(--abu-muda); vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#FAFAFA; }
+    
+    /* BADGES STATUS */
+    .badge {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:0.75rem; font-weight:800;
+    }
+    .badge.menunggu { background:#FEF3C7; color:#92400E; }
+    .badge.dikonfirmasi { background:#D1FAE5; color:#065F46; }
+    .badge.dikirim { background:#DBEAFE; color:#1E40AF; }
+    .badge.selesai { background:#F3F4F6; color:#374151; }
+    .badge.dibatalkan { background:#FEE2E2; color:#991B1B; }
+    
+    /* BUTTONS */
+    .btn {
+      padding:8px 16px; border-radius:8px; border:none;
+      font-family:'Nunito',sans-serif; font-weight:700; font-size:0.82rem;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .btn-hijau { background:var(--hijau); color:white; }
+    .btn-hijau:hover { background:var(--hijau-gelap); }
+    .btn-abu { background:var(--abu-muda); color:var(--navy); }
+    .btn-abu:hover { background:#E5E7EB; }
+    .btn-merah { background:#FEE2E2; color:var(--merah); }
+    .btn-merah:hover { background:#FECACA; }
+    .btn-sm { padding:5px 12px; font-size:0.78rem; }
+    
+    /* FORM MODUL */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { margin-bottom:0; }
+    .form-group.full { grid-column:1/-1; }
+    label { display:block; font-weight:700; font-size:0.85rem; color:var(--navy); margin-bottom:5px; }
+    input[type="text"], input[type="number"], input[type="url"], textarea, select {
+      width:100%; padding:10px 14px; border-radius:9px;
+      border:2px solid #E5E7EB; font-family:'Nunito',sans-serif;
+      font-size:0.9rem; outline:none; transition:border 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color:var(--hijau); }
+    textarea { resize:vertical; min-height:72px; }
+    .toggle-switch { display:flex; align-items:center; gap:10px; }
+    .toggle-switch input[type="checkbox"] { width:42px; height:22px; cursor:pointer; accent-color:var(--hijau); }
+
+    /* TABS */
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* SEARCH */
+    .search-bar input {
+      padding:9px 16px; border-radius:9px; border:2px solid #E5E7EB;
+      font-family:'Nunito',sans-serif; font-size:0.88rem; width:260px; outline:none;
+    }
+    .search-bar input:focus { border-color:var(--hijau); }
+
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      background:var(--navy); color:white; padding:14px 20px;
+      border-radius:12px; font-weight:700; font-size:0.88rem;
+      transform:translateY(100px); opacity:0; transition:all 0.35s;
+      border-left:4px solid var(--hijau); max-width:300px;
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.error { border-left-color:var(--merah); }
+    
+    .empty-row td { text-align:center; color:var(--abu); padding:40px; font-size:0.9rem; }
+    
+    @media(max-width:768px) {
+      .sidebar { width:200px; }
+      .main { margin-left:200px; padding:16px; }
+      .form-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    📚 Damping<span>Ku</span>
+    <small>Panel Admin</small>
+  </div>
+  <div class="nav-section">Utama</div>
+  <a class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</a>
+  <a class="nav-item" onclick="showPage('pesanan')"><span class="icon">🛍️</span> Pesanan</a>
+  <div class="nav-section">Konten</div>
+  <a class="nav-item" onclick="showPage('modul')"><span class="icon">📖</span> Kelola Modul</a>
+  <a class="nav-section" style="padding-top:8px;"></a>
+  <a class="nav-item" href="../index.html" target="_blank"><span class="icon">🌐</span> Lihat Website</a>
+  <div class="sidebar-footer">
+    <button onclick="logout()">🚪 Keluar</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <h1 id="page-title">Dashboard</h1>
+    <div class="admin-badge" id="admin-email">⏳ Memuat...</div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Total Pesanan</div><div class="stat-val" id="stat-total">—</div><div class="stat-sub">Semua waktu</div></div>
+      <div class="stat-card kuning"><div class="stat-label">Menunggu Konfirmasi</div><div class="stat-val" id="stat-menunggu">—</div><div class="stat-sub">Perlu tindakan</div></div>
+      <div class="stat-card"><div class="stat-label">Modul Aktif</div><div class="stat-val" id="stat-modul">—</div><div class="stat-sub">Tersedia di website</div></div>
+      <div class="stat-card navy"><div class="stat-label">Estimasi Pendapatan</div><div class="stat-val" id="stat-pendapatan">—</div><div class="stat-sub">Pesanan dikonfirmasi</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🔔 Pesanan Terbaru (Menunggu Konfirmasi)</div>
+        <button class="btn btn-abu" onclick="showPage('pesanan')">Lihat Semua →</button>
+      </div>
+      <table>
+        <thead><tr><th>Nama</th><th>Modul</th><th>Harga</th><th>WA</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-dashboard"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== PESANAN ===== -->
+  <div class="page" id="page-pesanan">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📋 Semua Pesanan</div>
+        <div class="search-bar"><input type="text" id="search-pesanan" placeholder="Cari nama / modul..." oninput="filterPesanan()"/></div>
+      </div>
+      <table>
+        <thead><tr><th>Tgl</th><th>Nama</th><th>Modul</th><th>Harga</th><th>Metode</th><th>WA</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-pesanan"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== MODUL ===== -->
+  <div class="page" id="page-modul">
+    <!-- Form Tambah/Edit Modul -->
+    <div class="panel" id="form-modul-panel">
+      <div class="panel-header">
+        <div class="panel-title" id="form-modul-title">➕ Tambah Modul Baru</div>
+        <button class="btn btn-abu btn-sm" onclick="resetFormModul()">✕ Batal</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Judul Modul *</label>
+          <input type="text" id="fm-judul" placeholder="Contoh: Cara Mendampingi Membaca Permulaan"/>
+        </div>
+        <div class="form-group">
+          <label>Kategori *</label>
+          <select id="fm-kategori">
+            <option value="membaca">Membaca</option>
+            <option value="berhitung">Berhitung</option>
+            <option value="emosi">Emosi & Kebiasaan</option>
+            <option value="umum">Umum</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Deskripsi Singkat</label>
+          <textarea id="fm-deskripsi" placeholder="Jelaskan isi modul ini secara singkat..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Harga (Rp) *</label>
+          <input type="number" id="fm-harga" placeholder="15000" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Urutan Tampil</label>
+          <input type="number" id="fm-urutan" placeholder="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Jumlah Halaman</label>
+          <input type="text" id="fm-halaman" placeholder="8-12"/>
+        </div>
+        <div class="form-group">
+          <label>Durasi Video</label>
+          <input type="text" id="fm-durasi" placeholder="3-5"/>
+        </div>
+        <div class="form-group full">
+          <label>URL Cover Gambar (opsional)</label>
+          <input type="url" id="fm-gambar" placeholder="https://..."/>
+        </div>
+        <div class="form-group">
+          <label>URL File Modul (Google Drive/dll)</label>
+          <input type="url" id="fm-file-url" placeholder="Link unduhan modul (diberikan setelah konfirmasi)"/>
+        </div>
+        <div class="form-group">
+          <div class="toggle-switch" style="margin-top:24px;">
+            <input type="checkbox" id="fm-aktif" checked/>
+            <label for="fm-aktif" style="margin:0">Tampilkan di website</label>
+          </div>
+          <div class="toggle-switch" style="margin-top:10px;">
+            <input type="checkbox" id="fm-terlaris"/>
+            <label for="fm-terlaris" style="margin:0">Tandai sebagai Terlaris 🔥</label>
+          </div>
+          <div class="toggle-switch" style="margin-top:10px;">
+            <input type="checkbox" id="fm-baru"/>
+            <label for="fm-baru" style="margin:0">Tandai sebagai Baru ✨</label>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="fm-id"/>
+      <div style="margin-top:20px; display:flex; gap:12px;">
+        <button class="btn btn-hijau" onclick="simpanModul()">💾 Simpan Modul</button>
+        <button class="btn btn-abu" onclick="resetFormModul()">Batal</button>
+      </div>
+    </div>
+    
+    <!-- Daftar Modul -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📚 Daftar Modul</div>
+        <button class="btn btn-hijau btn-sm" onclick="resetFormModul(); window.scrollTo(0,0)">+ Tambah Modul</button>
+      </div>
+      <table>
+        <thead><tr><th>#</th><th>Judul</th><th>Kategori</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-modul"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { auth, db, signOut, onAuthStateChanged, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, where, serverTimestamp } from '../js/firebase-config.js';
+
+  // Auth guard
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    document.getElementById('admin-email').textContent = '👤 ' + user.email;
+    loadDashboard();
+    loadPesanan();
+    loadModul();
+  });
+
+  window.logout = async () => {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  };
+
+  // PAGE NAVIGATION
+  window.showPage = (page) => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    const titles = { dashboard:'Dashboard', pesanan:'Pesanan', modul:'Kelola Modul' };
+    document.getElementById('page-title').textContent = titles[page] || page;
+    event?.target?.closest('.nav-item')?.classList.add('active');
+  };
+
+  // ===== DASHBOARD =====
+  let allPesanan = [], allModul = [];
+
+  async function loadDashboard() {
+    try {
+      const [pSnap, mSnap] = await Promise.all([
+        getDocs(query(collection(db, 'pesanan'), orderBy('tanggal','desc'))),
+        getDocs(query(collection(db, 'modul')))
+      ]);
+      allPesanan = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allModul = mSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      const menunggu = allPesanan.filter(p => p.status === 'menunggu');
+      const dikonfirmasi = allPesanan.filter(p => p.status === 'dikonfirmasi' || p.status === 'selesai');
+      const pendapatan = dikonfirmasi.reduce((s, p) => s + (p.harga || 0), 0);
+      const modulAktif = allModul.filter(m => m.aktif).length;
+
+      document.getElementById('stat-total').textContent = allPesanan.length;
+      document.getElementById('stat-menunggu').textContent = menunggu.length;
+      document.getElementById('stat-modul').textContent = modulAktif;
+      document.getElementById('stat-pendapatan').textContent = 'Rp' + pendapatan.toLocaleString('id-ID');
+
+      const tbody = document.getElementById('tabel-dashboard');
+      if (menunggu.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">✅ Tidak ada pesanan yang menunggu konfirmasi.</td></tr>';
+      } else {
+        tbody.innerHTML = menunggu.slice(0, 5).map(p => `
+          <tr>
+            <td><b>${p.nama}</b></td>
+            <td>${p.modulNama}</td>
+            <td>Rp${Number(p.harga).toLocaleString('id-ID')}</td>
+            <td><a href="https://wa.me/${p.wa.replace(/\D/g,'')}" target="_blank">📱 ${p.wa}</a></td>
+            <td><span class="badge menunggu">Menunggu</span></td>
+            <td>
+              <button class="btn btn-hijau btn-sm" onclick="updateStatus('${p.id}','dikonfirmasi')">✅ Konfirmasi</button>
+              <button class="btn btn-merah btn-sm" style="margin-left:4px" onclick="updateStatus('${p.id}','dibatalkan')">✕</button>
+            </td>
+          </tr>`).join('');
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  // ===== PESANAN =====
+  async function loadPesanan() {
+    try {
+      const snap = await getDocs(query(collection(db, 'pesanan'), orderBy('tanggal','desc')));
+      allPesanan = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderPesanan(allPesanan);
+    } catch(e) { console.error(e); }
+  }
+
+  function renderPesanan(data) {
+    const tbody = document.getElementById('tabel-pesanan');
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Belum ada pesanan masuk.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(p => {
+      const tgl = p.tanggal?.toDate ? p.tanggal.toDate().toLocaleDateString('id-ID',{day:'2-digit',month:'short'}) : '—';
+      return `<tr>
+        <td>${tgl}</td>
+        <td><b>${p.nama}</b></td>
+        <td>${p.modulNama}</td>
+        <td>Rp${Number(p.harga).toLocaleString('id-ID')}</td>
+        <td>${p.metode || '—'}</td>
+        <td><a href="https://wa.me/${String(p.wa).replace(/\D/g,'')}" target="_blank">📱 ${p.wa}</a></td>
+        <td>
+          <select onchange="updateStatus('${p.id}',this.value)" style="padding:4px 8px;border-radius:6px;border:1px solid #ddd;font-family:Nunito,sans-serif;font-size:0.8rem;">
+            <option value="menunggu" ${p.status==='menunggu'?'selected':''}>⏳ Menunggu</option>
+            <option value="dikonfirmasi" ${p.status==='dikonfirmasi'?'selected':''}>✅ Dikonfirmasi</option>
+            <option value="dikirim" ${p.status==='dikirim'?'selected':''}>📨 Link Dikirim</option>
+            <option value="selesai" ${p.status==='selesai'?'selected':''}>🎉 Selesai</option>
+            <option value="dibatalkan" ${p.status==='dibatalkan'?'selected':''}>❌ Dibatalkan</option>
+          </select>
+        </td>
+        <td><button class="btn btn-merah btn-sm" onclick="hapusPesanan('${p.id}')">🗑️</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  window.filterPesanan = () => {
+    const q = document.getElementById('search-pesanan').value.toLowerCase();
+    renderPesanan(allPesanan.filter(p =>
+      p.nama?.toLowerCase().includes(q) || p.modulNama?.toLowerCase().includes(q)
+    ));
+  };
+
+  window.updateStatus = async (id, status) => {
+    try {
+      await updateDoc(doc(db, 'pesanan', id), { status });
+      showToast('✅ Status diperbarui: ' + status);
+      loadDashboard(); loadPesanan();
+    } catch(e) { showToast('❌ Gagal memperbarui', true); }
+  };
+
+  window.hapusPesanan = async (id) => {
+    if (!confirm('Hapus pesanan ini? Aksi tidak bisa dibatalkan.')) return;
+    try {
+      await deleteDoc(doc(db, 'pesanan', id));
+      showToast('🗑️ Pesanan dihapus.');
+      loadPesanan();
+    } catch(e) { showToast('❌ Gagal menghapus', true); }
+  };
+
+  // ===== MODUL =====
+  async function loadModul() {
+    try {
+      const snap = await getDocs(query(collection(db, 'modul'), orderBy('urutan')));
+      allModul = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderModul();
+    } catch(e) { console.error(e); }
+  }
+
+  function renderModul() {
+    const tbody = document.getElementById('tabel-modul');
+    if (allModul.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Belum ada modul. Tambahkan modul pertama!</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allModul.map(m => `<tr>
+      <td>${m.urutan || '—'}</td>
+      <td><b>${m.judul}</b></td>
+      <td>${m.kategori}</td>
+      <td>Rp${Number(m.harga).toLocaleString('id-ID')}</td>
+      <td><span class="badge ${m.aktif ? 'dikonfirmasi' : 'dibatalkan'}">${m.aktif ? '✅ Aktif' : '⛔ Nonaktif'}</span></td>
+      <td>
+        <button class="btn btn-abu btn-sm" onclick="editModul('${m.id}')">✏️ Edit</button>
+        <button class="btn btn-merah btn-sm" style="margin-left:4px" onclick="hapusModul('${m.id}')">🗑️</button>
+      </td>
+    </tr>`).join('');
+  }
+
+  window.resetFormModul = () => {
+    document.getElementById('fm-id').value = '';
+    document.getElementById('fm-judul').value = '';
+    document.getElementById('fm-kategori').value = 'membaca';
+    document.getElementById('fm-deskripsi').value = '';
+    document.getElementById('fm-harga').value = '';
+    document.getElementById('fm-urutan').value = '';
+    document.getElementById('fm-halaman').value = '';
+    document.getElementById('fm-durasi').value = '';
+    document.getElementById('fm-gambar').value = '';
+    document.getElementById('fm-file-url').value = '';
+    document.getElementById('fm-aktif').checked = true;
+    document.getElementById('fm-terlaris').checked = false;
+    document.getElementById('fm-baru').checked = false;
+    document.getElementById('form-modul-title').textContent = '➕ Tambah Modul Baru';
+  };
+
+  window.editModul = (id) => {
+    const m = allModul.find(x => x.id === id);
+    if (!m) return;
+    document.getElementById('fm-id').value = id;
+    document.getElementById('fm-judul').value = m.judul || '';
+    document.getElementById('fm-kategori').value = m.kategori || 'membaca';
+    document.getElementById('fm-deskripsi').value = m.deskripsi || '';
+    document.getElementById('fm-harga').value = m.harga || '';
+    document.getElementById('fm-urutan').value = m.urutan || '';
+    document.getElementById('fm-halaman').value = m.halaman || '';
+    document.getElementById('fm-durasi').value = m.durasi || '';
+    document.getElementById('fm-gambar').value = m.gambar || '';
+    document.getElementById('fm-file-url').value = m.fileUrl || '';
+    document.getElementById('fm-aktif').checked = !!m.aktif;
+    document.getElementById('fm-terlaris').checked = !!m.terlaris;
+    document.getElementById('fm-baru').checked = !!m.baru;
+    document.getElementById('form-modul-title').textContent = '✏️ Edit Modul';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.simpanModul = async () => {
+    const id = document.getElementById('fm-id').value;
+    const judul = document.getElementById('fm-judul').value.trim();
+    const harga = parseInt(document.getElementById('fm-harga').value);
+    if (!judul || !harga) { showToast('⚠️ Judul dan harga wajib diisi!', true); return; }
+    const data = {
+      judul,
+      kategori: document.getElementById('fm-kategori').value,
+      deskripsi: document.getElementById('fm-deskripsi').value.trim(),
+      harga,
+      urutan: parseInt(document.getElementById('fm-urutan').value) || 99,
+      halaman: document.getElementById('fm-halaman').value || '8-12',
+      durasi: document.getElementById('fm-durasi').value || '3-5',
+      gambar: document.getElementById('fm-gambar').value.trim(),
+      fileUrl: document.getElementById('fm-file-url').value.trim(),
+      aktif: document.getElementById('fm-aktif').checked,
+      terlaris: document.getElementById('fm-terlaris').checked,
+      baru: document.getElementById('fm-baru').checked,
+    };
+    try {
+      if (id) {
+        await updateDoc(doc(db, 'modul', id), data);
+        showToast('✅ Modul berhasil diperbarui!');
+      } else {
+        data.dibuatPada = serverTimestamp();
+        await addDoc(collection(db, 'modul'), data);
+        showToast('✅ Modul baru berhasil ditambahkan!');
+      }
+      resetFormModul(); loadModul();
+    } catch(e) { showToast('❌ Gagal menyimpan modul.', true); console.error(e); }
+  };
+
+  window.hapusModul = async (id) => {
+    if (!confirm('Hapus modul ini? Aksi tidak bisa dibatalkan.')) return;
+    try {
+      await deleteDoc(doc(db, 'modul', id));
+      showToast('🗑️ Modul dihapus.');
+      loadModul();
+    } catch(e) { showToast('❌ Gagal menghapus modul.', true); }
+  };
+
+  function showToast(msg, err = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast show' + (err ? ' error' : '');
+    setTimeout(() => t.className = 'toast', 3500);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+// ============================================================
+// FIRESTORE SECURITY RULES — DampingKu
+// Salin isi file ini ke Firebase Console > Firestore > Rules
+// ============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // MODUL: publik bisa baca, hanya admin (logged in) yang bisa tulis
+    match /modul/{modulId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // PESANAN: siapa saja bisa buat pesanan baru,
+    // hanya admin yang bisa baca semua & ubah status
+    match /pesanan/{pesananId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+  }
+}

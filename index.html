@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DampingKu — Teman Orang Tua Dampingi Anak Belajar</title>
+  <meta name="description" content="Modul digital panduan mendampingi anak SD belajar di rumah. Disusun langsung oleh guru SD aktif. Mulai Rp10.000/modul."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --hijau: #2A9D8F;
+      --hijau-muda: #52C4B7;
+      --hijau-gelap: #1A7268;
+      --navy: #1D3557;
+      --navy-muda: #2E4A6E;
+      --krem: #FFF8F0;
+      --kuning: #F4A261;
+      --putih: #FFFFFF;
+      --abu: #6B7280;
+      --abu-muda: #F3F4F6;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(42,157,143,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Nunito',sans-serif; background:var(--putih); color:var(--navy); overflow-x:hidden; }
+    
+    /* NAV */
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(10px);
+      border-bottom:2px solid var(--hijau-muda);
+      padding:12px 24px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo-icon {
+      width:40px; height:40px; background:linear-gradient(135deg,var(--hijau),var(--hijau-gelap));
+      border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-size:20px;
+    }
+    .logo-text { font-size:1.4rem; font-weight:900; color:var(--navy); }
+    .logo-text span { color:var(--hijau); }
+    nav ul { list-style:none; display:flex; gap:24px; align-items:center; }
+    nav ul a { text-decoration:none; color:var(--navy); font-weight:600; transition:color 0.2s; }
+    nav ul a:hover { color:var(--hijau); }
+    .btn-nav {
+      background:var(--hijau); color:white; padding:8px 20px;
+      border-radius:20px; font-weight:700; text-decoration:none;
+      transition:background 0.2s;
+    }
+    .btn-nav:hover { background:var(--hijau-gelap); }
+    
+    /* HERO */
+    .hero {
+      background:linear-gradient(135deg,var(--navy) 0%, var(--navy-muda) 50%, #1E4A6B 100%);
+      padding:80px 24px;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; top:-50%; left:-20%;
+      width:140%; height:200%;
+      background:radial-gradient(ellipse at 30% 50%, rgba(42,157,143,0.2) 0%, transparent 60%),
+                 radial-gradient(ellipse at 70% 30%, rgba(82,196,183,0.15) 0%, transparent 50%);
+    }
+    .hero-content { position:relative; max-width:680px; margin:0 auto; }
+    .hero-badge {
+      display:inline-block; background:rgba(42,157,143,0.2);
+      border:1px solid var(--hijau); color:var(--hijau-muda);
+      padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700;
+      margin-bottom:20px; letter-spacing:0.5px;
+    }
+    .hero h1 {
+      font-family:'Lora',serif; font-size:clamp(2rem,5vw,3.2rem);
+      color:white; line-height:1.25; margin-bottom:16px;
+    }
+    .hero h1 em { font-style:italic; color:var(--hijau-muda); }
+    .hero p { color:rgba(255,255,255,0.8); font-size:1.1rem; margin-bottom:32px; line-height:1.7; }
+    .hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .btn-primary {
+      background:var(--hijau); color:white; padding:14px 28px;
+      border-radius:var(--radius); font-weight:800; font-size:1rem;
+      text-decoration:none; transition:all 0.2s; border:2px solid var(--hijau);
+    }
+    .btn-primary:hover { background:var(--hijau-gelap); transform:translateY(-2px); }
+    .btn-outline {
+      background:transparent; color:white; padding:14px 28px;
+      border-radius:var(--radius); font-weight:700; font-size:1rem;
+      text-decoration:none; border:2px solid rgba(255,255,255,0.5);
+      transition:all 0.2s;
+    }
+    .btn-outline:hover { border-color:white; background:rgba(255,255,255,0.1); }
+    .hero-stats {
+      display:flex; justify-content:center; gap:32px; margin-top:48px;
+      flex-wrap:wrap;
+    }
+    .stat { text-align:center; }
+    .stat-num { font-size:1.8rem; font-weight:900; color:var(--hijau-muda); }
+    .stat-label { font-size:0.8rem; color:rgba(255,255,255,0.6); margin-top:2px; }
+    
+    /* SECTION STYLES */
+    .section { padding:72px 24px; max-width:1100px; margin:0 auto; }
+    .section-title { font-family:'Lora',serif; font-size:clamp(1.6rem,3vw,2.2rem); color:var(--navy); margin-bottom:8px; }
+    .section-sub { color:var(--abu); font-size:1rem; margin-bottom:48px; }
+    .tag-label {
+      display:inline-block; font-size:0.75rem; font-weight:800;
+      color:var(--hijau); letter-spacing:1.5px; text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    
+    /* KEUNGGULAN */
+    .fitur-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+    .fitur-card {
+      background:var(--krem); border-radius:var(--radius); padding:28px;
+      border:2px solid transparent; transition:all 0.2s;
+    }
+    .fitur-card:hover { border-color:var(--hijau); transform:translateY(-4px); box-shadow:var(--shadow); }
+    .fitur-icon { font-size:2rem; margin-bottom:12px; }
+    .fitur-card h3 { font-size:1rem; font-weight:800; color:var(--navy); margin-bottom:6px; }
+    .fitur-card p { font-size:0.9rem; color:var(--abu); line-height:1.6; }
+    
+    /* PRODUK */
+    #produk { background:var(--abu-muda); padding:72px 24px; }
+    .produk-inner { max-width:1100px; margin:0 auto; }
+    #filter-bar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+    .filter-btn {
+      padding:8px 18px; border-radius:20px; border:2px solid #ddd;
+      background:white; font-family:'Nunito',sans-serif; font-weight:700;
+      font-size:0.85rem; cursor:pointer; transition:all 0.2s; color:var(--abu);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background:var(--hijau); color:white; border-color:var(--hijau);
+    }
+    #modul-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px; }
+    
+    .modul-card {
+      background:white; border-radius:var(--radius); overflow:hidden;
+      box-shadow:0 2px 12px rgba(0,0,0,0.07); transition:all 0.25s;
+      border:2px solid transparent;
+    }
+    .modul-card:hover { box-shadow:var(--shadow); border-color:var(--hijau); transform:translateY(-4px); }
+    .modul-cover {
+      height:160px; background:linear-gradient(135deg,var(--hijau),var(--navy));
+      display:flex; align-items:center; justify-content:center;
+      font-size:3rem; position:relative; overflow:hidden;
+    }
+    .modul-cover img { width:100%; height:100%; object-fit:cover; position:absolute; }
+    .modul-badge {
+      position:absolute; top:10px; right:10px;
+      background:var(--kuning); color:white; font-size:0.7rem;
+      font-weight:800; padding:3px 8px; border-radius:6px;
+    }
+    .modul-body { padding:20px; }
+    .modul-kategori { font-size:0.72rem; font-weight:800; color:var(--hijau); letter-spacing:1px; text-transform:uppercase; }
+    .modul-judul { font-size:1rem; font-weight:800; color:var(--navy); margin:6px 0; line-height:1.4; }
+    .modul-deskripsi { font-size:0.85rem; color:var(--abu); line-height:1.5; margin-bottom:16px; }
+    .modul-meta { display:flex; gap:10px; font-size:0.78rem; color:var(--abu); margin-bottom:16px; }
+    .modul-meta span { display:flex; align-items:center; gap:4px; }
+    .modul-footer { display:flex; justify-content:space-between; align-items:center; }
+    .modul-harga { font-size:1.2rem; font-weight:900; color:var(--hijau-gelap); }
+    .btn-pesan {
+      background:var(--hijau); color:white; border:none;
+      padding:10px 18px; border-radius:10px; font-weight:800;
+      font-size:0.85rem; cursor:pointer; font-family:'Nunito',sans-serif;
+      transition:all 0.2s;
+    }
+    .btn-pesan:hover { background:var(--hijau-gelap); }
+    
+    /* CARA PESAN */
+    .cara-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:32px; counter-reset:steps; }
+    .step { text-align:center; counter-increment:steps; position:relative; }
+    .step::before {
+      content:counter(steps);
+      display:block; width:52px; height:52px;
+      background:var(--hijau); color:white;
+      font-size:1.3rem; font-weight:900;
+      border-radius:50%; line-height:52px; margin:0 auto 16px;
+    }
+    .step h3 { font-size:1rem; font-weight:800; color:var(--navy); margin-bottom:6px; }
+    .step p { font-size:0.87rem; color:var(--abu); line-height:1.6; }
+    
+    /* MODAL PEMESANAN */
+    .modal-overlay {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+      z-index:1000; align-items:center; justify-content:center; padding:20px;
+    }
+    .modal-overlay.active { display:flex; }
+    .modal {
+      background:white; border-radius:20px; padding:32px;
+      max-width:480px; width:100%; position:relative;
+      max-height:90vh; overflow-y:auto;
+    }
+    .modal-close {
+      position:absolute; top:16px; right:16px;
+      background:var(--abu-muda); border:none; border-radius:50%;
+      width:32px; height:32px; cursor:pointer; font-size:1.1rem;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .modal h2 { font-size:1.3rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
+    .modal-modul-info {
+      background:var(--krem); border-radius:12px; padding:16px; margin:16px 0;
+      border-left:4px solid var(--hijau);
+    }
+    .modal-modul-info .modul-nm { font-weight:800; color:var(--navy); }
+    .modal-modul-info .modul-hargax { font-size:1.3rem; font-weight:900; color:var(--hijau-gelap); }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-weight:700; font-size:0.9rem; color:var(--navy); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 16px; border-radius:10px;
+      border:2px solid #e5e7eb; font-family:'Nunito',sans-serif;
+      font-size:0.95rem; transition:border 0.2s; outline:none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color:var(--hijau); }
+    .btn-submit {
+      width:100%; padding:14px; background:var(--hijau); color:white;
+      border:none; border-radius:12px; font-family:'Nunito',sans-serif;
+      font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.2s;
+    }
+    .btn-submit:hover { background:var(--hijau-gelap); }
+    .btn-submit:disabled { background:var(--abu); cursor:not-allowed; }
+    
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      background:var(--navy); color:white; padding:16px 24px;
+      border-radius:12px; font-weight:700; font-size:0.9rem;
+      transform:translateY(100px); opacity:0;
+      transition:all 0.4s; max-width:320px;
+      border-left:4px solid var(--hijau);
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.error { border-left-color:#ef4444; }
+    
+    /* FOOTER */
+    footer {
+      background:var(--navy); color:rgba(255,255,255,0.7);
+      padding:48px 24px 24px; text-align:center;
+    }
+    footer .logo-footer { font-size:1.6rem; font-weight:900; color:white; margin-bottom:8px; }
+    footer .logo-footer span { color:var(--hijau-muda); }
+    footer p { font-size:0.88rem; line-height:1.7; max-width:500px; margin:0 auto 24px; }
+    footer .social { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+    footer .social a {
+      width:38px; height:38px; border-radius:50%;
+      background:rgba(255,255,255,0.1); display:flex; align-items:center;
+      justify-content:center; text-decoration:none; color:white;
+      transition:background 0.2s; font-size:1rem;
+    }
+    footer .social a:hover { background:var(--hijau); }
+    footer .copy { font-size:0.78rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; }
+    
+    #loading-modul { text-align:center; padding:40px; color:var(--abu); }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--abu); }
+    .empty-state .icon { font-size:3rem; margin-bottom:16px; }
+
+    @media(max-width:640px) {
+      nav ul { display:none; }
+      .hero { padding:60px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-icon">📚</div>
+    <div class="logo-text">Damping<span>Ku</span></div>
+  </a>
+  <ul>
+    <li><a href="#fitur">Keunggulan</a></li>
+    <li><a href="#produk">Modul</a></li>
+    <li><a href="#cara-pesan">Cara Pesan</a></li>
+    <li><a href="admin/login.html" class="btn-nav">Admin</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📚 Disusun Langsung oleh Guru SD Aktif</div>
+    <h1>Dampingi Anak Belajar dengan <em>Cara yang Tepat</em></h1>
+    <p>Modul digital panduan mendampingi anak SD belajar di rumah. Singkat, praktis, langsung bisa diterapkan — tanpa perlu jadi ahli pendidikan.</p>
+    <div class="hero-btns">
+      <a href="#produk" class="btn-primary">🛍️ Lihat Modul</a>
+      <a href="#cara-pesan" class="btn-outline">Cara Pemesanan</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Modul Tersedia</div></div>
+      <div class="stat"><div class="stat-num">Rp10rb</div><div class="stat-label">Harga Mulai Dari</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Guru SD Berpengalaman</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KEUNGGULAN -->
+<section class="section" id="fitur">
+  <div style="text-align:center;">
+    <div class="tag-label">Mengapa DampingKu?</div>
+    <h2 class="section-title">Beda dari Produk Edukasi Lainnya</h2>
+    <p class="section-sub">Kami tidak mengajar anak — kami membekali <em>orang tua</em> agar bisa mendampingi anak dengan lebih baik.</p>
+  </div>
+  <div class="fitur-grid">
+    <div class="fitur-card">
+      <div class="fitur-icon">👩‍🏫</div>
+      <h3>Disusun Guru SD Aktif</h3>
+      <p>Bukan tim konten umum. Dibuat oleh guru yang tiap hari mengajar dan memahami kurikulum SD terkini.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">⚡</div>
+      <h3>Singkat & Langsung Pakai</h3>
+      <p>Video 3-5 menit + e-modul ringkas. Bisa dibaca di sela waktu istirahat kerja.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">🎯</div>
+      <h3>Beli Per Topik</h3>
+      <p>Tidak perlu beli paket besar. Pilih topik yang sedang dibutuhkan anak sekarang.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">💰</div>
+      <h3>Harga Terjangkau</h3>
+      <p>Mulai Rp10.000 per modul. Jauh lebih hemat dari bimbel privat atau kursus parenting.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">📥</div>
+      <h3>Langsung Bisa Diunduh</h3>
+      <p>Setelah konfirmasi pembayaran, file langsung dikirim. Tidak perlu instal aplikasi.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">💬</div>
+      <h3>Ada Sesi Konsultasi</h3>
+      <p>Beli 3+ modul? Dapat akses live Q&A bulanan langsung dengan guru penyusun.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUK MODUL -->
+<section id="produk">
+  <div class="produk-inner">
+    <div class="tag-label">Katalog Modul</div>
+    <h2 class="section-title">Pilih Modul Sesuai Kebutuhan</h2>
+    <div id="filter-bar">
+      <button class="filter-btn active" data-filter="semua">Semua</button>
+      <button class="filter-btn" data-filter="membaca">Membaca</button>
+      <button class="filter-btn" data-filter="berhitung">Berhitung</button>
+      <button class="filter-btn" data-filter="emosi">Emosi & Kebiasaan</button>
+    </div>
+    <div id="modul-grid">
+      <div id="loading-modul">⏳ Memuat modul...</div>
+    </div>
+  </div>
+</section>
+
+<!-- CARA PESAN -->
+<section class="section" id="cara-pesan">
+  <div style="text-align:center;">
+    <div class="tag-label">Panduan Pembelian</div>
+    <h2 class="section-title">Cara Memesan Modul</h2>
+    <p class="section-sub">Proses sederhana, modul langsung di tangan dalam hitungan menit.</p>
+  </div>
+  <div class="cara-steps">
+    <div class="step">
+      <h3>Pilih Modul</h3>
+      <p>Temukan topik yang paling relevan dengan kesulitan belajar anak Anda saat ini.</p>
+    </div>
+    <div class="step">
+      <h3>Isi Form Pesanan</h3>
+      <p>Masukkan nama, nomor WhatsApp, dan pilih metode pembayaran.</p>
+    </div>
+    <div class="step">
+      <h3>Transfer Pembayaran</h3>
+      <p>Lakukan transfer sesuai nominal ke rekening yang tertera, lalu kirim bukti bayar.</p>
+    </div>
+    <div class="step">
+      <h3>Terima Modul</h3>
+      <p>Setelah dikonfirmasi admin, link unduhan dikirim via WhatsApp dalam 1×24 jam.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-footer">Damping<span>Ku</span></div>
+  <p>Teman Orang Tua Dampingi Anak Belajar.<br/>Disusun oleh guru SD aktif, untuk orang tua Indonesia.</p>
+  <div class="social">
+    <a href="https://instagram.com/dampingku.id" title="Instagram">📸</a>
+    <a href="https://wa.me/" title="WhatsApp">💬</a>
+  </div>
+  <div class="copy">© 2026 DampingKu — CV DampingKu Edukasi Nusantara. All rights reserved.</div>
+</footer>
+
+<!-- MODAL PEMESANAN -->
+<div class="modal-overlay" id="modal-pesan">
+  <div class="modal">
+    <button class="modal-close" onclick="tutupModal()">✕</button>
+    <h2>🛍️ Pesan Modul</h2>
+    <div class="modal-modul-info">
+      <div class="modul-nm" id="modal-nama-modul">—</div>
+      <div class="modul-hargax" id="modal-harga-modul">Rp0</div>
+    </div>
+    <div class="form-group">
+      <label>Nama Lengkap *</label>
+      <input type="text" id="nama-pembeli" placeholder="Nama orang tua/wali"/>
+    </div>
+    <div class="form-group">
+      <label>Nomor WhatsApp *</label>
+      <input type="tel" id="wa-pembeli" placeholder="08xxxxxxxxxx"/>
+    </div>
+    <div class="form-group">
+      <label>Email (opsional)</label>
+      <input type="email" id="email-pembeli" placeholder="email@contoh.com"/>
+    </div>
+    <div class="form-group">
+      <label>Metode Pembayaran *</label>
+      <select id="metode-bayar">
+        <option value="">-- Pilih --</option>
+        <option value="transfer_bni">Transfer BNI</option>
+        <option value="transfer_bca">Transfer BCA</option>
+        <option value="dana">DANA</option>
+        <option value="gopay">GoPay</option>
+        <option value="ovo">OVO</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Catatan (opsional)</label>
+      <textarea id="catatan-pembeli" rows="2" placeholder="Misalnya: kelas anak, dll"></textarea>
+    </div>
+    <button class="btn-submit" id="btn-kirim-pesan" onclick="kirimPesanan()">📨 Kirim Pesanan</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { db, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from './js/firebase-config.js';
+
+  let modulAktif = null;
+
+  // Load modul dari Firestore
+  async function loadModul(filter = 'semua') {
+    const grid = document.getElementById('modul-grid');
+    grid.innerHTML = '<div id="loading-modul">⏳ Memuat modul...</div>';
+    try {
+      let q;
+      if (filter === 'semua') {
+        q = query(collection(db, 'modul'), where('aktif', '==', true), orderBy('urutan'));
+      } else {
+        q = query(collection(db, 'modul'), where('aktif', '==', true), where('kategori', '==', filter), orderBy('urutan'));
+      }
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        grid.innerHTML = `<div class="empty-state"><div class="icon">📦</div><p>Modul segera hadir. Pantau terus ya!</p></div>`;
+        return;
+      }
+      grid.innerHTML = '';
+      snap.forEach(docSnap => {
+        const m = docSnap.data();
+        grid.innerHTML += buatKartuModul(docSnap.id, m);
+      });
+    } catch (e) {
+      grid.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Gagal memuat modul. Coba refresh halaman.</p></div>`;
+      console.error(e);
+    }
+  }
+
+  function buatKartuModul(id, m) {
+    const harga = 'Rp' + Number(m.harga).toLocaleString('id-ID');
+    const cover = m.gambar ? `<img src="${m.gambar}" alt="${m.judul}"/>` : '📖';
+    const badge = m.terlaris ? '<div class="modul-badge">🔥 Terlaris</div>' : (m.baru ? '<div class="modul-badge" style="background:#3B82F6">✨ Baru</div>' : '');
+    return `
+      <div class="modul-card" data-id="${id}">
+        <div class="modul-cover">${cover}${badge}</div>
+        <div class="modul-body">
+          <div class="modul-kategori">${m.kategori || 'Umum'}</div>
+          <div class="modul-judul">${m.judul}</div>
+          <div class="modul-deskripsi">${m.deskripsi || ''}</div>
+          <div class="modul-meta">
+            <span>📄 ${m.halaman || '8-12'} hal</span>
+            <span>🎬 Video ${m.durasi || '3-5'} mnt</span>
+          </div>
+          <div class="modul-footer">
+            <div class="modul-harga">${harga}</div>
+            <button class="btn-pesan" onclick="bukaModal('${id}','${m.judul}',${m.harga})">Pesan</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // Filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadModul(btn.dataset.filter);
+    });
+  });
+
+  // Modal
+  window.bukaModal = (id, nama, harga) => {
+    modulAktif = { id, nama, harga };
+    document.getElementById('modal-nama-modul').textContent = nama;
+    document.getElementById('modal-harga-modul').textContent = 'Rp' + Number(harga).toLocaleString('id-ID');
+    document.getElementById('modal-pesan').classList.add('active');
+  };
+  window.tutupModal = () => {
+    document.getElementById('modal-pesan').classList.remove('active');
+    modulAktif = null;
+  };
+
+  // Kirim pesanan
+  window.kirimPesanan = async () => {
+    const nama = document.getElementById('nama-pembeli').value.trim();
+    const wa = document.getElementById('wa-pembeli').value.trim();
+    const email = document.getElementById('email-pembeli').value.trim();
+    const metode = document.getElementById('metode-bayar').value;
+    const catatan = document.getElementById('catatan-pembeli').value.trim();
+    if (!nama || !wa || !metode) { showToast('⚠️ Lengkapi semua kolom wajib!', true); return; }
+    if (!modulAktif) return;
+    const btn = document.getElementById('btn-kirim-pesan');
+    btn.disabled = true; btn.textContent = '⏳ Mengirim...';
+    try {
+      await addDoc(collection(db, 'pesanan'), {
+        modulId: modulAktif.id,
+        modulNama: modulAktif.nama,
+        harga: modulAktif.harga,
+        nama, wa, email, metode, catatan,
+        status: 'menunggu',
+        tanggal: serverTimestamp()
+      });
+      showToast('✅ Pesanan terkirim! Admin akan menghubungi via WhatsApp dalam 1×24 jam.');
+      tutupModal();
+      document.getElementById('nama-pembeli').value = '';
+      document.getElementById('wa-pembeli').value = '';
+      document.getElementById('email-pembeli').value = '';
+      document.getElementById('metode-bayar').value = '';
+      document.getElementById('catatan-pembeli').value = '';
+    } catch (e) {
+      showToast('❌ Gagal mengirim. Coba lagi atau hubungi kami via WhatsApp.', true);
+      console.error(e);
+    } finally {
+      btn.disabled = false; btn.textContent = '📨 Kirim Pesanan';
+    }
+  };
+
+  function showToast(msg, err = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (err ? ' error' : '');
+    setTimeout(() => t.className = 'toast', 4000);
+  }
+
+  loadModul();
+</script>
+</body>
+</html>
