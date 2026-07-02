@@ -375,37 +375,8 @@
           <div class="section-title">🎬 Video Edukasi</div>
           <a href="#" class="lihat-semua" onClick="showSection('video')">Lihat Semua →</a>
         </div>
-        <div class="video-row">
-          <div class="video-card" onClick="bukaVideo('Cara Mendampingi Anak Membaca','Tips praktis mendampingi anak belajar membaca dengan metode fonik yang menyenangkan.','5:32','v1')">
-            <div class="video-thumb v1">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">5:32</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Membaca</div>
-              <div class="video-judul">Cara Mendampingi Anak Membaca</div>
-            </div>
-          </div>
-          <div class="video-card" onClick="bukaVideo('Teknik Mengajarkan Berhitung','Metode jarimatika dan permainan angka untuk membuat berhitung jadi seru.','4:15','v2')">
-            <div class="video-thumb v2">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">4:15</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Berhitung</div>
-              <div class="video-judul">Teknik Mengajarkan Berhitung</div>
-            </div>
-          </div>
-          <div class="video-card" onClick="bukaVideo('Mengelola Emosi Anak','Panduan orang tua mengenali dan mendampingi anak yang sedang tantrum atau frustasi.','6:48','v3')">
-            <div class="video-thumb v3">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">6:48</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Emosi & Karakter</div>
-              <div class="video-judul">Mengelola Emosi Anak SD</div>
-            </div>
-          </div>
+        <div class="video-row" id="dashboard-video-row">
+          <div style="color:#9CA3AF;font-size:0.85rem;padding:20px;">⏳ Memuat video...</div>
         </div>
       </div>
 
@@ -481,31 +452,8 @@
   <!-- ===== VIDEO SECTION ===== -->
   <div id="section-video" style="display:none">
     <h2 style="font-size:1.4rem;font-weight:900;color:var(--navy);margin-bottom:20px;">🎬 Video Edukasi</h2>
-    <div class="video-row">
-      <div class="video-card" onClick="bukaVideo('Cara Mendampingi Anak Membaca','Tips praktis mendampingi anak belajar membaca dengan metode fonik yang menyenangkan.','5:32','v1')">
-        <div class="video-thumb v1"><div class="play-btn">▶</div><div class="video-durasi">5:32</div></div>
-        <div class="video-body"><div class="video-kat">Membaca</div><div class="video-judul">Cara Mendampingi Anak Membaca</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Teknik Mengajarkan Berhitung','Metode jarimatika dan permainan angka untuk membuat berhitung jadi seru.','4:15','v2')">
-        <div class="video-thumb v2"><div class="play-btn">▶</div><div class="video-durasi">4:15</div></div>
-        <div class="video-body"><div class="video-kat">Berhitung</div><div class="video-judul">Teknik Mengajarkan Berhitung</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Mengelola Emosi Anak','Panduan orang tua mengenali dan mendampingi anak yang sedang tantrum atau frustasi.','6:48','v3')">
-        <div class="video-thumb v3"><div class="play-btn">▶</div><div class="video-durasi">6:48</div></div>
-        <div class="video-body"><div class="video-kat">Emosi & Karakter</div><div class="video-judul">Mengelola Emosi Anak SD</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Rutinitas Belajar di Rumah','Panduan membuat jadwal belajar yang konsisten dan menyenangkan untuk anak SD.','7:20','v1')">
-        <div class="video-thumb v1"><div class="play-btn">▶</div><div class="video-durasi">7:20</div></div>
-        <div class="video-body"><div class="video-kat">Parenting</div><div class="video-judul">Rutinitas Belajar di Rumah</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Cara Mengeja yang Benar','Teknik mengajarkan mengeja huruf dengan metode fonik untuk anak kelas 1-2 SD.','5:10','v2')">
-        <div class="video-thumb v2"><div class="play-btn">▶</div><div class="video-durasi">5:10</div></div>
-        <div class="video-body"><div class="video-kat">Membaca</div><div class="video-judul">Cara Mengeja yang Benar</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Komunikasi Positif dengan Anak','Tips berkomunikasi yang efektif agar anak mau belajar tanpa dipaksa.','8:05','v3')">
-        <div class="video-thumb v3"><div class="play-btn">▶</div><div class="video-durasi">8:05</div></div>
-        <div class="video-body"><div class="video-kat">Parenting</div><div class="video-judul">Komunikasi Positif dengan Anak</div></div>
-      </div>
+    <div class="video-row" id="video-full-row">
+      <div style="color:#9CA3AF;padding:20px;">⏳ Memuat video...</div>
     </div>
   </div>
 
@@ -539,6 +487,7 @@
       <h4 id="modal-video-judul2">Judul Video</h4>
       <p id="modal-video-desc">Deskripsi video</p>
       <a href="index.html#produk" class="btn-beli-modul">📚 Lihat Modul Terkait</a>
+      <a href="#" id="btn-buka-video" class="btn-beli-modul" target="_blank" style="display:none;background:#1D3557;margin-left:8px;">▶ Tonton Video</a>
     </div>
   </div>
 </div>
@@ -633,6 +582,33 @@
     } catch(e) { console.error(e); }
   }
   loadModul();
+  loadVideoFromFirebase();
+
+  async function loadVideoFromFirebase() {
+    try {
+      const snap = await getDocs(collection(db,'video'));
+      const videos = snap.docs.map(d=>({id:d.id,...d.data()}))
+        .filter(v => v.aktif === true)
+        .sort((a,b) => (a.urutan||99) - (b.urutan||99));
+      document.getElementById('stat-video').textContent = videos.length || '0';
+      const kartuVideo = (v) => `
+        <div class="video-card" onclick="bukaVideo('${v.judul}','${v.deskripsi||''}','${v.durasi}','${v.warna||'v1'}','${v.link||''}')">
+          <div class="video-thumb ${v.warna||'v1'}">
+            <div class="play-btn">▶</div>
+            <div class="video-durasi">${v.durasi}</div>
+          </div>
+          <div class="video-body">
+            <div class="video-kat">${v.kategori}</div>
+            <div class="video-judul">${v.judul}</div>
+          </div>
+        </div>`;
+      const html = videos.length > 0 ? videos.slice(0,3).map(kartuVideo).join('') : '<div style="color:#9CA3AF;padding:20px;">Belum ada video. Tambahkan via panel admin.</div>';
+      document.getElementById('dashboard-video-row').innerHTML = html;
+      // Update halaman video penuh
+      const videoFullEl = document.getElementById('video-full-row');
+      if(videoFullEl) videoFullEl.innerHTML = videos.length > 0 ? videos.map(kartuVideo).join('') : '<div style="color:#9CA3AF;padding:20px;">Belum ada video.</div>';
+    } catch(e) { console.error(e); }
+  }
 
   // ── INSPIRASI QUOTES
   const quotes = [
@@ -646,11 +622,18 @@
   document.getElementById('inspirasi-quote').textContent = q.q;
 
   // ── VIDEO MODAL
-  window.bukaVideo = (judul, desc, durasi, kelas) => {
+  window.bukaVideo = (judul, desc, durasi, kelas, link) => {
     document.getElementById('modal-video-judul').textContent = judul;
     document.getElementById('modal-video-judul2').textContent = judul;
     document.getElementById('modal-video-desc').textContent = desc;
     document.getElementById('modal-video').classList.add('active');
+    // Jika ada link video, tampilkan tombol buka
+    const btnLink = document.getElementById('btn-buka-video');
+    if(btnLink) {
+      if(link && link !== 'undefined' && link !== '') {
+        btnLink.href = link; btnLink.style.display='inline-block';
+      } else { btnLink.style.display='none'; }
+    }
     tambahPoin(10);
   };
   window.tutupVideo = () => document.getElementById('modal-video').classList.remove('active');
