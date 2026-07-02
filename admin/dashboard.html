@@ -172,7 +172,11 @@
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <img src="../assets/logo.png" alt="DampingKu" class="logo-glow" style="height:38px; width:auto;"/>
+    <img src="../assets/logo.png" alt="DampingKu" class="logo-glow" style="height:38px; width:auto;"
+      onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'"/>
+    <div id="logo-fallback" style="display:none; font-size:1.2rem; font-weight:900; color:white;">
+      Damping<span style="color:var(--hijau-muda);">Ku</span>
+    </div>
     <small>Panel Admin</small>
   </div>
   <div class="nav-section">Utama</div>
@@ -180,6 +184,7 @@
   <a class="nav-item" onClick="showPage('pesanan')"><span class="icon">🛍️</span> Pesanan</a>
   <div class="nav-section">Konten</div>
   <a class="nav-item" onClick="showPage('modul')"><span class="icon">📖</span> Kelola Modul</a>
+  <a class="nav-item" onClick="showPage('video')"><span class="icon">🎬</span> Kelola Video</a>
   <a class="nav-section" style="padding-top:8px;"></a>
   <a class="nav-item" href="../index.html" target="_blank"><span class="icon">🌐</span> Lihat Website</a>
   <div class="sidebar-footer">
@@ -313,6 +318,90 @@
     </div>
   </div>
 
+  <!-- ===== VIDEO ===== -->
+  <div class="page" id="page-video">
+
+    <!-- Form Tambah/Edit Video -->
+    <div class="panel" id="form-video-panel">
+      <div class="panel-header">
+        <div class="panel-title" id="form-video-title">➕ Tambah Video Baru</div>
+        <button class="btn btn-abu btn-sm" onClick="resetFormVideo()">✕ Batal</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Judul Video *</label>
+          <input type="text" id="fv-judul" placeholder="Contoh: Cara Mendampingi Anak Membaca"/>
+        </div>
+        <div class="form-group">
+          <label>Kategori *</label>
+          <select id="fv-kategori">
+            <option value="Membaca">Membaca</option>
+            <option value="Berhitung">Berhitung</option>
+            <option value="Emosi & Karakter">Emosi & Karakter</option>
+            <option value="Parenting">Parenting</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Deskripsi Video</label>
+          <textarea id="fv-deskripsi" rows="2" placeholder="Penjelasan singkat isi video ini..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Durasi Video *</label>
+          <input type="text" id="fv-durasi" placeholder="Contoh: 5:32"/>
+        </div>
+        <div class="form-group">
+          <label>Warna Thumbnail</label>
+          <select id="fv-warna">
+            <option value="v1">Hijau Tosca (Membaca)</option>
+            <option value="v2">Ungu–Biru (Berhitung)</option>
+            <option value="v3">Oranye (Emosi/Parenting)</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Link Video (YouTube/Google Drive/dll)</label>
+          <input type="url" id="fv-link" placeholder="https://youtube.com/watch?v=..."/>
+        </div>
+        <div class="form-group">
+          <label>Urutan Tampil</label>
+          <input type="number" id="fv-urutan" placeholder="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <div class="toggle-switch" style="margin-top:24px;">
+            <input type="checkbox" id="fv-aktif" checked/>
+            <label for="fv-aktif" style="margin:0">Tampilkan di dashboard</label>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="fv-id"/>
+      <div style="margin-top:20px;display:flex;gap:12px;">
+        <button class="btn btn-hijau" onClick="simpanVideo()">💾 Simpan Video</button>
+        <button class="btn btn-abu" onClick="resetFormVideo()">Batal</button>
+      </div>
+    </div>
+
+    <!-- Daftar Video -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🎬 Daftar Video Edukasi</div>
+        <button class="btn btn-hijau btn-sm" onClick="resetFormVideo();window.scrollTo(0,0)">+ Tambah Video</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Judul</th>
+            <th>Kategori</th>
+            <th>Durasi</th>
+            <th>Link</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-video"></tbody>
+      </table>
+    </div>
+  </div>
+
 </main>
 
 <!-- TOAST -->
@@ -340,7 +429,7 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-' + page).classList.add('active');
-    const titles = { dashboard:'Dashboard', pesanan:'Pesanan', modul:'Kelola Modul' };
+    const titles = { dashboard:'Dashboard', pesanan:'Pesanan', modul:'Kelola Modul', video:'Kelola Video' };
     document.getElementById('page-title').textContent = titles[page] || page;
     event?.target?.closest('.nav-item')?.classList.add('active');
   };
@@ -560,6 +649,107 @@
     t.textContent = msg; t.className = 'toast show' + (err ? ' error' : '');
     setTimeout(() => t.className = 'toast', 3500);
   }
+
+  // ===== KELOLA VIDEO =====
+  let allVideo = [];
+
+  async function loadVideo() {
+    try {
+      const snap = await getDocs(query(collection(db, 'video'), orderBy('urutan')));
+      allVideo = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderVideo();
+    } catch(e) { console.error(e); }
+  }
+
+  function renderVideo() {
+    const tbody = document.getElementById('tabel-video');
+    if(!tbody) return;
+    if (allVideo.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Belum ada video. Tambahkan video pertama!</td></tr>';
+      return;
+    }
+    const warnaLabel = { v1:'🟢 Hijau Tosca', v2:'🟣 Ungu-Biru', v3:'🟠 Oranye' };
+    tbody.innerHTML = allVideo.map(v => `<tr>
+      <td>${v.urutan || '—'}</td>
+      <td><b>${v.judul}</b><div style="font-size:0.75rem;color:#6B7280;margin-top:2px;">${v.deskripsi ? v.deskripsi.substring(0,50)+'…' : ''}</div></td>
+      <td>${v.kategori}</td>
+      <td><b>${v.durasi || '—'}</b></td>
+      <td>${v.link ? '<a href="'+v.link+'" target="_blank" style="color:#2A9D8F;font-weight:700;font-size:0.8rem;">🔗 Buka Link</a>' : '—'}</td>
+      <td><span class="badge ${v.aktif ? 'dikonfirmasi' : 'dibatalkan'}">${v.aktif ? '✅ Aktif' : '⛔ Nonaktif'}</span></td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-abu btn-sm" onclick="editVideo('${v.id}')">✏️ Edit</button>
+        <button class="btn btn-merah btn-sm" onclick="hapusVideo('${v.id}')">🗑️</button>
+      </td>
+    </tr>`).join('');
+  }
+
+  window.resetFormVideo = () => {
+    document.getElementById('fv-id').value = '';
+    document.getElementById('fv-judul').value = '';
+    document.getElementById('fv-deskripsi').value = '';
+    document.getElementById('fv-durasi').value = '';
+    document.getElementById('fv-link').value = '';
+    document.getElementById('fv-urutan').value = '';
+    document.getElementById('fv-kategori').value = 'Membaca';
+    document.getElementById('fv-warna').value = 'v1';
+    document.getElementById('fv-aktif').checked = true;
+    document.getElementById('form-video-title').textContent = '➕ Tambah Video Baru';
+  };
+
+  window.editVideo = (id) => {
+    const v = allVideo.find(x => x.id === id);
+    if (!v) return;
+    document.getElementById('fv-id').value = id;
+    document.getElementById('fv-judul').value = v.judul || '';
+    document.getElementById('fv-deskripsi').value = v.deskripsi || '';
+    document.getElementById('fv-durasi').value = v.durasi || '';
+    document.getElementById('fv-link').value = v.link || '';
+    document.getElementById('fv-urutan').value = v.urutan || '';
+    document.getElementById('fv-kategori').value = v.kategori || 'Membaca';
+    document.getElementById('fv-warna').value = v.warna || 'v1';
+    document.getElementById('fv-aktif').checked = !!v.aktif;
+    document.getElementById('form-video-title').textContent = '✏️ Edit Video';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.simpanVideo = async () => {
+    const id = document.getElementById('fv-id').value;
+    const judul = document.getElementById('fv-judul').value.trim();
+    const durasi = document.getElementById('fv-durasi').value.trim();
+    if (!judul || !durasi) { showToast('⚠️ Judul dan durasi wajib diisi!', true); return; }
+    const data = {
+      judul,
+      deskripsi: document.getElementById('fv-deskripsi').value.trim(),
+      durasi,
+      link: document.getElementById('fv-link').value.trim(),
+      urutan: parseInt(document.getElementById('fv-urutan').value) || 99,
+      kategori: document.getElementById('fv-kategori').value,
+      warna: document.getElementById('fv-warna').value,
+      aktif: document.getElementById('fv-aktif').checked,
+    };
+    try {
+      if (id) {
+        await updateDoc(doc(db, 'video', id), data);
+        showToast('✅ Video berhasil diperbarui!');
+      } else {
+        data.dibuatPada = serverTimestamp();
+        await addDoc(collection(db, 'video'), data);
+        showToast('✅ Video baru berhasil ditambahkan!');
+      }
+      resetFormVideo(); loadVideo();
+    } catch(e) { showToast('❌ Gagal menyimpan video.', true); console.error(e); }
+  };
+
+  window.hapusVideo = async (id) => {
+    if (!confirm('Hapus video ini? Aksi tidak bisa dibatalkan.')) return;
+    try {
+      await deleteDoc(doc(db, 'video', id));
+      showToast('🗑️ Video dihapus.');
+      loadVideo();
+    } catch(e) { showToast('❌ Gagal menghapus video.', true); }
+  };
+
+  loadVideo();
 </script>
 </body>
 </html>
