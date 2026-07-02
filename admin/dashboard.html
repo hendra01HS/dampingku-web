@@ -655,7 +655,7 @@
 
   async function loadVideo() {
     try {
-      const snap = await getDocs(query(collection(db, 'video'), orderBy('urutan')));
+      const snap = await getDocs(collection(db, 'video'));
       allVideo = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       renderVideo();
     } catch(e) { console.error(e); }
@@ -737,7 +737,13 @@
         showToast('✅ Video baru berhasil ditambahkan!');
       }
       resetFormVideo(); loadVideo();
-    } catch(e) { showToast('❌ Gagal menyimpan video.', true); console.error(e); }
+    } catch(e) {
+      console.error('Error simpan video:', e);
+      let msg = '❌ Gagal menyimpan video.';
+      if(e.code === 'permission-denied') msg = '❌ Akses ditolak. Pastikan sudah login sebagai admin.';
+      if(e.code === 'unavailable') msg = '❌ Koneksi bermasalah. Coba lagi.';
+      showToast(msg, true);
+    }
   };
 
   window.hapusVideo = async (id) => {
