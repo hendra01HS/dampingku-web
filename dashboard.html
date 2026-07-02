@@ -3,241 +3,167 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard — DampingKu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,600;1,600&display=swap" rel="stylesheet"/>
+  <title>Dashboard Admin — DampingKu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --hijau:#2A9D8F; --hijau-muda:#52C4B7; --hijau-gelap:#1A7268;
+      --hijau:#2A9D8F; --hijau-gelap:#1A7268; --hijau-muda:#52C4B7;
       --navy:#1D3557; --kuning:#F4A261; --merah:#EF4444;
-      --ungu:#7C3AED; --biru:#3B82F6;
       --abu:#6B7280; --abu-muda:#F3F4F6; --putih:#FFFFFF;
-      --sidebar:240px;
+      --sidebar-w:240px;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Nunito',sans-serif; background:#F0F7F6; display:flex; min-height:100vh; }
+    body { font-family:'Nunito',sans-serif; background:var(--abu-muda); display:flex; min-height:100vh; }
 
-    /* ── SIDEBAR ── */
+    /* SIDEBAR */
     .sidebar {
-      width:var(--sidebar); background:var(--putih);
-      border-right:1px solid #E5E7EB; position:fixed;
-      top:0; left:0; height:100vh; display:flex;
-      flex-direction:column; z-index:100; overflow-y:auto;
+      width:var(--sidebar-w); background:var(--navy); color:white;
+      position:fixed; top:0; left:0; height:100vh;
+      display:flex; flex-direction:column; z-index:50; overflow-y:auto;
     }
     .sidebar-logo {
-      padding:20px 20px 16px; border-bottom:1px solid #F3F4F6;
-      display:flex; align-items:center; gap:10px;
+      padding:24px 20px; border-bottom:1px solid rgba(255,255,255,0.1);
+      font-size:1.3rem; font-weight:900;
     }
-    .sidebar-logo img { height:36px; width:auto; }
-    .sidebar-logo-text { font-size:1.1rem; font-weight:900; color:var(--navy); }
-    .sidebar-logo-text span { color:var(--hijau); }
-    .sidebar-logo-sub { font-size:0.65rem; color:var(--abu); font-weight:600; line-height:1.3; }
-
-    .nav-group { padding:12px 12px 4px; font-size:0.65rem; font-weight:800; color:#9CA3AF; letter-spacing:1.5px; text-transform:uppercase; }
+    .sidebar-logo span { color:var(--hijau-muda); }
+    .sidebar-logo small { display:block; font-size:0.7rem; font-weight:400; color:rgba(255,255,255,0.5); margin-top:2px; }
+    .nav-section { padding:16px 12px 4px; font-size:0.68rem; font-weight:800; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
     .nav-item {
-      display:flex; align-items:center; gap:10px; padding:10px 16px;
-      color:var(--abu); font-weight:700; font-size:0.88rem;
-      border-radius:10px; margin:2px 8px; cursor:pointer;
-      transition:all 0.2s; text-decoration:none; border:none; background:none; width:calc(100% - 16px);
-    }
-    .nav-item:hover { background:#F0FDF4; color:var(--hijau); }
-    .nav-item.active { background:linear-gradient(135deg,#E6F7F5,#D1FAE5); color:var(--hijau-gelap); font-weight:800; }
-    .nav-item .nav-icon { font-size:1.1rem; width:22px; text-align:center; }
-    .nav-badge { margin-left:auto; background:var(--merah); color:white; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px; }
-
-    .sidebar-user {
-      margin-top:auto; padding:16px; border-top:1px solid #F3F4F6;
       display:flex; align-items:center; gap:10px;
+      padding:10px 20px; cursor:pointer;
+      color:rgba(255,255,255,0.7); font-weight:700; font-size:0.9rem;
+      border-radius:0; transition:all 0.2s; text-decoration:none;
+      border-left:3px solid transparent;
     }
-    .user-avatar {
-      width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--hijau),var(--navy));
-      display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;
+    .nav-item:hover, .nav-item.active {
+      background:rgba(42,157,143,0.15); color:white;
+      border-left-color:var(--hijau-muda);
     }
-    .user-name { font-weight:800; font-size:0.88rem; color:var(--navy); }
-    .user-sub { font-size:0.72rem; color:var(--abu); }
-    .btn-logout { margin-left:auto; background:none; border:none; color:#9CA3AF; cursor:pointer; font-size:1rem; }
-
-    /* ── MAIN ── */
-    .main { margin-left:var(--sidebar); flex:1; padding:24px; max-width:calc(100% - var(--sidebar)); }
-
-    /* TOPBAR */
-    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
-    .topbar-search {
-      flex:1; max-width:420px;
-      background:white; border-radius:12px; border:2px solid #E5E7EB;
-      display:flex; align-items:center; gap:10px; padding:10px 16px;
+    .nav-item .icon { font-size:1.1rem; width:22px; text-align:center; }
+    .sidebar-footer {
+      margin-top:auto; padding:16px 20px;
+      border-top:1px solid rgba(255,255,255,0.1);
     }
-    .topbar-search input { border:none; outline:none; font-family:'Nunito',sans-serif; font-size:0.9rem; width:100%; color:var(--navy); }
-    .topbar-search input::placeholder { color:#9CA3AF; }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
-    .notif-btn { position:relative; background:white; border:2px solid #E5E7EB; border-radius:10px; padding:9px 12px; cursor:pointer; font-size:1.1rem; }
-    .notif-dot { position:absolute; top:-4px; right:-4px; background:var(--merah); color:white; font-size:0.6rem; font-weight:800; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
-    .topbar-user { display:flex; align-items:center; gap:8px; background:white; border:2px solid #E5E7EB; border-radius:12px; padding:8px 14px; cursor:pointer; }
-    .topbar-user .av { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,var(--hijau),var(--navy)); display:flex; align-items:center; justify-content:center; font-size:0.9rem; }
-    .topbar-user span { font-weight:700; font-size:0.85rem; color:var(--navy); }
-
-    /* HERO BANNER */
-    .hero-banner {
-      background:linear-gradient(135deg,#1D3557 0%,#2A9D8F 100%);
-      border-radius:20px; padding:28px 32px; margin-bottom:24px;
-      display:flex; align-items:center; gap:24px; overflow:hidden; position:relative; min-height:180px;
+    .sidebar-footer button {
+      width:100%; background:rgba(255,255,255,0.1); border:none;
+      color:white; padding:10px; border-radius:8px;
+      font-family:'Nunito',sans-serif; font-weight:700; cursor:pointer;
+      transition:background 0.2s; font-size:0.88rem;
     }
-    .hero-banner::before {
-      content:''; position:absolute; right:0; top:0; width:55%; height:100%;
-      background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='300' cy='100' r='120' fill='rgba(82,196,183,0.15)'/%3E%3Ccircle cx='350' cy='50' r='80' fill='rgba(82,196,183,0.1)'/%3E%3C/svg%3E") no-repeat center/cover;
+    .sidebar-footer button:hover { background:rgba(239,68,68,0.3); }
+    
+    /* MAIN */
+    .main { margin-left:var(--sidebar-w); flex:1; padding:28px; }
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:28px;
     }
-    .hero-illus {
-      position:absolute; right:24px; bottom:0;
-      font-size:6rem; line-height:1; opacity:0.9;
+    .topbar h1 { font-size:1.5rem; font-weight:900; color:var(--navy); }
+    .topbar .admin-badge {
+      background:var(--hijau); color:white; padding:6px 14px;
+      border-radius:20px; font-size:0.82rem; font-weight:700;
     }
-    .hero-text { position:relative; z-index:1; }
-    .hero-greeting { font-size:0.85rem; color:rgba(255,255,255,0.7); font-weight:600; margin-bottom:4px; }
-    .hero-name { font-size:1.8rem; font-weight:900; color:white; margin-bottom:6px; }
-    .hero-quote { font-style:italic; font-size:0.88rem; color:var(--hijau-muda); margin-bottom:16px; line-height:1.5; max-width:400px; }
-    .hero-btns { display:flex; gap:10px; flex-wrap:wrap; }
-    .btn-hero-primary { background:var(--kuning); color:white; padding:10px 20px; border-radius:10px; font-weight:800; font-size:0.88rem; text-decoration:none; border:none; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
-    .btn-hero-primary:hover { background:#E8934F; transform:translateY(-1px); }
-    .btn-hero-outline { background:rgba(255,255,255,0.15); color:white; padding:10px 20px; border-radius:10px; font-weight:700; font-size:0.88rem; text-decoration:none; border:2px solid rgba(255,255,255,0.3); cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
-    .btn-hero-outline:hover { background:rgba(255,255,255,0.25); }
-
-    /* STAT CARDS */
-    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:24px; }
+    
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
     .stat-card {
-      background:white; border-radius:16px; padding:16px 18px;
-      display:flex; align-items:center; gap:14px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+      background:white; border-radius:14px; padding:20px;
+      border-left:4px solid var(--hijau);
     }
-    .stat-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
-    .stat-icon.hijau { background:#E6F7F5; }
-    .stat-icon.kuning { background:#FEF3C7; }
-    .stat-icon.biru { background:#EFF6FF; }
-    .stat-icon.ungu { background:#F5F3FF; }
-    .stat-info {}
-    .stat-label { font-size:0.72rem; color:var(--abu); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
-    .stat-val { font-size:1.5rem; font-weight:900; color:var(--navy); line-height:1.2; }
-    .stat-trend { font-size:0.72rem; color:#16A34A; font-weight:700; margin-top:2px; }
+    .stat-card.kuning { border-left-color:var(--kuning); }
+    .stat-card.merah { border-left-color:var(--merah); }
+    .stat-card.navy { border-left-color:var(--navy); }
+    .stat-label { font-size:0.78rem; color:var(--abu); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+    .stat-val { font-size:1.8rem; font-weight:900; color:var(--navy); margin-top:4px; }
+    .stat-sub { font-size:0.75rem; color:var(--abu); margin-top:2px; }
 
-    /* GRID KONTEN */
-    .content-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; }
-    @media(max-width:1024px) { .content-grid { grid-template-columns:1fr; } }
-
-    .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-    .section-title { font-size:1rem; font-weight:900; color:var(--navy); }
-    .lihat-semua { font-size:0.8rem; font-weight:700; color:var(--hijau); text-decoration:none; }
-    .lihat-semua:hover { text-decoration:underline; }
-
-    /* MODUL CARDS */
-    .modul-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin-bottom:24px; }
-    .modul-card {
-      background:white; border-radius:16px; overflow:hidden;
-      box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:all 0.2s; cursor:pointer;
+    /* PANEL */
+    .panel { background:white; border-radius:16px; padding:24px; margin-bottom:24px; }
+    .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+    .panel-title { font-size:1.1rem; font-weight:900; color:var(--navy); }
+    
+    /* TABLE */
+    table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+    th { text-align:left; padding:10px 12px; color:var(--abu); font-weight:800; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--abu-muda); }
+    td { padding:12px 12px; border-bottom:1px solid var(--abu-muda); vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#FAFAFA; }
+    
+    /* BADGES STATUS */
+    .badge {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:0.75rem; font-weight:800;
     }
-    .modul-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(42,157,143,0.15); }
-    .modul-thumb {
-      height:110px; position:relative; overflow:hidden;
-      display:flex; align-items:center; justify-content:center; font-size:3rem;
+    .badge.menunggu { background:#FEF3C7; color:#92400E; }
+    .badge.dikonfirmasi { background:#D1FAE5; color:#065F46; }
+    .badge.dikirim { background:#DBEAFE; color:#1E40AF; }
+    .badge.selesai { background:#F3F4F6; color:#374151; }
+    .badge.dibatalkan { background:#FEE2E2; color:#991B1B; }
+    
+    /* BUTTONS */
+    .btn {
+      padding:8px 16px; border-radius:8px; border:none;
+      font-family:'Nunito',sans-serif; font-weight:700; font-size:0.82rem;
+      cursor:pointer; transition:all 0.2s;
     }
-    .modul-thumb.g1 { background:linear-gradient(135deg,#2A9D8F,#1D3557); }
-    .modul-thumb.g2 { background:linear-gradient(135deg,#7C3AED,#3B82F6); }
-    .modul-thumb.g3 { background:linear-gradient(135deg,#F4A261,#EF4444); }
-    .modul-thumb.g4 { background:linear-gradient(135deg,#16A34A,#2A9D8F); }
-    .modul-badge-new { position:absolute; top:8px; right:8px; background:var(--kuning); color:white; font-size:0.65rem; font-weight:800; padding:3px 7px; border-radius:6px; }
-    .modul-body { padding:12px 14px; }
-    .modul-kat { font-size:0.65rem; font-weight:800; color:var(--hijau); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
-    .modul-nama { font-size:0.85rem; font-weight:800; color:var(--navy); line-height:1.3; margin-bottom:8px; }
-    .progress-bar { height:5px; background:#E5E7EB; border-radius:3px; overflow:hidden; margin-bottom:4px; }
-    .progress-fill { height:100%; background:linear-gradient(90deg,var(--hijau),var(--hijau-muda)); border-radius:3px; transition:width 0.5s; }
-    .progress-label { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--abu); font-weight:700; }
-    .btn-lanjut { width:100%; margin-top:8px; padding:7px; background:var(--hijau); color:white; border:none; border-radius:8px; font-family:'Nunito',sans-serif; font-weight:800; font-size:0.78rem; cursor:pointer; transition:background 0.2s; }
-    .btn-lanjut:hover { background:var(--hijau-gelap); }
-    .btn-mulai { background:#E6F7F5; color:var(--hijau-gelap); }
-    .btn-mulai:hover { background:#D1FAE5; }
-
-    /* VIDEO SECTION */
-    .video-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin-bottom:24px; }
-    .video-card { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); transition:all 0.2s; cursor:pointer; }
-    .video-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.1); }
-    .video-thumb {
-      height:120px; position:relative; display:flex; align-items:center; justify-content:center;
+    .btn-hijau { background:var(--hijau); color:white; }
+    .btn-hijau:hover { background:var(--hijau-gelap); }
+    .btn-abu { background:var(--abu-muda); color:var(--navy); }
+    .btn-abu:hover { background:#E5E7EB; }
+    .btn-merah { background:#FEE2E2; color:var(--merah); }
+    .btn-merah:hover { background:#FECACA; }
+    .btn-sm { padding:5px 12px; font-size:0.78rem; }
+    
+    /* FORM MODUL */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { margin-bottom:0; }
+    .form-group.full { grid-column:1/-1; }
+    label { display:block; font-weight:700; font-size:0.85rem; color:var(--navy); margin-bottom:5px; }
+    input[type="text"], input[type="number"], input[type="url"], textarea, select {
+      width:100%; padding:10px 14px; border-radius:9px;
+      border:2px solid #E5E7EB; font-family:'Nunito',sans-serif;
+      font-size:0.9rem; outline:none; transition:border 0.2s;
     }
-    .video-thumb.v1 { background:linear-gradient(135deg,#1D3557,#2A9D8F); }
-    .video-thumb.v2 { background:linear-gradient(135deg,#7C3AED,#EC4899); }
-    .video-thumb.v3 { background:linear-gradient(135deg,#D97706,#F4A261); }
-    .play-btn {
-      width:44px; height:44px; background:rgba(255,255,255,0.9); border-radius:50%;
-      display:flex; align-items:center; justify-content:center; font-size:1.2rem;
-      box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform 0.2s;
+    input:focus, textarea:focus, select:focus { border-color:var(--hijau); }
+    textarea { resize:vertical; min-height:72px; }
+    .toggle-switch { display:flex; align-items:center; gap:10px; }
+    .toggle-switch input[type="checkbox"] { width:42px; height:22px; cursor:pointer; accent-color:var(--hijau); }
+
+    /* TABS */
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* SEARCH */
+    .search-bar input {
+      padding:9px 16px; border-radius:9px; border:2px solid #E5E7EB;
+      font-family:'Nunito',sans-serif; font-size:0.88rem; width:260px; outline:none;
     }
-    .video-card:hover .play-btn { transform:scale(1.1); }
-    .video-durasi { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.7); color:white; font-size:0.7rem; font-weight:700; padding:2px 7px; border-radius:5px; }
-    .video-body { padding:12px 14px; }
-    .video-kat { font-size:0.65rem; font-weight:800; color:var(--biru); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
-    .video-judul { font-size:0.85rem; font-weight:800; color:var(--navy); line-height:1.3; }
+    .search-bar input:focus { border-color:var(--hijau); }
 
-    /* SIDEBAR KANAN */
-    .right-col { display:flex; flex-direction:column; gap:16px; }
-
-    /* AKSES CEPAT */
-    .akses-cepat { background:white; border-radius:16px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .akses-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-    .akses-item {
-      background:var(--abu-muda); border-radius:12px; padding:14px 10px;
-      text-align:center; cursor:pointer; transition:all 0.2s; text-decoration:none;
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      background:var(--navy); color:white; padding:14px 20px;
+      border-radius:12px; font-weight:700; font-size:0.88rem;
+      transform:translateY(100px); opacity:0; transition:all 0.35s;
+      border-left:4px solid var(--hijau); max-width:300px;
     }
-    .akses-item:hover { background:#E6F7F5; transform:translateY(-2px); }
-    .akses-icon { font-size:1.5rem; margin-bottom:5px; }
-    .akses-label { font-size:0.75rem; font-weight:800; color:var(--navy); }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.error { border-left-color:var(--merah); }
+    
+    .empty-row td { text-align:center; color:var(--abu); padding:40px; font-size:0.9rem; }
 
-    /* INSPIRASI */
-    .inspirasi {
-      background:linear-gradient(135deg,var(--navy),#2A9D8F);
-      border-radius:16px; padding:20px; color:white; position:relative; overflow:hidden;
+    @keyframes logoGlow {
+      0%   { filter: brightness(0) invert(1) drop-shadow(0 0 2px rgba(82,196,183,0)); }
+      50%  { filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(82,196,183,0.95)) drop-shadow(0 0 22px rgba(42,157,143,0.6)); }
+      100% { filter: brightness(0) invert(1) drop-shadow(0 0 2px rgba(82,196,183,0)); }
     }
-    .inspirasi::before { content:'❝'; position:absolute; top:-10px; left:12px; font-size:4rem; color:rgba(255,255,255,0.1); font-family:serif; }
-    .inspirasi-label { font-size:0.72rem; font-weight:800; color:var(--hijau-muda); letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
-    .inspirasi-quote { font-size:0.88rem; line-height:1.6; color:rgba(255,255,255,0.9); font-style:italic; margin-bottom:10px; }
-    .inspirasi-source { font-size:0.75rem; font-weight:800; color:var(--hijau-muda); }
-    .inspirasi-illus { text-align:right; font-size:3rem; margin-top:8px; }
-
-    /* TANTANGAN */
-    .tantangan { background:white; border-radius:16px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .tantangan-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #F3F4F6; }
-    .tantangan-item:last-child { border-bottom:none; }
-    .tantangan-check { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0; }
-    .tantangan-check.done { background:#DCFCE7; }
-    .tantangan-check.todo { background:#F3F4F6; }
-    .tantangan-text { font-size:0.82rem; font-weight:700; color:var(--navy); flex:1; }
-    .tantangan-text.done { color:var(--abu); text-decoration:line-through; }
-    .tantangan-poin { font-size:0.72rem; font-weight:800; color:var(--kuning); }
-
-    /* NAMA MODAL */
-    .modal-nama { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:500; align-items:center; justify-content:center; }
-    .modal-nama.active { display:flex; }
-    .modal-nama-box { background:white; border-radius:20px; padding:32px; max-width:400px; width:90%; text-align:center; }
-    .modal-nama-box h2 { font-size:1.3rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
-    .modal-nama-box p { font-size:0.88rem; color:var(--abu); margin-bottom:20px; }
-    .modal-nama-box input { width:100%; padding:12px 16px; border-radius:10px; border:2px solid #E5E7EB; font-family:'Nunito',sans-serif; font-size:1rem; outline:none; text-align:center; font-weight:800; margin-bottom:16px; }
-    .modal-nama-box input:focus { border-color:var(--hijau); }
-    .btn-simpan-nama { width:100%; padding:13px; background:var(--hijau); color:white; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-weight:900; font-size:1rem; cursor:pointer; }
-    .btn-simpan-nama:hover { background:var(--hijau-gelap); }
-
-    /* VIDEO MODAL */
-    .modal-video { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:500; align-items:center; justify-content:center; padding:20px; }
-    .modal-video.active { display:flex; }
-    .modal-video-box { background:white; border-radius:20px; max-width:640px; width:100%; overflow:hidden; }
-    .modal-video-header { padding:16px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E5E7EB; }
-    .modal-video-header h3 { font-size:1rem; font-weight:900; color:var(--navy); }
-    .btn-tutup-video { background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--abu); }
-    .video-placeholder { background:#1F2937; height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; gap:12px; }
-    .video-placeholder .play-big { font-size:3rem; }
-    .video-info { padding:16px 20px; }
-    .video-info h4 { font-weight:900; color:var(--navy); margin-bottom:4px; }
-    .video-info p { font-size:0.85rem; color:var(--abu); }
-    .btn-beli-modul { display:inline-block; margin-top:12px; padding:10px 20px; background:var(--hijau); color:white; border-radius:10px; font-weight:800; font-size:0.88rem; text-decoration:none; }
-
+    .logo-glow { animation: logoGlow 3s ease-in-out infinite; }
+    
     @media(max-width:768px) {
-      .sidebar { display:none; }
-      .main { margin-left:0; padding:16px; }
-      .hero-illus { display:none; }
+      .sidebar { width:200px; }
+      .main { margin-left:200px; padding:16px; }
+      .form-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -246,427 +172,398 @@
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <img src="assets/logo.png" alt="DampingKu" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
-    <div style="display:none">
-      <div class="sidebar-logo-text">Damping<span>Ku</span></div>
+    <img src="../assets/logo.png" alt="DampingKu" class="logo-glow" style="height:38px; width:auto;"
+      onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'"/>
+    <div id="logo-fallback" style="display:none; font-size:1.2rem; font-weight:900; color:white;">
+      Damping<span style="color:var(--hijau-muda);">Ku</span>
     </div>
-    <div>
-      <div class="sidebar-logo-sub">Mendampingi dengan Cinta,<br/>Mengantarkan pada Prestasi</div>
-    </div>
+    <small>Panel Admin</small>
   </div>
-  <div class="nav-group">Menu Utama</div>
-  <a class="nav-item active" onClick="showSection('dashboard')">
-    <span class="nav-icon">🏠</span> Dashboard
-  </a>
-  <a class="nav-item" onClick="showSection('modul')">
-    <span class="nav-icon">📚</span> Modul
-  </a>
-  <a class="nav-item" onClick="showSection('video')">
-    <span class="nav-icon">▶️</span> Video Edukasi
-  </a>
-  <div class="nav-group">Lainnya</div>
-  <a class="nav-item" href="index.html" style="color:#2A9D8F;font-weight:900;">
-    <span class="nav-icon">🏠</span> ← Kembali ke Beranda
-  </a>
-  <a class="nav-item" href="index.html#produk">
-    <span class="nav-icon">🛍️</span> Beli Modul
-  </a>
-  <a class="nav-item" href="index.html#cara-pesan">
-    <span class="nav-icon">❓</span> Cara Pesan
-  </a>
-  <div class="sidebar-user">
-    <div class="user-avatar">👩</div>
-    <div>
-      <div class="user-name" id="sidebar-nama">Halo!</div>
-      <div class="user-sub">Orang Tua Hebat 🌟</div>
-    </div>
-    <button class="btn-logout" onClick="gantiNama()" title="Ganti nama">✏️</button>
+  <div class="nav-section">Utama</div>
+  <a class="nav-item active" onClick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</a>
+  <a class="nav-item" onClick="showPage('pesanan')"><span class="icon">🛍️</span> Pesanan</a>
+  <div class="nav-section">Konten</div>
+  <a class="nav-item" onClick="showPage('modul')"><span class="icon">📖</span> Kelola Modul</a>
+  <a class="nav-section" style="padding-top:8px;"></a>
+  <a class="nav-item" href="../index.html" target="_blank"><span class="icon">🌐</span> Lihat Website</a>
+  <div class="sidebar-footer">
+    <button onClick="logout()">🚪 Keluar</button>
   </div>
 </aside>
 
 <!-- MAIN -->
 <main class="main">
-
-  <!-- TOPBAR -->
   <div class="topbar">
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:white;border:2px solid #E5E7EB;border-radius:10px;padding:9px 14px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.85rem;color:#1D3557;text-decoration:none;transition:all 0.2s;flex-shrink:0;" onMouseOver="this.style.borderColor='#2A9D8F';this.style.color='#2A9D8F'" onMouseOut="this.style.borderColor='#E5E7EB';this.style.color='#1D3557'">
-      ← Beranda
-    </a>
-    <div class="topbar-search">
-      <span>🔍</span>
-      <input type="text" placeholder="Cari modul, video, atau topik..."/>
-    </div>
-    <div class="topbar-right">
-      <div class="notif-btn">🔔<div class="notif-dot">3</div></div>
-      <div class="topbar-user" onClick="gantiNama()">
-        <div class="av">👩</div>
-        <span id="topbar-nama">Halo!</span>
-        <span style="color:#9CA3AF;font-size:0.8rem;">▾</span>
-      </div>
-    </div>
+    <h1 id="page-title">Dashboard</h1>
+    <div class="admin-badge" id="admin-email">⏳ Memuat...</div>
   </div>
 
-  <!-- ===== DASHBOARD SECTION ===== -->
-  <div id="section-dashboard">
-
-    <!-- HERO BANNER -->
-    <div class="hero-banner">
-      <div class="hero-text">
-        <div class="hero-greeting">Selamat datang kembali,</div>
-        <div class="hero-name" id="hero-nama">Bunda Hebat! 👋</div>
-        <div class="hero-quote">"Setiap langkah kecil hari ini adalah<br/>bekal besar untuk masa depan anak."</div>
-        <div class="hero-btns">
-          <a href="index.html#produk" class="btn-hero-primary">🛍️ Lihat Modul Baru</a>
-          <button class="btn-hero-outline" onClick="showSection('video')">▶️ Tonton Video</button>
-        </div>
-      </div>
-      <div class="hero-illus">👨‍👩‍👦</div>
-    </div>
-
-    <!-- STATS -->
+  <!-- ===== DASHBOARD ===== -->
+  <div class="page active" id="page-dashboard">
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon hijau">📚</div>
-        <div class="stat-info">
-          <div class="stat-label">Modul Dibeli</div>
-          <div class="stat-val" id="stat-modul-dibeli">0</div>
-          <div class="stat-trend" id="trend-modul">— belum ada</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon biru">▶️</div>
-        <div class="stat-info">
-          <div class="stat-label">Video Edukasi</div>
-          <div class="stat-val" id="stat-video">3</div>
-          <div class="stat-trend">Video tersedia</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon kuning">⭐</div>
-        <div class="stat-info">
-          <div class="stat-label">Poin Semangat</div>
-          <div class="stat-val" id="stat-poin">0</div>
-          <div class="stat-trend">Kumpulkan terus!</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon ungu">🎯</div>
-        <div class="stat-info">
-          <div class="stat-label">Hari Belajar</div>
-          <div class="stat-val" id="stat-hari">1</div>
-          <div class="stat-trend">Konsisten yuk!</div>
-        </div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Total Pesanan</div><div class="stat-val" id="stat-total">—</div><div class="stat-sub">Semua waktu</div></div>
+      <div class="stat-card kuning"><div class="stat-label">Menunggu Konfirmasi</div><div class="stat-val" id="stat-menunggu">—</div><div class="stat-sub">Perlu tindakan</div></div>
+      <div class="stat-card"><div class="stat-label">Modul Aktif</div><div class="stat-val" id="stat-modul">—</div><div class="stat-sub">Tersedia di website</div></div>
+      <div class="stat-card navy"><div class="stat-label">Estimasi Pendapatan</div><div class="stat-val" id="stat-pendapatan">—</div><div class="stat-sub">Pesanan dikonfirmasi</div></div>
     </div>
-
-    <div class="content-grid">
-      <div>
-        <!-- MODUL TERBARU -->
-        <div class="section-header">
-          <div class="section-title">📖 Modul Tersedia</div>
-          <a href="index.html#produk" class="lihat-semua">Lihat Semua →</a>
-        </div>
-        <div class="modul-row" id="dashboard-modul-row">
-          <div style="color:#9CA3AF;font-size:0.85rem;padding:20px;">⏳ Memuat modul...</div>
-        </div>
-
-        <!-- VIDEO EDUKASI -->
-        <div class="section-header">
-          <div class="section-title">🎬 Video Edukasi</div>
-          <a href="#" class="lihat-semua" onClick="showSection('video')">Lihat Semua →</a>
-        </div>
-        <div class="video-row">
-          <div class="video-card" onClick="bukaVideo('Cara Mendampingi Anak Membaca','Tips praktis mendampingi anak belajar membaca dengan metode fonik yang menyenangkan.','5:32','v1')">
-            <div class="video-thumb v1">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">5:32</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Membaca</div>
-              <div class="video-judul">Cara Mendampingi Anak Membaca</div>
-            </div>
-          </div>
-          <div class="video-card" onClick="bukaVideo('Teknik Mengajarkan Berhitung','Metode jarimatika dan permainan angka untuk membuat berhitung jadi seru.','4:15','v2')">
-            <div class="video-thumb v2">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">4:15</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Berhitung</div>
-              <div class="video-judul">Teknik Mengajarkan Berhitung</div>
-            </div>
-          </div>
-          <div class="video-card" onClick="bukaVideo('Mengelola Emosi Anak','Panduan orang tua mengenali dan mendampingi anak yang sedang tantrum atau frustasi.','6:48','v3')">
-            <div class="video-thumb v3">
-              <div class="play-btn">▶</div>
-              <div class="video-durasi">6:48</div>
-            </div>
-            <div class="video-body">
-              <div class="video-kat">Emosi & Karakter</div>
-              <div class="video-judul">Mengelola Emosi Anak SD</div>
-            </div>
-          </div>
-        </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🔔 Pesanan Terbaru (Menunggu Konfirmasi)</div>
+        <button class="btn btn-abu" onClick="showPage('pesanan')">Lihat Semua →</button>
       </div>
-
-      <!-- KOLOM KANAN -->
-      <div class="right-col">
-        <!-- AKSES CEPAT -->
-        <div class="akses-cepat">
-          <div class="section-title">⚡ Akses Cepat</div>
-          <div class="akses-grid">
-            <a class="akses-item" href="index.html#produk">
-              <div class="akses-icon">📚</div>
-              <div class="akses-label">Modul Saya</div>
-            </a>
-            <a class="akses-item" href="#" onClick="showSection('video')">
-              <div class="akses-icon">▶️</div>
-              <div class="akses-label">Video Terbaru</div>
-            </a>
-            <a class="akses-item" href="index.html#cara-pesan">
-              <div class="akses-icon">🛒</div>
-              <div class="akses-label">Cara Pesan</div>
-            </a>
-            <a class="akses-item" href="index.html#fitur">
-              <div class="akses-icon">💡</div>
-              <div class="akses-label">Tips Belajar</div>
-            </a>
-          </div>
-        </div>
-
-        <!-- INSPIRASI -->
-        <div class="inspirasi">
-          <div class="inspirasi-label">✨ Inspirasi Hari Ini</div>
-          <div class="inspirasi-quote" id="inspirasi-quote">"Anak bukan untuk menjadi seperti kita, tetapi untuk menjadi versi terbaik dari dirinya sendiri."</div>
-          <div class="inspirasi-source">— DampingKu</div>
-          <div class="inspirasi-illus">🌟👨‍👩‍👦</div>
-        </div>
-
-        <!-- TANTANGAN HARIAN -->
-        <div class="tantangan">
-          <div class="section-title" style="margin-bottom:12px;">🎯 Tantangan Hari Ini</div>
-          <div class="tantangan-item" onClick="toggleTantangan(this)">
-            <div class="tantangan-check todo">○</div>
-            <div class="tantangan-text">Baca 1 modul DampingKu hari ini</div>
-            <div class="tantangan-poin">+10 ⭐</div>
-          </div>
-          <div class="tantangan-item" onClick="toggleTantangan(this)">
-            <div class="tantangan-check todo">○</div>
-            <div class="tantangan-text">Dampingi anak belajar 15 menit</div>
-            <div class="tantangan-poin">+15 ⭐</div>
-          </div>
-          <div class="tantangan-item" onClick="toggleTantangan(this)">
-            <div class="tantangan-check todo">○</div>
-            <div class="tantangan-text">Tonton 1 video edukasi</div>
-            <div class="tantangan-poin">+10 ⭐</div>
-          </div>
-          <div class="tantangan-item" onClick="toggleTantangan(this)">
-            <div class="tantangan-check todo">○</div>
-            <div class="tantangan-text">Beri pujian ke anak hari ini</div>
-            <div class="tantangan-poin">+5 ⭐</div>
-          </div>
-        </div>
-      </div>
+      <table>
+        <thead><tr><th>Nama</th><th>Modul</th><th>Harga</th><th>WA</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-dashboard"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- ===== MODUL SECTION ===== -->
-  <div id="section-modul" style="display:none">
-    <h2 style="font-size:1.4rem;font-weight:900;color:var(--navy);margin-bottom:20px;">📚 Semua Modul</h2>
-    <div class="modul-row" id="full-modul-row">
-      <div style="color:#9CA3AF;padding:20px;">⏳ Memuat modul...</div>
+  <!-- ===== PESANAN ===== -->
+  <div class="page" id="page-pesanan">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📋 Semua Pesanan</div>
+        <div class="search-bar"><input type="text" id="search-pesanan" placeholder="Cari nama / modul..." oninput="filterPesanan()"/></div>
+      </div>
+      <table>
+        <thead><tr><th>Tgl</th><th>Nama</th><th>Modul</th><th>Harga</th><th>Metode</th><th>WA</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-pesanan"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- ===== VIDEO SECTION ===== -->
-  <div id="section-video" style="display:none">
-    <h2 style="font-size:1.4rem;font-weight:900;color:var(--navy);margin-bottom:20px;">🎬 Video Edukasi</h2>
-    <div class="video-row">
-      <div class="video-card" onClick="bukaVideo('Cara Mendampingi Anak Membaca','Tips praktis mendampingi anak belajar membaca dengan metode fonik yang menyenangkan.','5:32','v1')">
-        <div class="video-thumb v1"><div class="play-btn">▶</div><div class="video-durasi">5:32</div></div>
-        <div class="video-body"><div class="video-kat">Membaca</div><div class="video-judul">Cara Mendampingi Anak Membaca</div></div>
+  <!-- ===== MODUL ===== -->
+  <div class="page" id="page-modul">
+    <!-- Form Tambah/Edit Modul -->
+    <div class="panel" id="form-modul-panel">
+      <div class="panel-header">
+        <div class="panel-title" id="form-modul-title">➕ Tambah Modul Baru</div>
+        <button class="btn btn-abu btn-sm" onClick="resetFormModul()">✕ Batal</button>
       </div>
-      <div class="video-card" onClick="bukaVideo('Teknik Mengajarkan Berhitung','Metode jarimatika dan permainan angka untuk membuat berhitung jadi seru.','4:15','v2')">
-        <div class="video-thumb v2"><div class="play-btn">▶</div><div class="video-durasi">4:15</div></div>
-        <div class="video-body"><div class="video-kat">Berhitung</div><div class="video-judul">Teknik Mengajarkan Berhitung</div></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Judul Modul *</label>
+          <input type="text" id="fm-judul" placeholder="Contoh: Cara Mendampingi Membaca Permulaan"/>
+        </div>
+        <div class="form-group">
+          <label>Kategori *</label>
+          <select id="fm-kategori">
+            <option value="membaca">Membaca</option>
+            <option value="berhitung">Berhitung</option>
+            <option value="emosi">Emosi & Kebiasaan</option>
+            <option value="umum">Umum</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Deskripsi Singkat</label>
+          <textarea id="fm-deskripsi" placeholder="Jelaskan isi modul ini secara singkat..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Harga (Rp) *</label>
+          <input type="number" id="fm-harga" placeholder="15000" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Urutan Tampil</label>
+          <input type="number" id="fm-urutan" placeholder="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Jumlah Halaman</label>
+          <input type="text" id="fm-halaman" placeholder="8-12"/>
+        </div>
+        <div class="form-group">
+          <label>Durasi Video</label>
+          <input type="text" id="fm-durasi" placeholder="3-5"/>
+        </div>
+        <div class="form-group full">
+          <label>URL Cover Gambar (opsional)</label>
+          <input type="url" id="fm-gambar" placeholder="https://..."/>
+        </div>
+        <div class="form-group">
+          <label>URL File Modul (Google Drive/dll)</label>
+          <input type="url" id="fm-file-url" placeholder="Link unduhan modul (diberikan setelah konfirmasi)"/>
+        </div>
+        <div class="form-group">
+          <div class="toggle-switch" style="margin-top:24px;">
+            <input type="checkbox" id="fm-aktif" checked/>
+            <label for="fm-aktif" style="margin:0">Tampilkan di website</label>
+          </div>
+          <div class="toggle-switch" style="margin-top:10px;">
+            <input type="checkbox" id="fm-terlaris"/>
+            <label for="fm-terlaris" style="margin:0">Tandai sebagai Terlaris 🔥</label>
+          </div>
+          <div class="toggle-switch" style="margin-top:10px;">
+            <input type="checkbox" id="fm-baru"/>
+            <label for="fm-baru" style="margin:0">Tandai sebagai Baru ✨</label>
+          </div>
+        </div>
       </div>
-      <div class="video-card" onClick="bukaVideo('Mengelola Emosi Anak','Panduan orang tua mengenali dan mendampingi anak yang sedang tantrum atau frustasi.','6:48','v3')">
-        <div class="video-thumb v3"><div class="play-btn">▶</div><div class="video-durasi">6:48</div></div>
-        <div class="video-body"><div class="video-kat">Emosi & Karakter</div><div class="video-judul">Mengelola Emosi Anak SD</div></div>
+      <input type="hidden" id="fm-id"/>
+      <div style="margin-top:20px; display:flex; gap:12px;">
+        <button class="btn btn-hijau" onClick="simpanModul()">💾 Simpan Modul</button>
+        <button class="btn btn-abu" onClick="resetFormModul()">Batal</button>
       </div>
-      <div class="video-card" onClick="bukaVideo('Rutinitas Belajar di Rumah','Panduan membuat jadwal belajar yang konsisten dan menyenangkan untuk anak SD.','7:20','v1')">
-        <div class="video-thumb v1"><div class="play-btn">▶</div><div class="video-durasi">7:20</div></div>
-        <div class="video-body"><div class="video-kat">Parenting</div><div class="video-judul">Rutinitas Belajar di Rumah</div></div>
+    </div>
+    
+    <!-- Daftar Modul -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📚 Daftar Modul</div>
+        <button class="btn btn-hijau btn-sm" onClick="resetFormModul(); window.scrollTo(0,0)">+ Tambah Modul</button>
       </div>
-      <div class="video-card" onClick="bukaVideo('Cara Mengeja yang Benar','Teknik mengajarkan mengeja huruf dengan metode fonik untuk anak kelas 1-2 SD.','5:10','v2')">
-        <div class="video-thumb v2"><div class="play-btn">▶</div><div class="video-durasi">5:10</div></div>
-        <div class="video-body"><div class="video-kat">Membaca</div><div class="video-judul">Cara Mengeja yang Benar</div></div>
-      </div>
-      <div class="video-card" onClick="bukaVideo('Komunikasi Positif dengan Anak','Tips berkomunikasi yang efektif agar anak mau belajar tanpa dipaksa.','8:05','v3')">
-        <div class="video-thumb v3"><div class="play-btn">▶</div><div class="video-durasi">8:05</div></div>
-        <div class="video-body"><div class="video-kat">Parenting</div><div class="video-judul">Komunikasi Positif dengan Anak</div></div>
-      </div>
+      <table>
+        <thead><tr><th>#</th><th>Judul</th><th>Kategori</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-modul"></tbody>
+      </table>
     </div>
   </div>
 
 </main>
 
-<!-- MODAL NAMA -->
-<div class="modal-nama" id="modal-nama">
-  <div class="modal-nama-box">
-    <div style="font-size:3rem;margin-bottom:12px;">👋</div>
-    <h2>Halo! Siapa nama Anda?</h2>
-    <p>Kami ingin menyapa Anda dengan nama. Ini tersimpan di perangkat Anda saja.</p>
-    <input type="text" id="input-nama" placeholder="Contoh: Bunda Sari / Ayah Budi" maxlength="30"/>
-    <button class="btn-simpan-nama" onClick="simpanNama()">✅ Simpan & Mulai</button>
-  </div>
-</div>
-
-<!-- MODAL VIDEO -->
-<div class="modal-video" id="modal-video">
-  <div class="modal-video-box">
-    <div class="modal-video-header">
-      <h3 id="modal-video-judul">Judul Video</h3>
-      <button class="btn-tutup-video" onClick="tutupVideo()">✕</button>
-    </div>
-    <div class="video-placeholder">
-      <div class="play-big">🎬</div>
-      <div style="font-size:0.88rem;color:rgba(255,255,255,0.7);text-align:center;max-width:280px;">
-        Video ini akan segera tersedia.<br/>Hubungi kami via WhatsApp untuk akses video lengkap.
-      </div>
-    </div>
-    <div class="video-info">
-      <h4 id="modal-video-judul2">Judul Video</h4>
-      <p id="modal-video-desc">Deskripsi video</p>
-      <a href="index.html#produk" class="btn-beli-modul">📚 Lihat Modul Terkait</a>
-    </div>
-  </div>
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script type="module">
-  import { db, collection, getDocs, query, where, orderBy } from './js/firebase-config.js';
+  import { auth, db, signOut, onAuthStateChanged, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, where, serverTimestamp } from '../js/firebase-config.js';
 
-  // ── NAMA PENGGUNA
-  function getNama() { return localStorage.getItem('dampingku_nama') || ''; }
-  function setNamaTampilan(nama) {
-    const sapaan = nama || 'Bunda Hebat';
-    document.getElementById('sidebar-nama').textContent = sapaan;
-    document.getElementById('topbar-nama').textContent = 'Halo, ' + sapaan + '!';
-    document.getElementById('hero-nama').textContent = sapaan + '! 👋';
-  }
+  // Auth guard
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    document.getElementById('admin-email').textContent = '👤 ' + user.email;
+    loadDashboard();
+    loadPesanan();
+    loadModul();
+  });
 
-  window.gantiNama = () => {
-    document.getElementById('input-nama').value = getNama();
-    document.getElementById('modal-nama').classList.add('active');
-  };
-  window.simpanNama = () => {
-    const nama = document.getElementById('input-nama').value.trim();
-    if(!nama) return;
-    localStorage.setItem('dampingku_nama', nama);
-    setNamaTampilan(nama);
-    document.getElementById('modal-nama').classList.remove('active');
-    tambahPoin(5);
+  window.logout = async () => {
+    await signOut(auth);
+    window.location.href = 'login.html';
   };
 
-  // Cek nama saat load
-  const namaSimpan = getNama();
-  if(!namaSimpan) {
-    setTimeout(() => document.getElementById('modal-nama').classList.add('active'), 800);
-  } else {
-    setNamaTampilan(namaSimpan);
-  }
-
-  // Enter di input nama
-  document.getElementById('input-nama').addEventListener('keypress', e => { if(e.key==='Enter') window.simpanNama(); });
-
-  // ── POIN & STATS
-  function getPoin() { return parseInt(localStorage.getItem('dampingku_poin')||'0'); }
-  function tambahPoin(n) {
-    const p = getPoin() + n;
-    localStorage.setItem('dampingku_poin', p);
-    document.getElementById('stat-poin').textContent = p;
-  }
-  document.getElementById('stat-poin').textContent = getPoin();
-
-  // Hari belajar
-  const hariKey = 'dampingku_hari_' + new Date().toDateString();
-  if(!localStorage.getItem(hariKey)) { localStorage.setItem(hariKey,'1'); }
-  const totalHari = Object.keys(localStorage).filter(k=>k.startsWith('dampingku_hari_')).length;
-  document.getElementById('stat-hari').textContent = totalHari;
-
-  // ── NAVIGASI SECTION
-  window.showSection = (id) => {
-    ['dashboard','modul','video'].forEach(s => {
-      document.getElementById('section-'+s).style.display = s===id ? 'block' : 'none';
-    });
+  // PAGE NAVIGATION
+  window.showPage = (page) => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    const titles = { dashboard:'Dashboard', pesanan:'Pesanan', modul:'Kelola Modul' };
+    document.getElementById('page-title').textContent = titles[page] || page;
     event?.target?.closest('.nav-item')?.classList.add('active');
   };
 
-  // ── LOAD MODUL DARI FIREBASE
-  async function loadModul() {
+  // ===== DASHBOARD =====
+  let allPesanan = [], allModul = [];
+
+  async function loadDashboard() {
     try {
-      const snap = await getDocs(query(collection(db,'modul'), where('aktif','==',true), orderBy('urutan')));
-      const moduls = snap.docs.map(d=>({id:d.id,...d.data()}));
-      document.getElementById('stat-modul-dibeli').textContent = moduls.length;
-      if(moduls.length > 0) document.getElementById('trend-modul').textContent = moduls.length + ' modul tersedia';
+      const [pSnap, mSnap] = await Promise.all([
+        getDocs(query(collection(db, 'pesanan'), orderBy('tanggal','desc'))),
+        getDocs(query(collection(db, 'modul')))
+      ]);
+      allPesanan = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allModul = mSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      const menunggu = allPesanan.filter(p => p.status === 'menunggu');
+      const dikonfirmasi = allPesanan.filter(p => p.status === 'dikonfirmasi' || p.status === 'selesai');
+      const pendapatan = dikonfirmasi.reduce((s, p) => s + (p.harga || 0), 0);
+      const modulAktif = allModul.filter(m => m.aktif).length;
 
-      const gradenMap = ['g1','g2','g3','g4'];
-      const emojiMap = {'membaca':'📖','berhitung':'🔢','emosi':'💚','umum':'📝'};
-      const kartuHTML = (m, i) => `
-        <div class="modul-card">
-          <div class="modul-thumb ${gradenMap[i%4]}">
-            <span style="font-size:2.5rem">${emojiMap[m.kategori]||'📚'}</span>
-            ${m.baru?'<div class="modul-badge-new">Baru</div>':''}
-          </div>
-          <div class="modul-body">
-            <div class="modul-kat">${m.kategori||'Umum'}</div>
-            <div class="modul-nama">${m.judul}</div>
-            <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-            <div class="progress-label"><span>Belum dimulai</span><span>0%</span></div>
-            <button class="btn-lanjut btn-mulai" onclick="window.location.href='index.html#produk'">🛍️ Lihat & Pesan</button>
-          </div>
-        </div>`;
+      document.getElementById('stat-total').textContent = allPesanan.length;
+      document.getElementById('stat-menunggu').textContent = menunggu.length;
+      document.getElementById('stat-modul').textContent = modulAktif;
+      document.getElementById('stat-pendapatan').textContent = 'Rp' + pendapatan.toLocaleString('id-ID');
 
-      document.getElementById('dashboard-modul-row').innerHTML = moduls.slice(0,4).map((m,i)=>kartuHTML(m,i)).join('') || '<div style="color:#9CA3AF;padding:20px;">Belum ada modul.</div>';
-      document.getElementById('full-modul-row').innerHTML = moduls.map((m,i)=>kartuHTML(m,i)).join('') || '<div style="color:#9CA3AF;padding:20px;">Belum ada modul.</div>';
+      const tbody = document.getElementById('tabel-dashboard');
+      if (menunggu.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">✅ Tidak ada pesanan yang menunggu konfirmasi.</td></tr>';
+      } else {
+        tbody.innerHTML = menunggu.slice(0, 5).map(p => `
+          <tr>
+            <td><b>${p.nama}</b></td>
+            <td>${p.modulNama}</td>
+            <td>Rp${Number(p.harga).toLocaleString('id-ID')}</td>
+            <td><a href="https://wa.me/${p.wa.replace(/\D/g,'')}" target="_blank">📱 ${p.wa}</a></td>
+            <td><span class="badge menunggu">Menunggu</span></td>
+            <td>
+              <button class="btn btn-hijau btn-sm" onclick="updateStatus('${p.id}','dikonfirmasi')">✅ Konfirmasi</button>
+              <button class="btn btn-merah btn-sm" style="margin-left:4px" onclick="updateStatus('${p.id}','dibatalkan')">✕</button>
+            </td>
+          </tr>`).join('');
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  // ===== PESANAN =====
+  async function loadPesanan() {
+    try {
+      const snap = await getDocs(query(collection(db, 'pesanan'), orderBy('tanggal','desc')));
+      allPesanan = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderPesanan(allPesanan);
     } catch(e) { console.error(e); }
   }
-  loadModul();
 
-  // ── INSPIRASI QUOTES
-  const quotes = [
-    {q:'"Anak bukan untuk menjadi seperti kita, tetapi untuk menjadi versi terbaik dari dirinya sendiri."', s:'— DampingKu'},
-    {q:'"Mendampingi anak belajar bukan berarti mengerjakan tugasnya, tapi hadir menemani prosesnya."', s:'— Tim Guru DampingKu'},
-    {q:'"Pujian yang tulus dari orang tua adalah bahan bakar semangat belajar anak."', s:'— DampingKu'},
-    {q:'"Anak yang merasa dicintai akan lebih mudah belajar dan berkembang."', s:'— DampingKu'},
-    {q:'"Konsistensi 15 menit setiap hari lebih berharga dari 2 jam belajar seminggu sekali."', s:'— Tim Guru DampingKu'},
-  ];
-  const q = quotes[new Date().getDay() % quotes.length];
-  document.getElementById('inspirasi-quote').textContent = q.q;
+  function renderPesanan(data) {
+    const tbody = document.getElementById('tabel-pesanan');
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Belum ada pesanan masuk.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(p => {
+      const tgl = p.tanggal?.toDate ? p.tanggal.toDate().toLocaleDateString('id-ID',{day:'2-digit',month:'short'}) : '—';
+      return `<tr>
+        <td>${tgl}</td>
+        <td><b>${p.nama}</b></td>
+        <td>${p.modulNama}</td>
+        <td>Rp${Number(p.harga).toLocaleString('id-ID')}</td>
+        <td>${p.metode || '—'}</td>
+        <td><a href="https://wa.me/${String(p.wa).replace(/\D/g,'')}" target="_blank">📱 ${p.wa}</a></td>
+        <td>
+          <select onchange="updateStatus('${p.id}',this.value)" style="padding:4px 8px;border-radius:6px;border:1px solid #ddd;font-family:Nunito,sans-serif;font-size:0.8rem;">
+            <option value="menunggu" ${p.status==='menunggu'?'selected':''}>⏳ Menunggu</option>
+            <option value="dikonfirmasi" ${p.status==='dikonfirmasi'?'selected':''}>✅ Dikonfirmasi</option>
+            <option value="dikirim" ${p.status==='dikirim'?'selected':''}>📨 Link Dikirim</option>
+            <option value="selesai" ${p.status==='selesai'?'selected':''}>🎉 Selesai</option>
+            <option value="dibatalkan" ${p.status==='dibatalkan'?'selected':''}>❌ Dibatalkan</option>
+          </select>
+        </td>
+        <td><button class="btn btn-merah btn-sm" onclick="hapusPesanan('${p.id}')">🗑️</button></td>
+      </tr>`;
+    }).join('');
+  }
 
-  // ── VIDEO MODAL
-  window.bukaVideo = (judul, desc, durasi, kelas) => {
-    document.getElementById('modal-video-judul').textContent = judul;
-    document.getElementById('modal-video-judul2').textContent = judul;
-    document.getElementById('modal-video-desc').textContent = desc;
-    document.getElementById('modal-video').classList.add('active');
-    tambahPoin(10);
+  window.filterPesanan = () => {
+    const q = document.getElementById('search-pesanan').value.toLowerCase();
+    renderPesanan(allPesanan.filter(p =>
+      p.nama?.toLowerCase().includes(q) || p.modulNama?.toLowerCase().includes(q)
+    ));
   };
-  window.tutupVideo = () => document.getElementById('modal-video').classList.remove('active');
 
-  // ── TANTANGAN
-  window.toggleTantangan = (el) => {
-    const check = el.querySelector('.tantangan-check');
-    const text = el.querySelector('.tantangan-text');
-    const poinEl = el.querySelector('.tantangan-poin');
-    if(check.classList.contains('done')) return;
-    check.classList.remove('todo'); check.classList.add('done');
-    check.textContent = '✅';
-    text.classList.add('done');
-    const poin = parseInt(poinEl.textContent.match(/\d+/)[0]);
-    tambahPoin(poin);
+  window.updateStatus = async (id, status) => {
+    try {
+      await updateDoc(doc(db, 'pesanan', id), { status });
+      showToast('✅ Status diperbarui: ' + status);
+      loadDashboard(); loadPesanan();
+    } catch(e) { showToast('❌ Gagal memperbarui', true); }
   };
+
+  window.hapusPesanan = async (id) => {
+    if (!confirm('Hapus pesanan ini? Aksi tidak bisa dibatalkan.')) return;
+    try {
+      await deleteDoc(doc(db, 'pesanan', id));
+      showToast('🗑️ Pesanan dihapus.');
+      loadPesanan();
+    } catch(e) { showToast('❌ Gagal menghapus', true); }
+  };
+
+  // ===== MODUL =====
+  async function loadModul() {
+    try {
+      const snap = await getDocs(query(collection(db, 'modul'), orderBy('urutan')));
+      allModul = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderModul();
+    } catch(e) { console.error(e); }
+  }
+
+  function renderModul() {
+    const tbody = document.getElementById('tabel-modul');
+    if (allModul.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Belum ada modul. Tambahkan modul pertama!</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allModul.map(m => `<tr>
+      <td>${m.urutan || '—'}</td>
+      <td><b>${m.judul}</b></td>
+      <td>${m.kategori}</td>
+      <td>Rp${Number(m.harga).toLocaleString('id-ID')}</td>
+      <td><span class="badge ${m.aktif ? 'dikonfirmasi' : 'dibatalkan'}">${m.aktif ? '✅ Aktif' : '⛔ Nonaktif'}</span></td>
+      <td>
+        <button class="btn btn-abu btn-sm" onclick="editModul('${m.id}')">✏️ Edit</button>
+        <button class="btn btn-merah btn-sm" style="margin-left:4px" onclick="hapusModul('${m.id}')">🗑️</button>
+      </td>
+    </tr>`).join('');
+  }
+
+  window.resetFormModul = () => {
+    document.getElementById('fm-id').value = '';
+    document.getElementById('fm-judul').value = '';
+    document.getElementById('fm-kategori').value = 'membaca';
+    document.getElementById('fm-deskripsi').value = '';
+    document.getElementById('fm-harga').value = '';
+    document.getElementById('fm-urutan').value = '';
+    document.getElementById('fm-halaman').value = '';
+    document.getElementById('fm-durasi').value = '';
+    document.getElementById('fm-gambar').value = '';
+    document.getElementById('fm-file-url').value = '';
+    document.getElementById('fm-aktif').checked = true;
+    document.getElementById('fm-terlaris').checked = false;
+    document.getElementById('fm-baru').checked = false;
+    document.getElementById('form-modul-title').textContent = '➕ Tambah Modul Baru';
+  };
+
+  window.editModul = (id) => {
+    const m = allModul.find(x => x.id === id);
+    if (!m) return;
+    document.getElementById('fm-id').value = id;
+    document.getElementById('fm-judul').value = m.judul || '';
+    document.getElementById('fm-kategori').value = m.kategori || 'membaca';
+    document.getElementById('fm-deskripsi').value = m.deskripsi || '';
+    document.getElementById('fm-harga').value = m.harga || '';
+    document.getElementById('fm-urutan').value = m.urutan || '';
+    document.getElementById('fm-halaman').value = m.halaman || '';
+    document.getElementById('fm-durasi').value = m.durasi || '';
+    document.getElementById('fm-gambar').value = m.gambar || '';
+    document.getElementById('fm-file-url').value = m.fileUrl || '';
+    document.getElementById('fm-aktif').checked = !!m.aktif;
+    document.getElementById('fm-terlaris').checked = !!m.terlaris;
+    document.getElementById('fm-baru').checked = !!m.baru;
+    document.getElementById('form-modul-title').textContent = '✏️ Edit Modul';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.simpanModul = async () => {
+    const id = document.getElementById('fm-id').value;
+    const judul = document.getElementById('fm-judul').value.trim();
+    const harga = parseInt(document.getElementById('fm-harga').value);
+    if (!judul || !harga) { showToast('⚠️ Judul dan harga wajib diisi!', true); return; }
+    const data = {
+      judul,
+      kategori: document.getElementById('fm-kategori').value,
+      deskripsi: document.getElementById('fm-deskripsi').value.trim(),
+      harga,
+      urutan: parseInt(document.getElementById('fm-urutan').value) || 99,
+      halaman: document.getElementById('fm-halaman').value || '8-12',
+      durasi: document.getElementById('fm-durasi').value || '3-5',
+      gambar: document.getElementById('fm-gambar').value.trim(),
+      fileUrl: document.getElementById('fm-file-url').value.trim(),
+      aktif: document.getElementById('fm-aktif').checked,
+      terlaris: document.getElementById('fm-terlaris').checked,
+      baru: document.getElementById('fm-baru').checked,
+    };
+    try {
+      if (id) {
+        await updateDoc(doc(db, 'modul', id), data);
+        showToast('✅ Modul berhasil diperbarui!');
+      } else {
+        data.dibuatPada = serverTimestamp();
+        await addDoc(collection(db, 'modul'), data);
+        showToast('✅ Modul baru berhasil ditambahkan!');
+      }
+      resetFormModul(); loadModul();
+    } catch(e) { showToast('❌ Gagal menyimpan modul.', true); console.error(e); }
+  };
+
+  window.hapusModul = async (id) => {
+    if (!confirm('Hapus modul ini? Aksi tidak bisa dibatalkan.')) return;
+    try {
+      await deleteDoc(doc(db, 'modul', id));
+      showToast('🗑️ Modul dihapus.');
+      loadModul();
+    } catch(e) { showToast('❌ Gagal menghapus modul.', true); }
+  };
+
+  function showToast(msg, err = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast show' + (err ? ' error' : '');
+    setTimeout(() => t.className = 'toast', 3500);
+  }
 </script>
 </body>
 </html>
