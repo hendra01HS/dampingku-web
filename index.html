@@ -1,1343 +1,566 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPS Human Security — Belajar Bersama!</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --sky: #1E6FA6;
-    --sky-light: #D6EAF8;
-    --sky-dark: #154F78;
-    --leaf: #27AE60;
-    --leaf-light: #D5F5E3;
-    --sun: #F5A623;
-    --sun-light: #FEF3CD;
-    --coral: #E74C3C;
-    --coral-light: #FDEDEC;
-    --purple: #8E44AD;
-    --purple-light: #F5EEF8;
-    --white: #FFFFFF;
-    --bg: #F0F7FF;
-    --text: #1A2B3C;
-    --muted: #6B7F93;
-    --border: #D4E6F1;
-    --radius: 16px;
-    --shadow: 0 4px 20px rgba(30,111,166,0.12);
-    --shadow-lg: 0 8px 40px rgba(30,111,166,0.18);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DampingKu — Teman Orang Tua Dampingi Anak Belajar</title>
+  <meta name="description" content="Modul digital panduan mendampingi anak SD belajar di rumah. Disusun langsung oleh guru SD aktif. Mulai Rp10.000/modul."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --hijau: #2A9D8F;
+      --hijau-muda: #52C4B7;
+      --hijau-gelap: #1A7268;
+      --navy: #1D3557;
+      --navy-muda: #2E4A6E;
+      --krem: #FFF8F0;
+      --kuning: #F4A261;
+      --putih: #FFFFFF;
+      --abu: #6B7280;
+      --abu-muda: #F3F4F6;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(42,157,143,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Nunito',sans-serif; background:var(--putih); color:var(--navy); overflow-x:hidden; }
+    
+    /* NAV */
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(10px);
+      border-bottom:2px solid var(--hijau-muda);
+      padding:12px 24px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo-icon {
+      width:40px; height:40px; background:linear-gradient(135deg,var(--hijau),var(--hijau-gelap));
+      border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-size:20px;
+    }
+    .logo-text { font-size:1.4rem; font-weight:900; color:var(--navy); }
+    .logo-text span { color:var(--hijau); }
+    nav ul { list-style:none; display:flex; gap:24px; align-items:center; }
+    nav ul a { text-decoration:none; color:var(--navy); font-weight:600; transition:color 0.2s; }
+    nav ul a:hover { color:var(--hijau); }
+    .btn-nav {
+      background:var(--hijau); color:white; padding:8px 20px;
+      border-radius:20px; font-weight:700; text-decoration:none;
+      transition:background 0.2s;
+    }
+    .btn-nav:hover { background:var(--hijau-gelap); }
+    
+    /* HERO */
+    .hero {
+      background:linear-gradient(135deg,var(--navy) 0%, var(--navy-muda) 50%, #1E4A6B 100%);
+      padding:80px 24px;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; top:-50%; left:-20%;
+      width:140%; height:200%;
+      background:radial-gradient(ellipse at 30% 50%, rgba(42,157,143,0.2) 0%, transparent 60%),
+                 radial-gradient(ellipse at 70% 30%, rgba(82,196,183,0.15) 0%, transparent 50%);
+    }
+    .hero-content { position:relative; max-width:680px; margin:0 auto; }
+    .hero-badge {
+      display:inline-block; background:rgba(42,157,143,0.2);
+      border:1px solid var(--hijau); color:var(--hijau-muda);
+      padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700;
+      margin-bottom:20px; letter-spacing:0.5px;
+    }
+    .hero h1 {
+      font-family:'Lora',serif; font-size:clamp(2rem,5vw,3.2rem);
+      color:white; line-height:1.25; margin-bottom:16px;
+    }
+    .hero h1 em { font-style:italic; color:var(--hijau-muda); }
+    .hero p { color:rgba(255,255,255,0.8); font-size:1.1rem; margin-bottom:32px; line-height:1.7; }
+    .hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .btn-primary {
+      background:var(--hijau); color:white; padding:14px 28px;
+      border-radius:var(--radius); font-weight:800; font-size:1rem;
+      text-decoration:none; transition:all 0.2s; border:2px solid var(--hijau);
+    }
+    .btn-primary:hover { background:var(--hijau-gelap); transform:translateY(-2px); }
+    .btn-outline {
+      background:transparent; color:white; padding:14px 28px;
+      border-radius:var(--radius); font-weight:700; font-size:1rem;
+      text-decoration:none; border:2px solid rgba(255,255,255,0.5);
+      transition:all 0.2s;
+    }
+    .btn-outline:hover { border-color:white; background:rgba(255,255,255,0.1); }
+    .hero-stats {
+      display:flex; justify-content:center; gap:32px; margin-top:48px;
+      flex-wrap:wrap;
+    }
+    .stat { text-align:center; }
+    .stat-num { font-size:1.8rem; font-weight:900; color:var(--hijau-muda); }
+    .stat-label { font-size:0.8rem; color:rgba(255,255,255,0.6); margin-top:2px; }
+    
+    /* SECTION STYLES */
+    .section { padding:72px 24px; max-width:1100px; margin:0 auto; }
+    .section-title { font-family:'Lora',serif; font-size:clamp(1.6rem,3vw,2.2rem); color:var(--navy); margin-bottom:8px; }
+    .section-sub { color:var(--abu); font-size:1rem; margin-bottom:48px; }
+    .tag-label {
+      display:inline-block; font-size:0.75rem; font-weight:800;
+      color:var(--hijau); letter-spacing:1.5px; text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    
+    /* KEUNGGULAN */
+    .fitur-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+    .fitur-card {
+      background:var(--krem); border-radius:var(--radius); padding:28px;
+      border:2px solid transparent; transition:all 0.2s;
+    }
+    .fitur-card:hover { border-color:var(--hijau); transform:translateY(-4px); box-shadow:var(--shadow); }
+    .fitur-icon { font-size:2rem; margin-bottom:12px; }
+    .fitur-card h3 { font-size:1rem; font-weight:800; color:var(--navy); margin-bottom:6px; }
+    .fitur-card p { font-size:0.9rem; color:var(--abu); line-height:1.6; }
+    
+    /* PRODUK */
+    #produk { background:var(--abu-muda); padding:72px 24px; }
+    .produk-inner { max-width:1100px; margin:0 auto; }
+    #filter-bar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+    .filter-btn {
+      padding:8px 18px; border-radius:20px; border:2px solid #ddd;
+      background:white; font-family:'Nunito',sans-serif; font-weight:700;
+      font-size:0.85rem; cursor:pointer; transition:all 0.2s; color:var(--abu);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background:var(--hijau); color:white; border-color:var(--hijau);
+    }
+    #modul-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px; }
+    
+    .modul-card {
+      background:white; border-radius:var(--radius); overflow:hidden;
+      box-shadow:0 2px 12px rgba(0,0,0,0.07); transition:all 0.25s;
+      border:2px solid transparent;
+    }
+    .modul-card:hover { box-shadow:var(--shadow); border-color:var(--hijau); transform:translateY(-4px); }
+    .modul-cover {
+      height:160px; background:linear-gradient(135deg,var(--hijau),var(--navy));
+      display:flex; align-items:center; justify-content:center;
+      font-size:3rem; position:relative; overflow:hidden;
+    }
+    .modul-cover img { width:100%; height:100%; object-fit:cover; position:absolute; }
+    .modul-badge {
+      position:absolute; top:10px; right:10px;
+      background:var(--kuning); color:white; font-size:0.7rem;
+      font-weight:800; padding:3px 8px; border-radius:6px;
+    }
+    .modul-body { padding:20px; }
+    .modul-kategori { font-size:0.72rem; font-weight:800; color:var(--hijau); letter-spacing:1px; text-transform:uppercase; }
+    .modul-judul { font-size:1rem; font-weight:800; color:var(--navy); margin:6px 0; line-height:1.4; }
+    .modul-deskripsi { font-size:0.85rem; color:var(--abu); line-height:1.5; margin-bottom:16px; }
+    .modul-meta { display:flex; gap:10px; font-size:0.78rem; color:var(--abu); margin-bottom:16px; }
+    .modul-meta span { display:flex; align-items:center; gap:4px; }
+    .modul-footer { display:flex; justify-content:space-between; align-items:center; }
+    .modul-harga { font-size:1.2rem; font-weight:900; color:var(--hijau-gelap); }
+    .btn-pesan {
+      background:var(--hijau); color:white; border:none;
+      padding:10px 18px; border-radius:10px; font-weight:800;
+      font-size:0.85rem; cursor:pointer; font-family:'Nunito',sans-serif;
+      transition:all 0.2s;
+    }
+    .btn-pesan:hover { background:var(--hijau-gelap); }
+    
+    /* CARA PESAN */
+    .cara-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:32px; counter-reset:steps; }
+    .step { text-align:center; counter-increment:steps; position:relative; }
+    .step::before {
+      content:counter(steps);
+      display:block; width:52px; height:52px;
+      background:var(--hijau); color:white;
+      font-size:1.3rem; font-weight:900;
+      border-radius:50%; line-height:52px; margin:0 auto 16px;
+    }
+    .step h3 { font-size:1rem; font-weight:800; color:var(--navy); margin-bottom:6px; }
+    .step p { font-size:0.87rem; color:var(--abu); line-height:1.6; }
+    
+    /* MODAL PEMESANAN */
+    .modal-overlay {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+      z-index:1000; align-items:center; justify-content:center; padding:20px;
+    }
+    .modal-overlay.active { display:flex; }
+    .modal {
+      background:white; border-radius:20px; padding:32px;
+      max-width:480px; width:100%; position:relative;
+      max-height:90vh; overflow-y:auto;
+    }
+    .modal-close {
+      position:absolute; top:16px; right:16px;
+      background:var(--abu-muda); border:none; border-radius:50%;
+      width:32px; height:32px; cursor:pointer; font-size:1.1rem;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .modal h2 { font-size:1.3rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
+    .modal-modul-info {
+      background:var(--krem); border-radius:12px; padding:16px; margin:16px 0;
+      border-left:4px solid var(--hijau);
+    }
+    .modal-modul-info .modul-nm { font-weight:800; color:var(--navy); }
+    .modal-modul-info .modul-hargax { font-size:1.3rem; font-weight:900; color:var(--hijau-gelap); }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-weight:700; font-size:0.9rem; color:var(--navy); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 16px; border-radius:10px;
+      border:2px solid #e5e7eb; font-family:'Nunito',sans-serif;
+      font-size:0.95rem; transition:border 0.2s; outline:none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color:var(--hijau); }
+    .btn-submit {
+      width:100%; padding:14px; background:var(--hijau); color:white;
+      border:none; border-radius:12px; font-family:'Nunito',sans-serif;
+      font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.2s;
+    }
+    .btn-submit:hover { background:var(--hijau-gelap); }
+    .btn-submit:disabled { background:var(--abu); cursor:not-allowed; }
+    
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      background:var(--navy); color:white; padding:16px 24px;
+      border-radius:12px; font-weight:700; font-size:0.9rem;
+      transform:translateY(100px); opacity:0;
+      transition:all 0.4s; max-width:320px;
+      border-left:4px solid var(--hijau);
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.error { border-left-color:#ef4444; }
+    
+    /* FOOTER */
+    footer {
+      background:var(--navy); color:rgba(255,255,255,0.7);
+      padding:48px 24px 24px; text-align:center;
+    }
+    footer .logo-footer { font-size:1.6rem; font-weight:900; color:white; margin-bottom:8px; }
+    footer .logo-footer span { color:var(--hijau-muda); }
+    footer p { font-size:0.88rem; line-height:1.7; max-width:500px; margin:0 auto 24px; }
+    footer .social { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+    footer .social a {
+      width:38px; height:38px; border-radius:50%;
+      background:rgba(255,255,255,0.1); display:flex; align-items:center;
+      justify-content:center; text-decoration:none; color:white;
+      transition:background 0.2s; font-size:1rem;
+    }
+    footer .social a:hover { background:var(--hijau); }
+    footer .copy { font-size:0.78rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; }
+    
+    #loading-modul { text-align:center; padding:40px; color:var(--abu); }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--abu); }
+    .empty-state .icon { font-size:3rem; margin-bottom:16px; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media(max-width:640px) {
+      nav ul { display:none; }
+      .hero { padding:60px 16px; }
+    }
 
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ===== NAV ===== */
-  nav {
-    background: var(--white);
-    box-shadow: 0 2px 12px rgba(30,111,166,0.1);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .nav-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 24px;
-  }
-  .logo {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none; color: var(--sky-dark);
-  }
-  .logo-icon {
-    width: 42px; height: 42px;
-    background: linear-gradient(135deg, var(--sky), var(--leaf));
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .logo-text { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.1; }
-  .logo-sub { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
-
-  .nav-links { display: flex; gap: 4px; }
-  .nav-links a {
-    text-decoration: none; color: var(--text);
-    padding: 8px 14px; border-radius: 10px;
-    font-size: 0.88rem; font-weight: 600;
-    transition: all .2s;
-  }
-  .nav-links a:hover, .nav-links a.active { background: var(--sky-light); color: var(--sky); }
-
-  .nav-right { display: flex; align-items: center; gap: 10px; }
-  #admin-btn, #logout-btn {
-    padding: 8px 16px; border-radius: 10px; border: none; cursor: pointer;
-    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.85rem;
-    transition: all .2s;
-  }
-  #admin-btn { background: var(--sky); color: white; }
-  #admin-btn:hover { background: var(--sky-dark); }
-  #logout-btn { background: var(--coral-light); color: var(--coral); display: none; }
-  #logout-btn:hover { background: var(--coral); color: white; }
-  #admin-badge {
-    background: var(--sun); color: white; padding: 3px 10px;
-    border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-    display: none;
-  }
-
-  /* ===== PAGES ===== */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ===== HERO ===== */
-  .hero {
-    background: linear-gradient(135deg, var(--sky-dark) 0%, var(--sky) 50%, #2E86C1 100%);
-    color: white; padding: 60px 24px 80px;
-    text-align: center; position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M0,96L48,112C96,128,192,160,288,181.3C384,203,480,213,576,192C672,171,768,117,864,96C960,75,1056,85,1152,112C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") bottom/cover no-repeat;
-  }
-  .hero-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
-    padding: 6px 18px; border-radius: 20px;
-    font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
-    margin-bottom: 20px; backdrop-filter: blur(4px);
-  }
-  .hero h1 {
-    font-family: 'Nunito', sans-serif; font-weight: 900;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    line-height: 1.15; margin-bottom: 18px;
-  }
-  .hero h1 span { color: var(--sun); }
-  .hero p {
-    font-size: 1.05rem; opacity: 0.9; max-width: 600px; margin: 0 auto 32px;
-    line-height: 1.7;
-  }
-  .hero-pills {
-    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-  }
-  .hero-pill {
-    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
-    padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
-    display: flex; align-items: center; gap: 6px;
-  }
-
-  /* ===== SECTION ===== */
-  .section { max-width: 1100px; margin: 0 auto; padding: 48px 24px; }
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
-  }
-  .section-title {
-    font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-title .icon {
-    width: 38px; height: 38px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-
-  /* ===== CARDS ===== */
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .card {
-    background: white; border-radius: var(--radius);
-    box-shadow: var(--shadow); overflow: hidden;
-    transition: transform .25s, box-shadow .25s;
-  }
-  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-
-  /* Materi Cards */
-  .materi-card .card-top {
-    height: 100px; display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
-  }
-  .materi-card .card-body { padding: 20px; }
-  .materi-card .card-tag {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; padding: 3px 10px; border-radius: 20px;
-    margin-bottom: 10px; display: inline-block;
-  }
-  .materi-card h3 {
-    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.1rem;
-    margin-bottom: 8px;
-  }
-  .materi-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-  .card-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-  .btn {
-    padding: 8px 16px; border-radius: 10px; border: none; cursor: pointer;
-    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.82rem;
-    transition: all .2s; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
-  }
-  .btn-sky { background: var(--sky); color: white; }
-  .btn-sky:hover { background: var(--sky-dark); }
-  .btn-outline { background: var(--sky-light); color: var(--sky); }
-  .btn-outline:hover { background: var(--sky); color: white; }
-  .btn-danger { background: var(--coral-light); color: var(--coral); }
-  .btn-danger:hover { background: var(--coral); color: white; }
-  .btn-green { background: var(--leaf-light); color: var(--leaf); }
-  .btn-green:hover { background: var(--leaf); color: white; }
-  .btn-sun { background: var(--sun-light); color: #B7770D; }
-  .btn-sun:hover { background: var(--sun); color: white; }
-  .btn-purple { background: var(--purple-light); color: var(--purple); }
-  .btn-purple:hover { background: var(--purple); color: white; }
-
-  /* Video Cards */
-  .video-card .thumb {
-    position: relative; padding-top: 56.25%; background: #1a1a2e; overflow: hidden;
-  }
-  .video-card .thumb-inner {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    font-size: 2.5rem; background: linear-gradient(135deg, #1a1a2e, #16213e);
-  }
-  .play-btn {
-    position: absolute; width: 52px; height: 52px;
-    background: rgba(255,255,255,0.9); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; cursor: pointer; transition: transform .2s;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  }
-  .play-btn:hover { transform: scale(1.1); }
-  .video-card .card-body { padding: 16px 20px; }
-  .video-card h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
-  .video-card p { font-size: 0.82rem; color: var(--muted); }
-  .video-duration {
-    position: absolute; bottom: 8px; right: 8px;
-    background: rgba(0,0,0,0.7); color: white; font-size: 0.72rem;
-    padding: 2px 7px; border-radius: 6px; font-weight: 600;
-  }
-
-  /* Profil Cards */
-  .profil-card { text-align: center; padding: 28px 20px; }
-  .avatar {
-    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; font-weight: 900; font-family: 'Nunito', sans-serif;
-    color: white;
-  }
-  .profil-card h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem; margin-bottom: 4px; }
-  .profil-card .nim { font-size: 0.78rem; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
-  .profil-card .prodi {
-    display: inline-block; padding: 3px 12px; border-radius: 20px;
-    font-size: 0.75rem; font-weight: 700; margin-bottom: 10px;
-  }
-  .profil-card .bio { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-
-  /* Soal */
-  .quiz-container { max-width: 720px; margin: 0 auto; }
-  .quiz-card {
-    background: white; border-radius: var(--radius); box-shadow: var(--shadow);
-    padding: 28px; margin-bottom: 20px;
-  }
-  .quiz-num {
-    font-size: 0.75rem; font-weight: 700; color: var(--sky); text-transform: uppercase;
-    letter-spacing: 1px; margin-bottom: 10px;
-  }
-  .quiz-q { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem; margin-bottom: 18px; line-height: 1.5; }
-  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-  .quiz-option {
-    padding: 12px 16px; border: 2px solid var(--border); border-radius: 12px;
-    cursor: pointer; transition: all .2s; font-size: 0.9rem; font-weight: 600;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .quiz-option:hover { border-color: var(--sky); background: var(--sky-light); color: var(--sky); }
-  .quiz-option.correct { border-color: var(--leaf); background: var(--leaf-light); color: var(--leaf); }
-  .quiz-option.wrong { border-color: var(--coral); background: var(--coral-light); color: var(--coral); }
-  .quiz-option.disabled { pointer-events: none; }
-  .quiz-option-letter {
-    width: 28px; height: 28px; border-radius: 8px;
-    background: var(--border); display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
-  }
-  .quiz-option:hover .quiz-option-letter { background: var(--sky); color: white; }
-  .quiz-option.correct .quiz-option-letter { background: var(--leaf); color: white; }
-  .quiz-option.wrong .quiz-option-letter { background: var(--coral); color: white; }
-  .quiz-feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; display: none; }
-  .quiz-score-bar {
-    background: white; border-radius: var(--radius); box-shadow: var(--shadow);
-    padding: 20px 28px; margin-bottom: 28px;
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-  }
-  .score-display { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2rem; color: var(--sky); }
-  .score-label { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
-
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5); z-index: 200;
-    align-items: center; justify-content: center; padding: 20px;
-    backdrop-filter: blur(4px);
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: white; border-radius: 20px; padding: 32px;
-    max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
-    box-shadow: var(--shadow-lg);
-    animation: slideUp .3s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .modal-title {
-    font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem;
-    margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
-  }
-  .form-group { margin-bottom: 18px; }
-  .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 7px; color: var(--text); }
-  .form-control {
-    width: 100%; padding: 10px 14px; border: 2px solid var(--border);
-    border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem;
-    transition: border-color .2s; outline: none; color: var(--text);
-  }
-  .form-control:focus { border-color: var(--sky); }
-  textarea.form-control { resize: vertical; min-height: 90px; }
-  select.form-control { background-color: white; cursor: pointer; }
-  .modal-actions { display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end; }
-  .btn-close-modal { background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--muted); padding: 4px; }
-  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; }
-
-  /* LOGIN */
-  .login-box {
-    max-width: 420px; margin: 80px auto; background: white;
-    border-radius: 20px; padding: 40px; box-shadow: var(--shadow-lg); text-align: center;
-  }
-  .login-icon {
-    width: 70px; height: 70px; background: linear-gradient(135deg, var(--sky), var(--leaf));
-    border-radius: 20px; display: flex; align-items: center; justify-content: center;
-    font-size: 32px; margin: 0 auto 20px;
-  }
-  .login-box h2 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem; margin-bottom: 8px; }
-  .login-box p { color: var(--muted); font-size: 0.88rem; margin-bottom: 28px; }
-  .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; margin-bottom: 16px; }
-  .alert-danger { background: var(--coral-light); color: var(--coral); }
-  .alert-success { background: var(--leaf-light); color: var(--leaf); }
-
-  /* ADMIN PANEL */
-  .admin-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
-  .admin-tab {
-    padding: 10px 20px; border-radius: 12px; border: none; cursor: pointer;
-    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.88rem;
-    background: var(--border); color: var(--text); transition: all .2s;
-  }
-  .admin-tab.active { background: var(--sky); color: white; }
-  .admin-tab-content { display: none; }
-  .admin-tab-content.active { display: block; }
-  .admin-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
-  .admin-table th {
-    background: var(--sky-light); color: var(--sky-dark); font-size: 0.8rem;
-    text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; text-align: left;
-  }
-  .admin-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 0.88rem; vertical-align: middle; }
-  .admin-table tr:hover td { background: rgba(30,111,166,0.03); }
-  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
-  .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-  .admin-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.2rem; }
-
-  /* TOAST */
-  .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 10px; }
-  .toast {
-    background: var(--text); color: white; padding: 12px 20px; border-radius: 12px;
-    font-size: 0.88rem; font-weight: 600; box-shadow: var(--shadow-lg);
-    animation: fadeIn .3s ease;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .toast.success { background: var(--leaf); }
-  .toast.error { background: var(--coral); }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* EMPTY STATE */
-  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .empty-state .empty-icon { font-size: 4rem; margin-bottom: 16px; }
-  .empty-state h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: var(--text); }
-  .empty-state p { font-size: 0.88rem; }
-
-  /* DETAIL PAGE */
-  .detail-header { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; margin-bottom: 24px; }
-  .detail-meta { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
-  .detail-tag {
-    padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
-    background: var(--sky-light); color: var(--sky);
-  }
-  .detail-content { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
-  .detail-content h4 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.1rem; margin: 20px 0 10px; }
-  .detail-content p { line-height: 1.8; color: #374151; margin-bottom: 12px; }
-  .detail-content ul { margin: 10px 0 10px 20px; }
-  .detail-content ul li { margin-bottom: 6px; line-height: 1.7; }
-
-  /* FOOTER */
-  footer {
-    background: var(--sky-dark); color: white; text-align: center;
-    padding: 32px 24px; margin-top: 60px;
-  }
-  footer .footer-logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem; margin-bottom: 8px; }
-  footer p { opacity: 0.7; font-size: 0.85rem; }
-
-  /* PHASE BADGE */
-  .phase-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: linear-gradient(135deg, var(--sun), #E67E22);
-    color: white; padding: 8px 18px; border-radius: 20px;
-    font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.9rem;
-    box-shadow: 0 4px 15px rgba(245,166,35,0.4);
-    margin-bottom: 28px; display: inline-block;
-  }
-
-  /* BACK BTN */
-  .back-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--sky); font-weight: 600; cursor: pointer;
-    margin-bottom: 20px; font-size: 0.9rem; background: none; border: none;
-    padding: 8px 0;
-  }
-  .back-btn:hover { text-decoration: underline; }
-
-  /* VIDEO MODAL */
-  .video-embed { width: 100%; aspect-ratio: 16/9; border-radius: 12px; border: none; margin-bottom: 16px; }
-
-  @media (max-width: 640px) {
-    .nav-links { display: none; }
-    .hero { padding: 40px 16px 60px; }
-    .card-grid { grid-template-columns: 1fr; }
-    .modal { padding: 24px 20px; }
-  }
-</style>
+    /* LOGO GLOW EFFECT */
+    @keyframes logoGlow {
+      0%   { filter: drop-shadow(0 0 2px rgba(42,157,143,0)); }
+      50%  { filter: drop-shadow(0 0 10px rgba(42,157,143,0.85)) drop-shadow(0 0 20px rgba(82,196,183,0.5)); }
+      100% { filter: drop-shadow(0 0 2px rgba(42,157,143,0)); }
+    }
+    .logo-glow {
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <a class="logo" onClick="showPage('beranda')">
-      <div class="logo-icon">🌏</div>
-      <div>
-        <div class="logo-text">IPS Human Security</div>
-        <div class="logo-sub">SD Fase C — Kelas 5 & 6</div>
-      </div>
-    </a>
-    <div class="nav-links">
-      <a onClick="showPage('beranda')" id="nav-beranda" class="active">🏠 Beranda</a>
-      <a onClick="showPage('materi')" id="nav-materi">📚 Materi</a>
-      <a onClick="showPage('video')" id="nav-video">🎬 Video</a>
-      <a onClick="showPage('soal')" id="nav-soal">✏️ Soal</a>
-      <a onClick="showPage('profil')" id="nav-profil">👥 Tim</a>
-    </div>
-    <div class="nav-right">
-      <span id="admin-badge">🛡️ Admin</span>
-      <button id="admin-btn" onClick="showPage('login')">🔐 Admin</button>
-      <button id="logout-btn" onClick="doLogout()">Keluar</button>
-    </div>
-  </div>
+  <a href="/" class="logo">
+    <img src="assets/logo.png" alt="DampingKu" class="logo-glow" style="height:44px; width:auto;"/>
+  </a>
+  <ul>
+    <li><a href="#fitur">Keunggulan</a></li>
+    <li><a href="#produk">Modul</a></li>
+    <li><a href="#cara-pesan">Cara Pesan</a></li>
+    <li><a href="admin/login.html" class="btn-nav">Admin</a></li>
+  </ul>
 </nav>
 
-<!-- TOAST CONTAINER -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- ===================== PAGE: BERANDA ===================== -->
-<div class="page active" id="page-beranda">
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-badge">✨ PLATFORM PEMBELAJARAN INTERAKTIF</div>
-    <h1>Belajar <span>IPS</span> Jadi Menyenangkan!<br>Bersama Human Security 🌟</h1>
-    <p>Platform belajar IPS untuk Siswa SD Fase C (Kelas 5 & 6). Pelajari materi, tonton video seru, dan uji kemampuanmu dengan soal latihan!</p>
-    <div class="hero-pills">
-      <div class="hero-pill">🌍 Lingkungan & Masyarakat</div>
-      <div class="hero-pill">🛡️ Keamanan Manusia</div>
-      <div class="hero-pill">🤝 Kerja Sama Sosial</div>
-      <div class="hero-pill">💡 Ekonomi Dasar</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📚 Disusun Langsung oleh Guru SD Aktif</div>
+    <h1>Dampingi Anak Belajar dengan <em>Cara yang Tepat</em></h1>
+    <p>Modul digital panduan mendampingi anak SD belajar di rumah. Singkat, praktis, langsung bisa diterapkan — tanpa perlu jadi ahli pendidikan.</p>
+    <div class="hero-btns">
+      <a href="#produk" class="btn-primary">🛍️ Lihat Modul</a>
+      <a href="#cara-pesan" class="btn-outline">Cara Pemesanan</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Modul Tersedia</div></div>
+      <div class="stat"><div class="stat-num">Rp10rb</div><div class="stat-label">Harga Mulai Dari</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Guru SD Berpengalaman</div></div>
     </div>
   </div>
+</section>
 
-  <!-- STATS -->
-  <div class="section">
-    <div class="phase-badge">📚 SD Fase C — Kelas 5 & 6</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:8px;">
-      <div class="card" style="padding:24px;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:8px;">📖</div>
-        <div id="stat-materi" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--sky);">0</div>
-        <div style="font-size:0.85rem;color:var(--muted);font-weight:600;">Materi Pembelajaran</div>
-      </div>
-      <div class="card" style="padding:24px;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:8px;">🎬</div>
-        <div id="stat-video" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--leaf);">0</div>
-        <div style="font-size:0.85rem;color:var(--muted);font-weight:600;">Video Pembelajaran</div>
-      </div>
-      <div class="card" style="padding:24px;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:8px;">✏️</div>
-        <div id="stat-soal" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--sun);">0</div>
-        <div style="font-size:0.85rem;color:var(--muted);font-weight:600;">Soal Latihan</div>
-      </div>
-      <div class="card" style="padding:24px;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:8px;">👩‍🎓</div>
-        <div id="stat-mahasiswa" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--purple);">0</div>
-        <div style="font-size:0.85rem;color:var(--muted);font-weight:600;">Tim Pengajar</div>
-      </div>
+<!-- KEUNGGULAN -->
+<section class="section" id="fitur">
+  <div style="text-align:center;">
+    <div class="tag-label">Mengapa DampingKu?</div>
+    <h2 class="section-title">Beda dari Produk Edukasi Lainnya</h2>
+    <p class="section-sub">Kami tidak mengajar anak — kami membekali <em>orang tua</em> agar bisa mendampingi anak dengan lebih baik.</p>
+  </div>
+  <div class="fitur-grid">
+    <div class="fitur-card">
+      <div class="fitur-icon">👩‍🏫</div>
+      <h3>Disusun Guru SD Aktif</h3>
+      <p>Bukan tim konten umum. Dibuat oleh guru yang tiap hari mengajar dan memahami kurikulum SD terkini.</p>
     </div>
-
-    <!-- Quick access -->
-    <div class="section-header" style="margin-top:48px;">
-      <div class="section-title">
-        <div class="icon" style="background:var(--sun-light);">⚡</div>
-        Mulai Belajar Sekarang!
-      </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">⚡</div>
+      <h3>Singkat & Langsung Pakai</h3>
+      <p>Video 3-5 menit + e-modul ringkas. Bisa dibaca di sela waktu istirahat kerja.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
-      <div class="card" style="padding:24px;cursor:pointer;" onClick="showPage('materi')">
-        <div style="font-size:3rem;margin-bottom:12px;">📚</div>
-        <h3 style="font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:8px;">Baca Materi</h3>
-        <p style="font-size:0.85rem;color:var(--muted);">Belajar tentang Human Security, masyarakat, dan lingkungan.</p>
-        <div style="margin-top:14px;" class="btn btn-sky">Buka Materi →</div>
-      </div>
-      <div class="card" style="padding:24px;cursor:pointer;" onClick="showPage('video')">
-        <div style="font-size:3rem;margin-bottom:12px;">🎬</div>
-        <h3 style="font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:8px;">Tonton Video</h3>
-        <p style="font-size:0.85rem;color:var(--muted);">Video edukatif yang seru dan mudah dipahami.</p>
-        <div style="margin-top:14px;" class="btn btn-green">Tonton Sekarang →</div>
-      </div>
-      <div class="card" style="padding:24px;cursor:pointer;" onClick="showPage('soal')">
-        <div style="font-size:3rem;margin-bottom:12px;">✏️</div>
-        <h3 style="font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:8px;">Kerjakan Soal</h3>
-        <p style="font-size:0.85rem;color:var(--muted);">Uji pemahamanmu dengan soal latihan interaktif.</p>
-        <div style="margin-top:14px;" class="btn btn-sun">Mulai Mengerjakan →</div>
-      </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">🎯</div>
+      <h3>Beli Per Topik</h3>
+      <p>Tidak perlu beli paket besar. Pilih topik yang sedang dibutuhkan anak sekarang.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">💰</div>
+      <h3>Harga Terjangkau</h3>
+      <p>Mulai Rp10.000 per modul. Jauh lebih hemat dari bimbel privat atau kursus parenting.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">📥</div>
+      <h3>Langsung Bisa Diunduh</h3>
+      <p>Setelah konfirmasi pembayaran, file langsung dikirim. Tidak perlu instal aplikasi.</p>
+    </div>
+    <div class="fitur-card">
+      <div class="fitur-icon">💬</div>
+      <h3>Ada Sesi Konsultasi</h3>
+      <p>Beli 3+ modul? Dapat akses live Q&A bulanan langsung dengan guru penyusun.</p>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ===================== PAGE: MATERI ===================== -->
-<div class="page" id="page-materi">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="icon" style="background:var(--sky-light);">📚</div>
-        Materi Pembelajaran IPS
-      </div>
-      <button id="add-materi-btn" class="btn btn-sky" onClick="openMateriModal()" style="display:none;">+ Tambah Materi</button>
+<!-- PRODUK MODUL -->
+<section id="produk">
+  <div class="produk-inner">
+    <div class="tag-label">Katalog Modul</div>
+    <h2 class="section-title">Pilih Modul Sesuai Kebutuhan</h2>
+    <div id="filter-bar">
+      <button class="filter-btn active" data-filter="semua">Semua</button>
+      <button class="filter-btn" data-filter="membaca">Membaca</button>
+      <button class="filter-btn" data-filter="berhitung">Berhitung</button>
+      <button class="filter-btn" data-filter="emosi">Emosi & Kebiasaan</button>
     </div>
-    <div id="materi-grid" class="card-grid"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: DETAIL MATERI ===================== -->
-<div class="page" id="page-detail-materi">
-  <div class="section">
-    <button class="back-btn" onClick="showPage('materi')">← Kembali ke Materi</button>
-    <div id="detail-materi-content"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: VIDEO ===================== -->
-<div class="page" id="page-video">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="icon" style="background:var(--coral-light);">🎬</div>
-        Video Pembelajaran
-      </div>
-      <button id="add-video-btn" class="btn btn-sky" onClick="openVideoModal()" style="display:none;">+ Tambah Video</button>
-    </div>
-    <div id="video-grid" class="card-grid"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: SOAL ===================== -->
-<div class="page" id="page-soal">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="icon" style="background:var(--sun-light);">✏️</div>
-        Soal Latihan
-      </div>
-      <button id="add-soal-btn" class="btn btn-sky" onClick="openSoalModal()" style="display:none;">+ Tambah Soal</button>
-    </div>
-    <div class="quiz-container">
-      <div class="quiz-score-bar">
-        <div>
-          <div class="score-display" id="quiz-score">0 / 0</div>
-          <div class="score-label">Jawaban Benar</div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-outline" onClick="resetQuiz()">🔄 Ulangi</button>
-        </div>
-      </div>
-      <div id="soal-list"></div>
+    <div id="modul-grid">
+      <div id="loading-modul">⏳ Memuat modul...</div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ===================== PAGE: PROFIL ===================== -->
-<div class="page" id="page-profil">
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="icon" style="background:var(--purple-light);">👥</div>
-        Tim Pengembang
-      </div>
-      <button id="add-profil-btn" class="btn btn-sky" onClick="openProfilModal()" style="display:none;">+ Tambah Anggota</button>
-    </div>
-    <div id="profil-grid" class="card-grid"></div>
+<!-- CARA PESAN -->
+<section class="section" id="cara-pesan">
+  <div style="text-align:center;">
+    <div class="tag-label">Panduan Pembelian</div>
+    <h2 class="section-title">Cara Memesan Modul</h2>
+    <p class="section-sub">Proses sederhana, modul langsung di tangan dalam hitungan menit.</p>
   </div>
-</div>
-
-<!-- ===================== PAGE: LOGIN ===================== -->
-<div class="page" id="page-login">
-  <div style="padding:24px;">
-    <div class="login-box">
-      <div class="login-icon">🔐</div>
-      <h2>Login Admin</h2>
-      <p>Masuk untuk mengelola konten website pembelajaran IPS</p>
-      <div id="login-alert" class="alert alert-danger" style="display:none;"></div>
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-control" id="login-user" placeholder="Masukkan username">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" id="login-pass" placeholder="Masukkan password" onKeyDown="if(event.key==='Enter')doLogin()">
-      </div>
-      <button class="btn btn-sky" style="width:100%;justify-content:center;padding:12px;" onClick="doLogin()">Masuk →</button>
-      <p style="margin-top:16px;font-size:0.78rem;color:var(--muted);">Username: <b>admin</b> | Password: <b>ips2026</b></p>
-      <button class="btn" style="margin-top:12px;background:var(--border);color:var(--muted);width:100%;justify-content:center;" onClick="showPage('beranda')">← Kembali</button>
+  <div class="cara-steps">
+    <div class="step">
+      <h3>Pilih Modul</h3>
+      <p>Temukan topik yang paling relevan dengan kesulitan belajar anak Anda saat ini.</p>
+    </div>
+    <div class="step">
+      <h3>Isi Form Pesanan</h3>
+      <p>Masukkan nama, nomor WhatsApp, dan pilih metode pembayaran.</p>
+    </div>
+    <div class="step">
+      <h3>Transfer Pembayaran</h3>
+      <p>Lakukan transfer sesuai nominal ke rekening yang tertera, lalu kirim bukti bayar.</p>
+    </div>
+    <div class="step">
+      <h3>Terima Modul</h3>
+      <p>Setelah dikonfirmasi admin, link unduhan dikirim via WhatsApp dalam 1×24 jam.</p>
     </div>
   </div>
-</div>
-
-<!-- ===================== PAGE: ADMIN ===================== -->
-<div class="page" id="page-admin">
-  <div class="section">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.8rem;">🛡️ Panel Admin</div>
-      <div style="font-size:0.85rem;color:var(--muted);">Kelola seluruh konten website pembelajaran IPS</div>
-    </div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onClick="switchAdminTab('mahasiswa')">👥 Mahasiswa</button>
-      <button class="admin-tab" onClick="switchAdminTab('materi-adm')">📚 Materi</button>
-      <button class="admin-tab" onClick="switchAdminTab('video-adm')">🎬 Video</button>
-      <button class="admin-tab" onClick="switchAdminTab('soal-adm')">✏️ Soal</button>
-    </div>
-
-    <!-- TAB MAHASISWA -->
-    <div class="admin-tab-content active" id="tab-mahasiswa">
-      <div class="admin-header">
-        <div class="admin-title">Daftar Mahasiswa / Tim</div>
-        <button class="btn btn-sky" onClick="openProfilModal()">+ Tambah</button>
-      </div>
-      <div class="table-wrap"><table class="admin-table" id="adm-mahasiswa-table">
-        <thead><tr><th>#</th><th>Nama</th><th>NIM</th><th>Prodi</th><th>Aksi</th></tr></thead>
-        <tbody id="adm-mahasiswa-body"></tbody>
-      </table></div>
-    </div>
-
-    <!-- TAB MATERI -->
-    <div class="admin-tab-content" id="tab-materi-adm">
-      <div class="admin-header">
-        <div class="admin-title">Daftar Materi</div>
-        <button class="btn btn-sky" onClick="openMateriModal()">+ Tambah</button>
-      </div>
-      <div class="table-wrap"><table class="admin-table">
-        <thead><tr><th>#</th><th>Judul</th><th>Kategori</th><th>Fase</th><th>Aksi</th></tr></thead>
-        <tbody id="adm-materi-body"></tbody>
-      </table></div>
-    </div>
-
-    <!-- TAB VIDEO -->
-    <div class="admin-tab-content" id="tab-video-adm">
-      <div class="admin-header">
-        <div class="admin-title">Daftar Video</div>
-        <button class="btn btn-sky" onClick="openVideoModal()">+ Tambah</button>
-      </div>
-      <div class="table-wrap"><table class="admin-table">
-        <thead><tr><th>#</th><th>Judul</th><th>URL/Embed</th><th>Durasi</th><th>Aksi</th></tr></thead>
-        <tbody id="adm-video-body"></tbody>
-      </table></div>
-    </div>
-
-    <!-- TAB SOAL -->
-    <div class="admin-tab-content" id="tab-soal-adm">
-      <div class="admin-header">
-        <div class="admin-title">Daftar Soal</div>
-        <button class="btn btn-sky" onClick="openSoalModal()">+ Tambah</button>
-      </div>
-      <div class="table-wrap"><table class="admin-table">
-        <thead><tr><th>#</th><th>Pertanyaan</th><th>Jawaban Benar</th><th>Aksi</th></tr></thead>
-        <tbody id="adm-soal-body"></tbody>
-      </table></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== MODALS ===================== -->
-
-<!-- Modal Profil -->
-<div class="modal-overlay" id="modal-profil">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">👤 <span id="profil-modal-title">Tambah Anggota</span></div>
-      <button class="btn-close-modal" onClick="closeModal('modal-profil')">✕</button>
-    </div>
-    <input type="hidden" id="profil-edit-id">
-    <div class="form-group">
-      <label class="form-label">Nama Lengkap *</label>
-      <input type="text" class="form-control" id="profil-nama" placeholder="Nama lengkap">
-    </div>
-    <div class="form-group">
-      <label class="form-label">NIM *</label>
-      <input type="text" class="form-control" id="profil-nim" placeholder="Nomor Induk Mahasiswa">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Program Studi</label>
-      <input type="text" class="form-control" id="profil-prodi" placeholder="Misal: Pendidikan IPS">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Peran / Jabatan</label>
-      <input type="text" class="form-control" id="profil-peran" placeholder="Misal: Ketua Tim, Desainer, dll.">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Biodata Singkat</label>
-      <textarea class="form-control" id="profil-bio" placeholder="Ceritakan sedikit tentang anggota ini..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Warna Avatar</label>
-      <select class="form-control" id="profil-warna">
-        <option value="#1E6FA6">Biru</option>
-        <option value="#27AE60">Hijau</option>
-        <option value="#E74C3C">Merah</option>
-        <option value="#8E44AD">Ungu</option>
-        <option value="#F5A623">Kuning</option>
-        <option value="#2C3E50">Abu-abu Gelap</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" style="background:var(--border);color:var(--muted);" onClick="closeModal('modal-profil')">Batal</button>
-      <button class="btn btn-sky" onClick="saveProfil()">💾 Simpan</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Materi -->
-<div class="modal-overlay" id="modal-materi">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">📚 <span id="materi-modal-title">Tambah Materi</span></div>
-      <button class="btn-close-modal" onClick="closeModal('modal-materi')">✕</button>
-    </div>
-    <input type="hidden" id="materi-edit-id">
-    <div class="form-group">
-      <label class="form-label">Judul Materi *</label>
-      <input type="text" class="form-control" id="materi-judul" placeholder="Judul materi pembelajaran">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Kategori</label>
-      <select class="form-control" id="materi-kategori">
-        <option value="Human Security">Human Security</option>
-        <option value="Lingkungan">Lingkungan</option>
-        <option value="Masyarakat">Masyarakat</option>
-        <option value="Ekonomi">Ekonomi</option>
-        <option value="Keberagaman">Keberagaman</option>
-        <option value="Geografi">Geografi</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Fase / Kelas</label>
-      <select class="form-control" id="materi-fase">
-        <option value="Fase C - Kelas 5">Fase C - Kelas 5</option>
-        <option value="Fase C - Kelas 6">Fase C - Kelas 6</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Emoji / Ikon</label>
-      <input type="text" class="form-control" id="materi-emoji" placeholder="Misal: 🌍 atau 🛡️">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Deskripsi Singkat</label>
-      <textarea class="form-control" id="materi-deskripsi" placeholder="Deskripsi singkat materi..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Isi Materi (mendukung teks panjang)</label>
-      <textarea class="form-control" id="materi-isi" style="min-height:150px;" placeholder="Tulis isi materi di sini..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Tujuan Pembelajaran (pisahkan dengan titik koma)</label>
-      <textarea class="form-control" id="materi-tujuan" placeholder="Siswa memahami konsep human security; Siswa dapat menjelaskan..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" style="background:var(--border);color:var(--muted);" onClick="closeModal('modal-materi')">Batal</button>
-      <button class="btn btn-sky" onClick="saveMateri()">💾 Simpan</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Video -->
-<div class="modal-overlay" id="modal-video">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">🎬 <span id="video-modal-title">Tambah Video</span></div>
-      <button class="btn-close-modal" onClick="closeModal('modal-video')">✕</button>
-    </div>
-    <input type="hidden" id="video-edit-id">
-    <div class="form-group">
-      <label class="form-label">Judul Video *</label>
-      <input type="text" class="form-control" id="video-judul" placeholder="Judul video">
-    </div>
-    <div class="form-group">
-      <label class="form-label">URL YouTube (format: https://youtu.be/xxxxx)</label>
-      <input type="text" class="form-control" id="video-url" placeholder="https://youtu.be/xxxxx atau https://www.youtube.com/watch?v=xxxxx">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Deskripsi Video</label>
-      <textarea class="form-control" id="video-deskripsi" placeholder="Deskripsi isi video..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Durasi (misal: 10:30)</label>
-      <input type="text" class="form-control" id="video-durasi" placeholder="10:30">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Emoji Thumbnail</label>
-      <input type="text" class="form-control" id="video-emoji" placeholder="🌍">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" style="background:var(--border);color:var(--muted);" onClick="closeModal('modal-video')">Batal</button>
-      <button class="btn btn-sky" onClick="saveVideo()">💾 Simpan</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Video Player -->
-<div class="modal-overlay" id="modal-player">
-  <div class="modal" style="max-width:700px;">
-    <div class="modal-header">
-      <div class="modal-title" id="player-title">🎬 Video</div>
-      <button class="btn-close-modal" onClick="closeModal('modal-player')">✕</button>
-    </div>
-    <div id="player-container"></div>
-    <p id="player-desc" style="color:var(--muted);font-size:0.88rem;line-height:1.7;"></p>
-  </div>
-</div>
-
-<!-- Modal Soal -->
-<div class="modal-overlay" id="modal-soal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">✏️ <span id="soal-modal-title">Tambah Soal</span></div>
-      <button class="btn-close-modal" onClick="closeModal('modal-soal')">✕</button>
-    </div>
-    <input type="hidden" id="soal-edit-id">
-    <div class="form-group">
-      <label class="form-label">Pertanyaan *</label>
-      <textarea class="form-control" id="soal-pertanyaan" placeholder="Tulis pertanyaan di sini..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Pilihan A *</label>
-      <input type="text" class="form-control" id="soal-a" placeholder="Pilihan A">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Pilihan B *</label>
-      <input type="text" class="form-control" id="soal-b" placeholder="Pilihan B">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Pilihan C</label>
-      <input type="text" class="form-control" id="soal-c" placeholder="Pilihan C (opsional)">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Pilihan D</label>
-      <input type="text" class="form-control" id="soal-d" placeholder="Pilihan D (opsional)">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Jawaban Benar *</label>
-      <select class="form-control" id="soal-jawaban">
-        <option value="a">A</option>
-        <option value="b">B</option>
-        <option value="c">C</option>
-        <option value="d">D</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Penjelasan Jawaban</label>
-      <textarea class="form-control" id="soal-penjelasan" placeholder="Jelaskan mengapa jawaban tersebut benar..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" style="background:var(--border);color:var(--muted);" onClick="closeModal('modal-soal')">Batal</button>
-      <button class="btn btn-sky" onClick="saveSoal()">💾 Simpan</button>
-    </div>
-  </div>
-</div>
+</section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🌏 IPS Human Security</div>
-  <p>Platform Pembelajaran IPS untuk SD Fase C</p>
-  <p style="margin-top:8px;">© 2026 Tim Pengembang — Dibuat dengan ❤️ untuk Siswa Indonesia</p>
+  <div class="logo-footer"><img src="assets/logo.png" alt="DampingKu" class="logo-glow" style="height:52px; width:auto; filter:brightness(0) invert(1);"/></div>
+  <p>Teman Orang Tua Dampingi Anak Belajar.<br/>Disusun oleh guru SD aktif, untuk orang tua Indonesia.</p>
+  <div class="social">
+    <a href="https://instagram.com/dampingku.id" title="Instagram">📸</a>
+    <a href="https://wa.me/" title="WhatsApp">💬</a>
+  </div>
+  <div class="copy">© 2026 DampingKu — CV DampingKu Edukasi Nusantara. All rights reserved.</div>
 </footer>
 
-<script>
-// ===================== DATA STORE =====================
-const KEYS = { profil:'ips_profil', materi:'ips_materi', video:'ips_video', soal:'ips_soal', admin:'ips_admin' };
+<!-- MODAL PEMESANAN -->
+<div class="modal-overlay" id="modal-pesan">
+  <div class="modal">
+    <button class="modal-close" onClick="tutupModal()">✕</button>
+    <h2>🛍️ Pesan Modul</h2>
+    <div class="modal-modul-info">
+      <div class="modul-nm" id="modal-nama-modul">—</div>
+      <div class="modul-hargax" id="modal-harga-modul">Rp0</div>
+    </div>
+    <div class="form-group">
+      <label>Nama Lengkap *</label>
+      <input type="text" id="nama-pembeli" placeholder="Nama orang tua/wali"/>
+    </div>
+    <div class="form-group">
+      <label>Nomor WhatsApp *</label>
+      <input type="tel" id="wa-pembeli" placeholder="08xxxxxxxxxx"/>
+    </div>
+    <div class="form-group">
+      <label>Email (opsional)</label>
+      <input type="email" id="email-pembeli" placeholder="email@contoh.com"/>
+    </div>
+    <div class="form-group">
+      <label>Metode Pembayaran *</label>
+      <select id="metode-bayar">
+        <option value="">-- Pilih --</option>
+        <option value="transfer_bni">Transfer BNI</option>
+        <option value="transfer_bca">Transfer BCA</option>
+        <option value="dana">DANA</option>
+        <option value="gopay">GoPay</option>
+        <option value="ovo">OVO</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Catatan (opsional)</label>
+      <textarea id="catatan-pembeli" rows="2" placeholder="Misalnya: kelas anak, dll"></textarea>
+    </div>
+    <button class="btn-submit" id="btn-kirim-pesan" onClick="kirimPesanan()">📨 Kirim Pesanan</button>
+  </div>
+</div>
 
-function load(key){ try{ return JSON.parse(localStorage.getItem(key)||'null'); }catch(e){ return null; } }
-function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
-function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-// Default data
-const DEFAULT_PROFIL = [
-  { id:'p1', nama:'Anisa Rahmawati', nim:'2021010001', prodi:'Pendidikan IPS', peran:'Ketua Tim', bio:'Mahasiswa semester 7 yang bersemangat dalam mengembangkan media pembelajaran IPS berbasis human security.', warna:'#1E6FA6' },
-  { id:'p2', nama:'Budi Santoso', nim:'2021010002', prodi:'Pendidikan IPS', peran:'Pengembang Materi', bio:'Fokus pada pengembangan materi dan konten pembelajaran yang kreatif dan mudah dipahami siswa.', warna:'#27AE60' },
-  { id:'p3', nama:'Citra Dewi', nim:'2021010003', prodi:'Pendidikan IPS', peran:'Desainer Media', bio:'Bertanggung jawab atas tampilan visual dan desain media pembelajaran yang menarik dan ramah anak.', warna:'#8E44AD' },
-  { id:'p4', nama:'Dimas Pratama', nim:'2021010004', prodi:'Pendidikan IPS', peran:'Pengembang Web', bio:'Ahli teknologi yang membangun dan memelihara platform digital pembelajaran ini.', warna:'#E74C3C' },
-  { id:'p5', nama:'Eka Putri Lestari', nim:'2021010005', prodi:'Pendidikan IPS', peran:'Evaluasi & Soal', bio:'Bertanggung jawab dalam penyusunan soal latihan dan instrumen evaluasi pembelajaran yang komprehensif.', warna:'#F5A623' },
-];
+<script type="module">
+  import { db, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from './js/firebase-config.js';
 
-const DEFAULT_MATERI = [
-  { id:'m1', judul:'Apa Itu Human Security?', kategori:'Human Security', fase:'Fase C - Kelas 5', emoji:'🛡️', deskripsi:'Kenalan dengan konsep keamanan manusia yang merangkul semua aspek kehidupan.', isi:'Human security atau keamanan manusia adalah konsep yang berfokus pada keselamatan dan kesejahteraan setiap individu. Berbeda dengan keamanan negara yang berfokus pada perbatasan dan militer, human security mementingkan keselamatan manusia dalam kehidupan sehari-hari.\n\nKonsep ini dikembangkan oleh UNDP (Program Pembangunan PBB) pada tahun 1994. Ada 7 dimensi human security:\n\n1. Keamanan Ekonomi — bebas dari kemiskinan\n2. Keamanan Pangan — bebas dari kelaparan\n3. Keamanan Kesehatan — akses ke layanan kesehatan\n4. Keamanan Lingkungan — hidup di lingkungan yang bersih\n5. Keamanan Diri — bebas dari kekerasan\n6. Keamanan Komunitas — menjaga identitas dan tradisi\n7. Keamanan Politik — hak-hak dasar terlindungi', tujuan:'Siswa memahami definisi human security; Siswa dapat menyebutkan 7 dimensi human security; Siswa mengenal pentingnya keamanan manusia' },
-  { id:'m2', judul:'Menjaga Lingkungan Kita', kategori:'Lingkungan', fase:'Fase C - Kelas 5', emoji:'🌿', deskripsi:'Belajar cara merawat lingkungan sebagai bagian dari keamanan lingkungan hidup.', isi:'Lingkungan yang bersih dan sehat adalah hak setiap manusia. Menjaga lingkungan adalah tanggung jawab kita bersama.\n\nCara menjaga lingkungan:\n- Membuang sampah pada tempatnya\n- Melakukan 3R: Reduce (kurangi), Reuse (pakai ulang), Recycle (daur ulang)\n- Hemat air dan listrik\n- Menanam pohon di sekitar rumah\n- Tidak membakar sampah sembarangan\n\nDampak kerusakan lingkungan terhadap human security:\n- Banjir mengancam keselamatan warga\n- Polusi udara menyebabkan penyakit\n- Kekeringan mengancam ketersediaan air bersih', tujuan:'Siswa memahami pentingnya menjaga lingkungan; Siswa dapat menyebutkan cara menjaga lingkungan; Siswa memahami dampak kerusakan lingkungan' },
-  { id:'m3', judul:'Keberagaman dalam Masyarakat', kategori:'Keberagaman', fase:'Fase C - Kelas 5', emoji:'🌈', deskripsi:'Mengenal keberagaman budaya, suku, dan agama sebagai kekayaan bangsa Indonesia.', isi:'Indonesia adalah negara yang kaya akan keberagaman. Ada lebih dari 300 suku bangsa, 700 bahasa daerah, dan 6 agama yang diakui negara.\n\nManfaat keberagaman:\n- Memperkaya budaya bangsa\n- Meningkatkan kreativitas\n- Memperkuat persatuan jika dikelola dengan baik\n\nSikap yang perlu dikembangkan:\n- Toleransi: menghargai perbedaan\n- Gotong royong: bekerja sama\n- Menghormati adat istiadat daerah lain\n\nSemboyan Bhinneka Tunggal Ika artinya "Berbeda-beda tapi tetap satu". Ini mengingatkan kita untuk tetap bersatu meski berbeda.', tujuan:'Siswa mengenal keberagaman Indonesia; Siswa memahami pentingnya toleransi; Siswa dapat menunjukkan sikap menghargai perbedaan' },
-  { id:'m4', judul:'Kerjasama di Lingkungan Sekolah', kategori:'Masyarakat', fase:'Fase C - Kelas 5', emoji:'🤝', deskripsi:'Belajar pentingnya kerjasama dan gotong royong dalam kehidupan bermasyarakat.', isi:'Kerjasama adalah bekerja bersama-sama untuk mencapai tujuan yang sama. Di sekolah, kerjasama bisa dilakukan dalam berbagai kegiatan.\n\nContoh kerjasama di sekolah:\n- Kerja kelompok dalam belajar\n- Piket kelas bersama\n- Kegiatan ekstrakurikuler\n- Membantu teman yang kesulitan\n\nManfaat kerjasama:\n- Pekerjaan lebih cepat selesai\n- Mempererat persahabatan\n- Melatih tanggung jawab\n- Mengembangkan kemampuan bersosialisasi\n\nGotong royong adalah budaya asli Indonesia yang mencerminkan nilai kebersamaan dan saling membantu.', tujuan:'Siswa memahami pentingnya kerjasama; Siswa dapat memberikan contoh kerjasama; Siswa mengenal nilai gotong royong' },
-  { id:'m5', judul:'Kebutuhan Dasar Manusia', kategori:'Ekonomi', fase:'Fase C - Kelas 6', emoji:'🏠', deskripsi:'Memahami kebutuhan dasar manusia dan cara pemenuhannya dalam perspektif human security.', isi:'Setiap manusia memiliki kebutuhan dasar yang harus dipenuhi untuk hidup layak. Menurut Abraham Maslow, kebutuhan manusia tersusun dalam sebuah hierarki.\n\nKebutuhan dasar manusia:\n1. Fisiologis: makan, minum, tempat tinggal, pakaian\n2. Keamanan: rasa aman, perlindungan dari bahaya\n3. Sosial: rasa cinta, persahabatan, keluarga\n4. Penghargaan: dihormati, diakui prestasinya\n5. Aktualisasi diri: mengembangkan potensi\n\nKaitan dengan Human Security:\nKetika kebutuhan dasar tidak terpenuhi, keamanan manusia terancam. Contoh: kelaparan mengancam keamanan pangan, kemiskinan mengancam keamanan ekonomi.', tujuan:'Siswa memahami hierarki kebutuhan manusia; Siswa dapat mengidentifikasi kebutuhan dasar; Siswa memahami kaitan kebutuhan dasar dengan human security' },
-  { id:'m6', judul:'Hak dan Kewajiban Warga Negara', kategori:'Masyarakat', fase:'Fase C - Kelas 6', emoji:'⚖️', deskripsi:'Mengenal hak dan kewajiban sebagai warga negara Indonesia yang baik.', isi:'Setiap warga negara Indonesia memiliki hak dan kewajiban yang diatur dalam UUD 1945.\n\nHak Warga Negara:\n- Mendapatkan pendidikan\n- Mendapatkan pekerjaan\n- Mendapatkan perlindungan hukum\n- Beribadah sesuai keyakinan\n- Menyampaikan pendapat\n\nKewajiban Warga Negara:\n- Menaati hukum dan peraturan\n- Membayar pajak\n- Membela negara\n- Menghormati hak orang lain\n- Menjaga keutuhan NKRI\n\nPentingnya hak dan kewajiban:\nKeseimbangan antara hak dan kewajiban menciptakan masyarakat yang adil, damai, dan sejahtera — sesuai dengan tujuan human security.', tujuan:'Siswa memahami hak warga negara; Siswa memahami kewajiban warga negara; Siswa dapat menjelaskan pentingnya keseimbangan hak dan kewajiban' },
-  { id:'m7', judul:'Keamanan Pangan dan Gizi untuk Semua', kategori:'Pangan', fase:'Fase C - Kelas 6', emoji:'🌾', deskripsi:'Memahami pentingnya keamanan pangan dan gizi sebagai salah satu pilar utama Human Security.', isi:'Keamanan pangan (food security) adalah kondisi di mana semua orang setiap saat memiliki akses terhadap pangan yang cukup, aman, dan bergizi untuk memenuhi kebutuhan hidup sehat.\n\nKeamanan pangan merupakan salah satu dari 7 dimensi Human Security yang paling mendasar. Tanpa pangan yang cukup, manusia tidak dapat hidup dan berkembang.\n\n4 Pilar Keamanan Pangan:\n1. Ketersediaan pangan — produksi pangan yang cukup\n2. Akses pangan — kemampuan mendapatkan pangan\n3. Pemanfaatan pangan — pangan yang bergizi dan aman\n4. Stabilitas — ketersediaan pangan sepanjang waktu\n\nAncaman terhadap keamanan pangan:\n- Bencana alam (banjir, kekeringan) merusak panen\n- Kemiskinan membuat orang tidak mampu membeli makanan\n- Perubahan iklim mengganggu produksi pertanian\n- Pemborosan makanan memperburuk kelangkaan pangan\n\nUpaya menjaga keamanan pangan di Indonesia:\n- Program ketahanan pangan nasional\n- Diversifikasi pangan (tidak hanya bergantung pada beras)\n- Pertanian berkelanjutan\n- Pemberian bantuan pangan bagi masyarakat kurang mampu\n\nPeran kita sebagai pelajar:\n- Tidak membuang-buang makanan\n- Makan makanan bergizi seimbang\n- Belajar menanam tanaman pangan di rumah\n- Menghargai jerih payah para petani Indonesia', tujuan:'Siswa memahami konsep keamanan pangan; Siswa dapat menyebutkan 4 pilar keamanan pangan; Siswa memahami ancaman dan upaya menjaga keamanan pangan; Siswa menyadari peran dirinya dalam mendukung keamanan pangan' },
-];
+  let modulAktif = null;
 
-const DEFAULT_VIDEO = [
-  { id:'v1', judul:'Pengenalan Human Security untuk Anak SD', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Video animasi menarik tentang konsep human security yang mudah dipahami oleh siswa SD Fase C.', durasi:'08:45', emoji:'🛡️' },
-  { id:'v2', judul:'Menjaga Lingkungan Hidup Kita Bersama', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Belajar cara menjaga lingkungan sekitar kita agar tetap bersih dan sehat untuk generasi mendatang.', durasi:'12:20', emoji:'🌿' },
-  { id:'v3', judul:'Keberagaman Budaya Indonesia yang Indah', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Mengenal berbagai suku, budaya, dan tradisi unik di Indonesia yang membuat kita bangga.', durasi:'15:00', emoji:'🌈' },
-  { id:'v4', judul:'Gotong Royong: Nilai Luhur Bangsa', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Kisah inspiratif tentang gotong royong dan manfaat kerjasama dalam kehidupan sehari-hari.', durasi:'09:30', emoji:'🤝' },
-  { id:'v5', judul:'Keamanan Ekonomi: Bebas dari Kemiskinan', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Mengenal konsep keamanan ekonomi dalam human security dan bagaimana cara mengatasi kemiskinan di Indonesia.', durasi:'11:15', emoji:'💰' },
-  { id:'v6', judul:'Keamanan Kesehatan untuk Semua', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Belajar tentang pentingnya akses layanan kesehatan sebagai hak dasar setiap manusia dalam konsep human security.', durasi:'10:40', emoji:'🏥' },
-  { id:'v7', judul:'Keamanan Pangan: Hak Makan yang Cukup', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', deskripsi:'Memahami keamanan pangan sebagai pilar penting human security dan upaya ketahanan pangan di Indonesia.', durasi:'13:00', emoji:'🌾' },
-];
-
-const DEFAULT_SOAL = [
-  { id:'s1', pertanyaan:'Apa kepanjangan dari UNDP yang mengembangkan konsep human security?', a:'United Nations Development Programme', b:'United Nations Defense Protocol', c:'Universal Nations Democracy Program', d:'United New Development Partnership', jawaban:'a', penjelasan:'UNDP adalah singkatan dari United Nations Development Programme (Program Pembangunan PBB) yang memperkenalkan konsep human security pada tahun 1994.' },
-  { id:'s2', pertanyaan:'Ada berapa dimensi dalam konsep Human Security menurut UNDP?', a:'5 dimensi', b:'6 dimensi', c:'7 dimensi', d:'8 dimensi', jawaban:'c', penjelasan:'Human Security memiliki 7 dimensi: keamanan ekonomi, pangan, kesehatan, lingkungan, diri, komunitas, dan politik.' },
-  { id:'s3', pertanyaan:'Apa makna semboyan "Bhinneka Tunggal Ika"?', a:'Berbeda-beda dan tidak bersatu', b:'Berbeda-beda tapi tetap satu', c:'Satu bangsa satu bahasa', d:'Bersatu kita teguh bercerai kita runtuh', jawaban:'b', penjelasan:'Bhinneka Tunggal Ika berasal dari bahasa Sansekerta yang berarti "Berbeda-beda tapi tetap satu". Ini adalah semboyan negara Indonesia.' },
-  { id:'s4', pertanyaan:'Kegiatan 3R dalam menjaga lingkungan terdiri dari?', a:'Read, Remember, Recite', b:'Reduce, Reuse, Recycle', c:'Remove, Rearrange, Remake', d:'Repair, Replace, Restore', jawaban:'b', penjelasan:'3R adalah Reduce (mengurangi pemakaian), Reuse (menggunakan kembali), dan Recycle (mendaur ulang) untuk menjaga kelestarian lingkungan.' },
-  { id:'s5', pertanyaan:'Siapa yang mengembangkan teori hierarki kebutuhan manusia?', a:'Sigmund Freud', b:'Jean Piaget', c:'Abraham Maslow', d:'Albert Einstein', jawaban:'c', penjelasan:'Abraham Maslow adalah psikolog yang terkenal dengan teori hierarki kebutuhan yang terdiri dari 5 tingkatan, dari kebutuhan fisiologis hingga aktualisasi diri.' },
-  { id:'s6', pertanyaan:'Manakah yang termasuk kewajiban warga negara Indonesia?', a:'Mendapatkan pendidikan gratis', b:'Memiliki hak pilih dalam pemilu', c:'Membayar pajak kepada negara', d:'Mendapatkan perlindungan hukum', jawaban:'c', penjelasan:'Membayar pajak adalah kewajiban warga negara yang diatur dalam undang-undang. Pajak digunakan untuk membiayai pembangunan negara demi kesejahteraan bersama.' },
-];
-
-// Init data
-function initData(){
-  if(!load(KEYS.profil)) save(KEYS.profil, DEFAULT_PROFIL);
-  if(!load(KEYS.materi)) save(KEYS.materi, DEFAULT_MATERI);
-  if(!load(KEYS.video)) save(KEYS.video, DEFAULT_VIDEO);
-  if(!load(KEYS.soal)) save(KEYS.soal, DEFAULT_SOAL);
-}
-
-// ===================== AUTH =====================
-let isAdmin = false;
-const ADMIN_USER = 'admin', ADMIN_PASS = 'ips2026';
-
-function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  if(u===ADMIN_USER && p===ADMIN_PASS){
-    isAdmin = true;
-    document.getElementById('admin-btn').style.display='none';
-    document.getElementById('logout-btn').style.display='block';
-    document.getElementById('admin-badge').style.display='inline-block';
-    document.getElementById('login-alert').style.display='none';
-    updateAdminUI();
-    showPage('admin');
-    toast('Login berhasil! Selamat datang, Admin.','success');
-  } else {
-    const al = document.getElementById('login-alert');
-    al.textContent = '❌ Username atau password salah!';
-    al.style.display='block';
+  // Load modul dari Firestore
+  async function loadModul(filter = 'semua') {
+    const grid = document.getElementById('modul-grid');
+    grid.innerHTML = '<div id="loading-modul">⏳ Memuat modul...</div>';
+    try {
+      let q;
+      if (filter === 'semua') {
+        q = query(collection(db, 'modul'), where('aktif', '==', true), orderBy('urutan'));
+      } else {
+        q = query(collection(db, 'modul'), where('aktif', '==', true), where('kategori', '==', filter), orderBy('urutan'));
+      }
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        grid.innerHTML = `<div class="empty-state"><div class="icon">📦</div><p>Modul segera hadir. Pantau terus ya!</p></div>`;
+        return;
+      }
+      grid.innerHTML = '';
+      snap.forEach(docSnap => {
+        const m = docSnap.data();
+        grid.innerHTML += buatKartuModul(docSnap.id, m);
+      });
+    } catch (e) {
+      grid.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Gagal memuat modul. Coba refresh halaman.</p></div>`;
+      console.error(e);
+    }
   }
-}
 
-function doLogout(){
-  isAdmin = false;
-  document.getElementById('admin-btn').style.display='block';
-  document.getElementById('logout-btn').style.display='none';
-  document.getElementById('admin-badge').style.display='none';
-  updateAdminUI();
-  showPage('beranda');
-  toast('Berhasil logout.','success');
-}
-
-function updateAdminUI(){
-  const els = ['add-materi-btn','add-video-btn','add-soal-btn','add-profil-btn'];
-  els.forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.style.display = isAdmin?'inline-flex':'none';
-  });
-}
-
-// ===================== NAVIGATION =====================
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const pg = document.getElementById('page-'+name);
-  if(pg) pg.classList.add('active');
-
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const na = document.getElementById('nav-'+name);
-  if(na) na.classList.add('active');
-
-  window.scrollTo({top:0, behavior:'smooth'});
-
-  if(name==='beranda') renderStats();
-  if(name==='materi') renderMateri();
-  if(name==='video') renderVideo();
-  if(name==='soal') renderSoal();
-  if(name==='profil') renderProfil();
-  if(name==='admin') renderAdmin();
-}
-
-// ===================== TOAST =====================
-function toast(msg, type=''){
-  const c = document.getElementById('toastContainer');
-  const el = document.createElement('div');
-  el.className = 'toast '+(type||'');
-  el.innerHTML = (type==='success'?'✅ ':type==='error'?'❌ ':'ℹ️ ')+msg;
-  c.appendChild(el);
-  setTimeout(()=>el.remove(), 3000);
-}
-
-// ===================== MODAL =====================
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function openModalEl(id){ document.getElementById(id).classList.add('open'); }
-
-// ===================== STATS =====================
-function renderStats(){
-  document.getElementById('stat-materi').textContent = (load(KEYS.materi)||[]).length;
-  document.getElementById('stat-video').textContent = (load(KEYS.video)||[]).length;
-  document.getElementById('stat-soal').textContent = (load(KEYS.soal)||[]).length;
-  document.getElementById('stat-mahasiswa').textContent = (load(KEYS.profil)||[]).length;
-}
-
-// ===================== MATERI =====================
-function renderMateri(){
-  const data = load(KEYS.materi)||[];
-  const grid = document.getElementById('materi-grid');
-  if(!data.length){ grid.innerHTML=`<div class="empty-state"><div class="empty-icon">📭</div><h3>Belum Ada Materi</h3><p>Admin belum menambahkan materi pembelajaran.</p></div>`; return; }
-  const colors = {'Human Security':'var(--sky)','Lingkungan':'var(--leaf)','Masyarakat':'var(--purple)','Ekonomi':'var(--sun)','Keberagaman':'var(--coral)','Geografi':'#2C3E50'};
-  const bgColors = {'Human Security':'var(--sky-light)','Lingkungan':'var(--leaf-light)','Masyarakat':'var(--purple-light)','Ekonomi':'var(--sun-light)','Keberagaman':'var(--coral-light)','Geografi':'#ECF0F1'};
-  grid.innerHTML = data.map(m=>`
-    <div class="card materi-card">
-      <div class="card-top" style="background:${bgColors[m.kategori]||'var(--sky-light)'};">${m.emoji||'📖'}</div>
-      <div class="card-body">
-        <div class="card-tag" style="background:${bgColors[m.kategori]||'var(--sky-light)'};color:${colors[m.kategori]||'var(--sky)'};">${m.kategori}</div>
-        <h3>${m.judul}</h3>
-        <p>${m.deskripsi||''}</p>
-        <div style="margin-top:8px;font-size:0.75rem;color:var(--muted);font-weight:600;">📚 ${m.fase}</div>
-        <div class="card-actions">
-          <button class="btn btn-sky" onclick="showDetailMateri('${m.id}')">Baca Selengkapnya →</button>
-          ${isAdmin?`<button class="btn btn-sun" onclick="editMateri('${m.id}')">✏️ Edit</button><button class="btn btn-danger" onclick="deleteMateri('${m.id}')">🗑️</button>`:''}
+  function buatKartuModul(id, m) {
+    const harga = 'Rp' + Number(m.harga).toLocaleString('id-ID');
+    const cover = m.gambar ? `<img src="${m.gambar}" alt="${m.judul}"/>` : '📖';
+    const badge = m.terlaris ? '<div class="modul-badge">🔥 Terlaris</div>' : (m.baru ? '<div class="modul-badge" style="background:#3B82F6">✨ Baru</div>' : '');
+    return `
+      <div class="modul-card" data-id="${id}">
+        <div class="modul-cover">${cover}${badge}</div>
+        <div class="modul-body">
+          <div class="modul-kategori">${m.kategori || 'Umum'}</div>
+          <div class="modul-judul">${m.judul}</div>
+          <div class="modul-deskripsi">${m.deskripsi || ''}</div>
+          <div class="modul-meta">
+            <span>📄 ${m.halaman || '8-12'} hal</span>
+            <span>🎬 Video ${m.durasi || '3-5'} mnt</span>
+          </div>
+          <div class="modul-footer">
+            <div class="modul-harga">${harga}</div>
+            <button class="btn-pesan" onclick="bukaModal('${id}','${m.judul}',${m.harga})">Pesan</button>
+          </div>
         </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function showDetailMateri(id){
-  const data = load(KEYS.materi)||[];
-  const m = data.find(x=>x.id===id);
-  if(!m) return;
-  const tujuan = (m.tujuan||'').split(';').filter(x=>x.trim());
-  document.getElementById('detail-materi-content').innerHTML=`
-    <div class="detail-header">
-      <div style="font-size:3rem;margin-bottom:12px;">${m.emoji||'📖'}</div>
-      <h1 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.8rem;margin-bottom:10px;">${m.judul}</h1>
-      <div class="detail-meta">
-        <span class="detail-tag">📂 ${m.kategori}</span>
-        <span class="detail-tag">🏫 ${m.fase}</span>
-      </div>
-      <p style="color:var(--muted);margin-top:10px;">${m.deskripsi||''}</p>
-    </div>
-    ${tujuan.length?`<div class="detail-content" style="margin-bottom:20px;">
-      <h4>🎯 Tujuan Pembelajaran</h4>
-      <ul>${tujuan.map(t=>`<li>${t.trim()}</li>`).join('')}</ul>
-    </div>`:''}
-    <div class="detail-content">
-      <h4>📖 Isi Materi</h4>
-      ${(m.isi||'').split('\n').map(p=>p.trim()?`<p>${p}</p>`:'').join('')}
-    </div>
-  `;
-  showPage('detail-materi');
-}
-
-function openMateriModal(){ document.getElementById('materi-modal-title').textContent='Tambah Materi'; document.getElementById('materi-edit-id').value=''; ['materi-judul','materi-deskripsi','materi-isi','materi-tujuan','materi-emoji'].forEach(id=>document.getElementById(id).value=''); openModalEl('modal-materi'); }
-function editMateri(id){
-  const m=(load(KEYS.materi)||[]).find(x=>x.id===id);
-  if(!m) return;
-  document.getElementById('materi-modal-title').textContent='Edit Materi';
-  document.getElementById('materi-edit-id').value=m.id;
-  document.getElementById('materi-judul').value=m.judul;
-  document.getElementById('materi-deskripsi').value=m.deskripsi||'';
-  document.getElementById('materi-isi').value=m.isi||'';
-  document.getElementById('materi-tujuan').value=m.tujuan||'';
-  document.getElementById('materi-emoji').value=m.emoji||'';
-  document.getElementById('materi-kategori').value=m.kategori;
-  document.getElementById('materi-fase').value=m.fase;
-  openModalEl('modal-materi');
-}
-function saveMateri(){
-  const judul=document.getElementById('materi-judul').value.trim();
-  if(!judul){toast('Judul materi tidak boleh kosong!','error');return;}
-  const editId=document.getElementById('materi-edit-id').value;
-  let data=load(KEYS.materi)||[];
-  const obj={id:editId||genId(),judul,kategori:document.getElementById('materi-kategori').value,fase:document.getElementById('materi-fase').value,emoji:document.getElementById('materi-emoji').value,deskripsi:document.getElementById('materi-deskripsi').value,isi:document.getElementById('materi-isi').value,tujuan:document.getElementById('materi-tujuan').value};
-  if(editId){ data=data.map(x=>x.id===editId?obj:x); } else { data.push(obj); }
-  save(KEYS.materi,data);
-  closeModal('modal-materi');
-  renderMateri();
-  renderAdmin();
-  toast(editId?'Materi berhasil diperbarui!':'Materi berhasil ditambahkan!','success');
-}
-function deleteMateri(id){
-  if(!confirm('Hapus materi ini?')) return;
-  save(KEYS.materi,(load(KEYS.materi)||[]).filter(x=>x.id!==id));
-  renderMateri(); renderAdmin(); toast('Materi dihapus.','success');
-}
-
-// ===================== VIDEO =====================
-function getYouTubeId(url){
-  const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^?&\n]+)/);
-  return m?m[1]:null;
-}
-
-function renderVideo(){
-  const data=load(KEYS.video)||[];
-  const grid=document.getElementById('video-grid');
-  if(!data.length){grid.innerHTML=`<div class="empty-state"><div class="empty-icon">📹</div><h3>Belum Ada Video</h3><p>Admin belum menambahkan video pembelajaran.</p></div>`;return;}
-  grid.innerHTML=data.map(v=>{
-    const vid=getYouTubeId(v.url||'');
-    const thumb=vid?`<img src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`:'';
-    return `<div class="card video-card">
-      <div class="thumb">
-        <div class="thumb-inner">${v.emoji||'🎬'}</div>
-        ${thumb}
-        <div class="play-btn" onclick="playVideo('${v.id}')">▶</div>
-        <div class="video-duration">${v.durasi||''}</div>
-      </div>
-      <div class="card-body">
-        <h3>${v.judul}</h3>
-        <p>${v.deskripsi||''}</p>
-        <div class="card-actions" style="margin-top:10px;">
-          <button class="btn btn-sky" onclick="playVideo('${v.id}')">▶ Tonton</button>
-          ${isAdmin?`<button class="btn btn-sun" onclick="editVideo('${v.id}')">✏️ Edit</button><button class="btn btn-danger" onclick="deleteVideo('${v.id}')">🗑️</button>`:''}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function playVideo(id){
-  const v=(load(KEYS.video)||[]).find(x=>x.id===id);
-  if(!v) return;
-  document.getElementById('player-title').textContent='🎬 '+v.judul;
-  document.getElementById('player-desc').textContent=v.deskripsi||'';
-  const vid=getYouTubeId(v.url||'');
-  const pc=document.getElementById('player-container');
-  if(vid){
-    pc.innerHTML=`<iframe class="video-embed" src="https://www.youtube.com/embed/${vid}?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
-  } else {
-    pc.innerHTML=`<div style="padding:40px;text-align:center;background:var(--sky-light);border-radius:12px;color:var(--sky)"><div style="font-size:3rem;margin-bottom:12px;">🔗</div><p style="font-weight:600;">URL video tidak valid atau tidak dapat diputar di sini.</p><a href="${v.url}" target="_blank" class="btn btn-sky" style="margin-top:12px;">Buka di YouTube</a></div>`;
+      </div>`;
   }
-  openModalEl('modal-player');
-}
 
-function openVideoModal(){document.getElementById('video-modal-title').textContent='Tambah Video';document.getElementById('video-edit-id').value='';['video-judul','video-url','video-deskripsi','video-durasi','video-emoji'].forEach(id=>document.getElementById(id).value='');openModalEl('modal-video');}
-function editVideo(id){
-  const v=(load(KEYS.video)||[]).find(x=>x.id===id);
-  if(!v) return;
-  document.getElementById('video-modal-title').textContent='Edit Video';
-  document.getElementById('video-edit-id').value=v.id;
-  document.getElementById('video-judul').value=v.judul;
-  document.getElementById('video-url').value=v.url||'';
-  document.getElementById('video-deskripsi').value=v.deskripsi||'';
-  document.getElementById('video-durasi').value=v.durasi||'';
-  document.getElementById('video-emoji').value=v.emoji||'';
-  openModalEl('modal-video');
-}
-function saveVideo(){
-  const judul=document.getElementById('video-judul').value.trim();
-  if(!judul){toast('Judul video tidak boleh kosong!','error');return;}
-  const editId=document.getElementById('video-edit-id').value;
-  let data=load(KEYS.video)||[];
-  const obj={id:editId||genId(),judul,url:document.getElementById('video-url').value,deskripsi:document.getElementById('video-deskripsi').value,durasi:document.getElementById('video-durasi').value,emoji:document.getElementById('video-emoji').value};
-  if(editId){data=data.map(x=>x.id===editId?obj:x);}else{data.push(obj);}
-  save(KEYS.video,data);
-  closeModal('modal-video');
-  renderVideo(); renderAdmin();
-  toast(editId?'Video berhasil diperbarui!':'Video berhasil ditambahkan!','success');
-}
-function deleteVideo(id){
-  if(!confirm('Hapus video ini?')) return;
-  save(KEYS.video,(load(KEYS.video)||[]).filter(x=>x.id!==id));
-  renderVideo(); renderAdmin(); toast('Video dihapus.','success');
-}
-
-// ===================== SOAL =====================
-let quizAnswers = {};
-function renderSoal(){
-  const data=load(KEYS.soal)||[];
-  const list=document.getElementById('soal-list');
-  if(!data.length){list.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><h3>Belum Ada Soal</h3><p>Admin belum menambahkan soal latihan.</p></div>`;return;}
-  updateScore(data);
-  list.innerHTML=data.map((s,i)=>{
-    const letters=['a','b','c','d'];
-    const opts=[{k:'a',v:s.a},{k:'b',v:s.b},{k:'c',v:s.c},{k:'d',v:s.d}].filter(x=>x.v);
-    const userAns=quizAnswers[s.id];
-    return `<div class="quiz-card">
-      <div class="quiz-num">Soal ${i+1}</div>
-      <div class="quiz-q">${s.pertanyaan}</div>
-      <div class="quiz-options">
-        ${opts.map(o=>{
-          let cls='quiz-option';
-          if(userAns){cls+=' disabled';if(o.k===s.jawaban)cls+=' correct';else if(o.k===userAns)cls+=' wrong';}
-          return `<div class="${cls}" onclick="answerSoal('${s.id}','${o.k}')">
-            <span class="quiz-option-letter">${o.k.toUpperCase()}</span>
-            <span>${o.v}</span>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="quiz-feedback" id="fb-${s.id}" style="${userAns?'display:block;background:'+(userAns===s.jawaban?'var(--leaf-light)':'var(--coral-light)')+';color:'+(userAns===s.jawaban?'var(--leaf)':'var(--coral)')+';':''}">${userAns?(userAns===s.jawaban?'✅ Benar! ':'❌ Salah. ')+(s.penjelasan||''):''}</div>
-      ${isAdmin?`<div class="card-actions" style="margin-top:14px;"><button class="btn btn-sun" onclick="editSoal('${s.id}')">✏️ Edit</button><button class="btn btn-danger" onclick="deleteSoal('${s.id}')">🗑️ Hapus</button></div>`:''}
-    </div>`;
-  }).join('');
-}
-
-function answerSoal(id,ans){
-  if(quizAnswers[id]) return;
-  quizAnswers[id]=ans;
-  renderSoal();
-}
-function resetQuiz(){quizAnswers={};renderSoal();}
-function updateScore(data){
-  const answered=data.filter(s=>quizAnswers[s.id]);
-  const correct=answered.filter(s=>quizAnswers[s.id]===s.jawaban);
-  document.getElementById('quiz-score').textContent=`${correct.length} / ${data.length}`;
-}
-
-function openSoalModal(){document.getElementById('soal-modal-title').textContent='Tambah Soal';document.getElementById('soal-edit-id').value='';['soal-pertanyaan','soal-a','soal-b','soal-c','soal-d','soal-penjelasan'].forEach(id=>document.getElementById(id).value='');document.getElementById('soal-jawaban').value='a';openModalEl('modal-soal');}
-function editSoal(id){
-  const s=(load(KEYS.soal)||[]).find(x=>x.id===id);
-  if(!s) return;
-  document.getElementById('soal-modal-title').textContent='Edit Soal';
-  document.getElementById('soal-edit-id').value=s.id;
-  document.getElementById('soal-pertanyaan').value=s.pertanyaan;
-  document.getElementById('soal-a').value=s.a;
-  document.getElementById('soal-b').value=s.b;
-  document.getElementById('soal-c').value=s.c||'';
-  document.getElementById('soal-d').value=s.d||'';
-  document.getElementById('soal-jawaban').value=s.jawaban;
-  document.getElementById('soal-penjelasan').value=s.penjelasan||'';
-  openModalEl('modal-soal');
-}
-function saveSoal(){
-  const pertanyaan=document.getElementById('soal-pertanyaan').value.trim();
-  const a=document.getElementById('soal-a').value.trim();
-  const b=document.getElementById('soal-b').value.trim();
-  if(!pertanyaan||!a||!b){toast('Pertanyaan dan pilihan A, B wajib diisi!','error');return;}
-  const editId=document.getElementById('soal-edit-id').value;
-  let data=load(KEYS.soal)||[];
-  const obj={id:editId||genId(),pertanyaan,a,b,c:document.getElementById('soal-c').value,d:document.getElementById('soal-d').value,jawaban:document.getElementById('soal-jawaban').value,penjelasan:document.getElementById('soal-penjelasan').value};
-  if(editId){data=data.map(x=>x.id===editId?obj:x);}else{data.push(obj);}
-  save(KEYS.soal,data);
-  closeModal('modal-soal');
-  renderSoal(); renderAdmin();
-  toast(editId?'Soal berhasil diperbarui!':'Soal berhasil ditambahkan!','success');
-}
-function deleteSoal(id){
-  if(!confirm('Hapus soal ini?')) return;
-  delete quizAnswers[id];
-  save(KEYS.soal,(load(KEYS.soal)||[]).filter(x=>x.id!==id));
-  renderSoal(); renderAdmin(); toast('Soal dihapus.','success');
-}
-
-// ===================== PROFIL =====================
-function renderProfil(){
-  const data=load(KEYS.profil)||[];
-  const grid=document.getElementById('profil-grid');
-  if(!data.length){grid.innerHTML=`<div class="empty-state"><div class="empty-icon">👥</div><h3>Belum Ada Anggota</h3><p>Belum ada data anggota tim.</p></div>`;return;}
-  grid.innerHTML=data.map(p=>`
-    <div class="card profil-card">
-      <div class="avatar" style="background:${p.warna||'var(--sky)'};">${(p.nama||'?')[0]}</div>
-      <h3>${p.nama}</h3>
-      <div class="nim">NIM: ${p.nim}</div>
-      <div class="prodi" style="background:${p.warna+'22'};color:${p.warna};">${p.peran||p.prodi}</div>
-      <p class="bio">${p.bio||''}</p>
-      ${isAdmin?`<div class="card-actions" style="justify-content:center;">
-        <button class="btn btn-sun" onclick="editProfil('${p.id}')">✏️ Edit</button>
-        <button class="btn btn-danger" onclick="deleteProfil('${p.id}')">🗑️ Hapus</button>
-      </div>`:''}
-    </div>
-  `).join('');
-}
-
-function openProfilModal(){document.getElementById('profil-modal-title').textContent='Tambah Anggota';document.getElementById('profil-edit-id').value='';['profil-nama','profil-nim','profil-prodi','profil-peran','profil-bio'].forEach(id=>document.getElementById(id).value='');openModalEl('modal-profil');}
-function editProfil(id){
-  const p=(load(KEYS.profil)||[]).find(x=>x.id===id);
-  if(!p) return;
-  document.getElementById('profil-modal-title').textContent='Edit Anggota';
-  document.getElementById('profil-edit-id').value=p.id;
-  document.getElementById('profil-nama').value=p.nama;
-  document.getElementById('profil-nim').value=p.nim;
-  document.getElementById('profil-prodi').value=p.prodi||'';
-  document.getElementById('profil-peran').value=p.peran||'';
-  document.getElementById('profil-bio').value=p.bio||'';
-  document.getElementById('profil-warna').value=p.warna||'#1E6FA6';
-  openModalEl('modal-profil');
-}
-function saveProfil(){
-  const nama=document.getElementById('profil-nama').value.trim();
-  const nim=document.getElementById('profil-nim').value.trim();
-  if(!nama||!nim){toast('Nama dan NIM wajib diisi!','error');return;}
-  const editId=document.getElementById('profil-edit-id').value;
-  let data=load(KEYS.profil)||[];
-  const obj={id:editId||genId(),nama,nim,prodi:document.getElementById('profil-prodi').value,peran:document.getElementById('profil-peran').value,bio:document.getElementById('profil-bio').value,warna:document.getElementById('profil-warna').value};
-  if(editId){data=data.map(x=>x.id===editId?obj:x);}else{data.push(obj);}
-  save(KEYS.profil,data);
-  closeModal('modal-profil');
-  renderProfil(); renderAdmin();
-  toast(editId?'Profil berhasil diperbarui!':'Anggota berhasil ditambahkan!','success');
-}
-function deleteProfil(id){
-  if(!confirm('Hapus anggota ini?')) return;
-  save(KEYS.profil,(load(KEYS.profil)||[]).filter(x=>x.id!==id));
-  renderProfil(); renderAdmin(); toast('Anggota dihapus.','success');
-}
-
-// ===================== ADMIN =====================
-function switchAdminTab(name){
-  document.querySelectorAll('.admin-tab').forEach((t,i)=>{
-    const tabs=['mahasiswa','materi-adm','video-adm','soal-adm'];
-    t.classList.toggle('active',tabs[i]===name);
+  // Filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadModul(btn.dataset.filter);
+    });
   });
-  document.querySelectorAll('.admin-tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-}
 
-function renderAdmin(){
-  if(!isAdmin) return;
-  // Mahasiswa
-  const profils=load(KEYS.profil)||[];
-  document.getElementById('adm-mahasiswa-body').innerHTML=profils.length?profils.map((p,i)=>`<tr><td>${i+1}</td><td><b>${p.nama}</b></td><td>${p.nim}</td><td>${p.prodi||'-'}</td><td><div style="display:flex;gap:6px;"><button class="btn btn-sun" style="padding:5px 10px;" onclick="editProfil('${p.id}')">✏️</button><button class="btn btn-danger" style="padding:5px 10px;" onclick="deleteProfil('${p.id}')">🗑️</button></div></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px;">Belum ada data</td></tr>';
-  // Materi
-  const materis=load(KEYS.materi)||[];
-  document.getElementById('adm-materi-body').innerHTML=materis.length?materis.map((m,i)=>`<tr><td>${i+1}</td><td><b>${m.emoji||''} ${m.judul}</b></td><td>${m.kategori}</td><td>${m.fase}</td><td><div style="display:flex;gap:6px;"><button class="btn btn-sun" style="padding:5px 10px;" onclick="editMateri('${m.id}')">✏️</button><button class="btn btn-danger" style="padding:5px 10px;" onclick="deleteMateri('${m.id}')">🗑️</button></div></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px;">Belum ada data</td></tr>';
-  // Video
-  const videos=load(KEYS.video)||[];
-  document.getElementById('adm-video-body').innerHTML=videos.length?videos.map((v,i)=>`<tr><td>${i+1}</td><td><b>${v.emoji||''} ${v.judul}</b></td><td><a href="${v.url}" target="_blank" style="color:var(--sky);font-size:0.8rem;">Buka ↗</a></td><td>${v.durasi||'-'}</td><td><div style="display:flex;gap:6px;"><button class="btn btn-sun" style="padding:5px 10px;" onclick="editVideo('${v.id}')">✏️</button><button class="btn btn-danger" style="padding:5px 10px;" onclick="deleteVideo('${v.id}')">🗑️</button></div></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px;">Belum ada data</td></tr>';
-  // Soal
-  const soals=load(KEYS.soal)||[];
-  document.getElementById('adm-soal-body').innerHTML=soals.length?soals.map((s,i)=>`<tr><td>${i+1}</td><td style="max-width:300px;">${s.pertanyaan}</td><td><span style="font-weight:700;color:var(--leaf);">${s.jawaban.toUpperCase()}: ${s[s.jawaban]||''}</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-sun" style="padding:5px 10px;" onclick="editSoal('${s.id}')">✏️</button><button class="btn btn-danger" style="padding:5px 10px;" onclick="deleteSoal('${s.id}')">🗑️</button></div></td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:30px;">Belum ada data</td></tr>';
-}
+  // Modal
+  window.bukaModal = (id, nama, harga) => {
+    modulAktif = { id, nama, harga };
+    document.getElementById('modal-nama-modul').textContent = nama;
+    document.getElementById('modal-harga-modul').textContent = 'Rp' + Number(harga).toLocaleString('id-ID');
+    document.getElementById('modal-pesan').classList.add('active');
+  };
+  window.tutupModal = () => {
+    document.getElementById('modal-pesan').classList.remove('active');
+    modulAktif = null;
+  };
 
-// Close modal when clicking overlay
-document.querySelectorAll('.modal-overlay').forEach(o=>{
-  o.addEventListener('click', e=>{ if(e.target===o){ if(o.id==='modal-player'){ document.getElementById('player-container').innerHTML=''; } closeModal(o.id); } });
-});
+  // Kirim pesanan
+  window.kirimPesanan = async () => {
+    const nama = document.getElementById('nama-pembeli').value.trim();
+    const wa = document.getElementById('wa-pembeli').value.trim();
+    const email = document.getElementById('email-pembeli').value.trim();
+    const metode = document.getElementById('metode-bayar').value;
+    const catatan = document.getElementById('catatan-pembeli').value.trim();
+    if (!nama || !wa || !metode) { showToast('⚠️ Lengkapi semua kolom wajib!', true); return; }
+    if (!modulAktif) return;
+    const btn = document.getElementById('btn-kirim-pesan');
+    btn.disabled = true; btn.textContent = '⏳ Mengirim...';
+    try {
+      await addDoc(collection(db, 'pesanan'), {
+        modulId: modulAktif.id,
+        modulNama: modulAktif.nama,
+        harga: modulAktif.harga,
+        nama, wa, email, metode, catatan,
+        status: 'menunggu',
+        tanggal: serverTimestamp()
+      });
+      showToast('✅ Pesanan terkirim! Admin akan menghubungi via WhatsApp dalam 1×24 jam.');
+      tutupModal();
+      document.getElementById('nama-pembeli').value = '';
+      document.getElementById('wa-pembeli').value = '';
+      document.getElementById('email-pembeli').value = '';
+      document.getElementById('metode-bayar').value = '';
+      document.getElementById('catatan-pembeli').value = '';
+    } catch (e) {
+      showToast('❌ Gagal mengirim. Coba lagi atau hubungi kami via WhatsApp.', true);
+      console.error(e);
+    } finally {
+      btn.disabled = false; btn.textContent = '📨 Kirim Pesanan';
+    }
+  };
 
-// ===================== INIT =====================
-initData();
-renderStats();
-updateAdminUI();
+  function showToast(msg, err = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (err ? ' error' : '');
+    setTimeout(() => t.className = 'toast', 4000);
+  }
+
+  loadModul();
 </script>
 </body>
 </html>
