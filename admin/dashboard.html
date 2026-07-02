@@ -656,7 +656,7 @@
   async function loadVideo() {
     try {
       const snap = await getDocs(collection(db, 'video'));
-      allVideo = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allVideo = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b)=>(a.urutan||99)-(b.urutan||99));
       renderVideo();
     } catch(e) { console.error(e); }
   }
