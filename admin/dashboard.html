@@ -153,10 +153,12 @@
     
     .empty-row td { text-align:center; color:var(--abu); padding:40px; font-size:0.9rem; }
 
+    /* FIX: logo glow tanpa brightness(0)+invert(1) agar tidak jadi kotak putih
+       jika logo.png tidak transparan. Hanya efek glow/drop-shadow saja. */
     @keyframes logoGlow {
-      0%   { filter: brightness(0) invert(1) drop-shadow(0 0 2px rgba(82,196,183,0)); }
-      50%  { filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(82,196,183,0.95)) drop-shadow(0 0 22px rgba(42,157,143,0.6)); }
-      100% { filter: brightness(0) invert(1) drop-shadow(0 0 2px rgba(82,196,183,0)); }
+      0%   { filter: drop-shadow(0 0 2px rgba(82,196,183,0)); }
+      50%  { filter: drop-shadow(0 0 10px rgba(82,196,183,0.95)) drop-shadow(0 0 22px rgba(42,157,143,0.6)); }
+      100% { filter: drop-shadow(0 0 2px rgba(82,196,183,0)); }
     }
     .logo-glow { animation: logoGlow 3s ease-in-out infinite; }
     
